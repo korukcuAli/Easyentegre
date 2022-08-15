@@ -1,0 +1,540 @@
+{{ header }}{{ column_left }}
+<div id="content">
+    <div class="page-header">
+        <div class="container-fluid ">
+            <div class="pull-right easy-mode {{ easy_visibility }}">
+                <img src="view/image/entegrasyon/logo.png" />
+            </div>
+            <ul class="breadcrumb">
+                {% for breadcrumb in breadcrumbs %}
+                    <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+                {% endfor %}
+            </ul>
+
+        </div>
+
+
+        <div class="container-fluid">
+            <div class="row">
+                <div class="panel panel-default" style="border-top: 2px solid #27ad5e;width: 100%">
+                    <div class="panel-heading">
+                        <h2 class="panel-title hidden"><i class="fa fa-list"></i> Hata Raporları</h2>
+
+
+                    </div>
+
+
+
+                    <div class="panel-body well" >
+
+                        <div class="row " >
+
+
+
+                            <div  class="col-xs-6 col-md ">
+                                <label class="control-label" for="input-model">Ürün Adı</label>
+                                <input type="text" name="filter_name" value="{{ filter_name }}" placeholder="Ürün adı" id="input-name" class="form-control" />
+                            </div>
+                            <div class="col-md col-xs-6">
+                                <label class="control-label" for="input-model">Ürün Kodu</label>
+                                <input type="text" name="filter_model" value="{{ filter_model }}" placeholder="Ürün kodu" id="input-model" class="form-control" />
+                            </div>
+
+
+                            <div class="col-md col-xs-6">
+                                <label class="control-label " for="input-model">Pazaryeri</label>
+
+                                <select name="filter_marketplace" class="form-control filter_marketplace selectpicker" data-live-search="true">
+                                    <option value="*">Tümü</option>
+                                    {% for marketplace in marketplaces %}
+
+                                        {% if marketplace.status %}
+
+                                            {% if filter_marketplace==marketplace.code %}
+                                                <option selected value="{{ marketplace.code }}">{{ marketplace.name }}</option>
+                                            {% else %}
+                                                <option value="{{ marketplace.code }}">{{ marketplace.name }}</option>
+
+                                            {% endif %}
+
+                                        {% endif %}
+
+                                    {% endfor %}
+
+
+                                </select>
+                            </div>
+
+
+                            <div class="form-group text-right" style="padding-top: 22px;
+    padding-bottom: 0px;
+    margin-bottom: 0;">
+                                <button type="button" id="button-filter" class="btn btn-primary"><i class="fa fa-filter"></i> {{ button_filter }}</button>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                    <div class="panel-body" >
+                        <div id="progres_bar"></div>
+
+                        <button  style="margin-bottom:5px; background:cornflowerblue; color:white " data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Kontrol Ediliyor.." class="pull-right btn btnAllTryAgain"><i class="fa fa-bullseye" aria-hidden="true"></i>
+                            Tüm ürünleri Kontrol Et
+                        </button>
+
+                        <table class="table table-bordered table-hover" style="width: 100%;">
+                            <thead>
+                            <tr>
+                                <td style="width: 15%">Ürün</td>
+                                <td style="width: 5%">Pazaryeri</td>
+                                <td style="width: 45%">Durum</td>
+                                <td style="width: 7%">Son Kontrol</td>
+
+                                <td class="text-center" style="width: 13%">Eylem</td>
+
+
+                            </tr>
+                            </thead>
+                            <tbody id="tablee">
+
+                            {% if products %}
+                                {% for product in products %}
+                                    <tr id="tr_{{ product.product_id }}">
+                                        <td class="hidden">
+                                            <div class="  checkbox">
+                                                <label style="font-size: 1em">
+                                                    <input class=" select" type="checkbox" name="selected[]"
+                                                           value="{{ product.product_id}}" checked="checked"/>
+
+
+                                                    <span class="cr"><i class="cr-icon fa fa-check"></i></span>
+                                                </label></div>
+                                        </td>
+                                        <td class="text-left">
+
+                                            <p> {{ product.name }} <br><span style="font-size: x-small"> <strong>Model:</strong> {{ product.model }}</span></p>
+
+                                        </td>
+
+                                        <td>{{ product.marketplace }}</td>
+
+                                        <td>{{ product.error }}</td>
+                                        <td>{{ product.date_modified }}</td>
+                                        <td class="text-center"><div class="btn-group">
+                                                <button product_id="{{ product.product_id }}" code="{{ product.code }}"  marketname="{{ product.marketplace }}" name="{{ product.name }}"  data-toggle="tooltip" title="{{ product.marketplace }} Ürün Ayarları" class="btn btn-warning btnSetting"  data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i>" ><i class="fa fa-pencil"></i></button>
+
+                                                <button id="btn_check_{{ product.btn_id }}" product_id="{{ product.product_id }}" code="{{ product.code }}" auto_action="{{ product.auto_action }}"  class="btn btn-primary btnTryAgain" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i>" data-toggle="tooltip"  title="{{ product.action }} Kontrol Et"><i class="fa fa-refresh" ></i></button>
+
+                                                <button product_id="{{ product.product_id }}" code="{{ product.code }}" class="btn btn-danger btnDelete" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i>" data-toggle="tooltip"  title="Ürünü Sil"><i class="fa fa-trash"></i></button>
+                                            </div>
+                                        </td>
+
+                                    </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td class="text-center" colspan="8">{{ text_no_results }}</td>
+                                </tr>
+                            {% endif %}
+
+                            </tbody>
+
+                        </table>
+
+                        <!--   <div class="row">
+                            <div class="col-sm-6 text-left">{{ pagination }}</div>
+                            <div class="col-sm-6 text-right">{{ results }}</div>
+                        --></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        $('#button-filter').on('click', function() {
+            var url = '';
+
+
+
+            var filter_marketplace = $('select[name=\'filter_marketplace\']').val();
+
+            if (filter_marketplace) {
+                url += '&filter_marketplace=' + encodeURIComponent(filter_marketplace);
+            }
+
+
+            var filter_name = $('input[name=\'filter_name\']').val();
+
+            if (filter_name) {
+                url += '&filter_name=' + encodeURIComponent(filter_name);
+            }
+
+
+            var filter_model = $('input[name=\'filter_model\']').val();
+
+            if (filter_model) {
+                url += '&filter_model=' + encodeURIComponent(filter_model);
+            }
+
+
+            location = 'index.php?route=entegrasyon/product/error_list&{{ token_link }}' + url;
+        });
+        //--></script>
+
+    <script type="text/javascript">
+        // IE and Edge fix!
+        $('button[form=\'form-product\']').on('click', function(e) {
+            $('#form-product').attr('action', $(this).attr('formaction'));
+        });
+
+        $('input[name=\'filter_name\']').autocomplete({
+            'source': function(request, response) {
+                $.ajax({
+                    url: 'index.php?route=catalog/product/autocomplete&{{ token_link }}&filter_name=' +  encodeURIComponent(request),
+                    dataType: 'json',
+                    success: function(json) {
+                        response($.map(json, function(item) {
+                            return {
+                                label: item['name'],
+                                value: item['product_id']
+                            }
+                        }));
+                    }
+                });
+            },
+            'select': function(item) {
+                $('input[name=\'filter_name\']').val(item['label']);
+            }
+        });
+
+        //--></script>
+
+
+
+
+    <script>
+
+
+        $('.btnAllTryAgain').on('click',function (){
+            $('#progres_bar').html('<div id="prgBulk" class="progress active" style="margin-top:20px;"> <div class="progress-bar"  role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width:0%"><span class="yuzde"></span></div></div>');
+
+            var $thisBtn=$(this);
+
+            $thisBtn.button('loading');
+
+            var total = "{{ product_total }}";
+
+            var i = 0;
+            check_action();
+
+            function check_action() {
+
+
+                if  (i <= total){
+                    i++;
+                    action_bulk(i)
+                }else{
+                    alert("Güncellemeler Bitti");
+
+                    $thisBtn.button('reset');
+
+                }
+
+            }
+
+            function action_bulk(i){
+                var total = "{{ product_total }}";
+                var product_id=$('#btn_again_'+i).attr('product_id');
+                var code=$('#btn_again_'+i).attr('code');
+                var auto_action=$('#btn_again_'+i).attr('auto_action');
+
+                $.post('index.php?route=entegrasyon/product/'+auto_action+'&{{ token_link }}',{product_id:product_id,code:code},function (json){
+
+
+                    var yuzde = Math.round(i * 100 /total);
+
+                    $('#prgBulk  .progress-bar').css('width', yuzde + '%');
+                    $('.progress  .yuzde').html(yuzde + '%' + ' tamamlandı');
+                    if(json['status']){
+
+
+
+                        $.toast({
+                            heading: 'Başarılı',
+                            text: json['message'],
+                            position: 'top-right',
+                            loader: true,
+                            allowToastClose: false,
+                            showHideTransition: 'slide',
+                            icon: 'success'
+                        });
+                        //   $('#tr_'+product_id).remove();
+                        $('#tr_'+product_id).css('background-color', 'rgb(0 255 31 / 8%');
+
+                        check_action();
+                    }else {
+                        $('#tr_'+product_id).css('background-color', 'rgb(255 0 0 / 8%');
+
+                        /*   var title='Uyarı';
+                           var alert_type='warning';
+                           $('#tr_'+product_id).remove();
+
+
+                           if (typeof json['alert_type'] !== 'undefined') {
+                               // your code here
+                               alert_type =json['alert_type'];
+
+                               if(json['alert_type']=='error'){
+
+                                   title='Uyarı';
+
+                               }else {
+
+                                   title='Bir Öneri';
+
+                               }
+                           }
+
+
+
+
+                           $.toast({
+                               heading: title,
+                               text: json['message'],
+                               position: 'top-right',
+                               loader: true,
+                               allowToastClose: false,
+                               showHideTransition: 'slide',
+                               icon: alert_type
+                           });*/
+                        check_action();
+
+
+                    }
+                    $.ajax({
+                        statusCode: {
+                            500: function() {
+                                $thisBtn.button('reset');
+                                alert('Time Out Hatası, Tekrar Başlatın');
+                            }
+                        }
+                    });
+
+
+                },'JSON');
+
+
+
+
+            }
+
+
+
+
+
+
+
+
+
+        })
+
+    </script>
+    <script>
+
+
+
+        $('.btnTryAgain').on('click',function (){
+
+            var $thisBtn=$(this);
+            var product_id=$thisBtn.attr('product_id');
+            var code=$thisBtn.attr('code');
+            var auto_action=$thisBtn.attr('auto_action');
+            $thisBtn.button('loading');
+
+            $.post('index.php?route=entegrasyon/product/check_status&{{ token_link }}',{product_id:product_id,code:code},function (json){
+
+
+                if(json['status']){
+
+                    $thisBtn.parent().parent().parent('tr').slideUp(1000,function (){
+
+                        $.toast({
+                            heading: 'Başarılı',
+                            text: json['message'],
+                            position: 'top-right',
+                            loader: true,
+                            allowToastClose: false,
+                            showHideTransition: 'slide',
+                            icon: 'success'
+                        });
+
+
+                    }); }else {
+
+                    var title='Uyarı';
+                    var alert_type='warning';
+
+
+                    if (typeof json['alert_type'] !== 'undefined') {
+                        // your code here
+                        alert_type =json['alert_type'];
+
+                        if(json['alert_type']=='error'){
+
+                            title='Uyarı';
+
+                        }else {
+
+                            title='Bir Öneri';
+
+                        }
+                    }
+
+
+                    Swal.fire({
+                        title: title,
+                        text: json['message'],
+                        icon: alert_type,
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'Tamam'
+                    });
+
+                }
+                $thisBtn.button('reset');
+
+
+            },'JSON');
+
+
+        })
+
+
+        $('.btnDelete').on('click',function (){
+            var $thisBtn=$(this);
+            var product_id=$thisBtn.attr('product_id');
+            var code=$thisBtn.attr('code');
+
+            $thisBtn.button('loading');
+            $.post('index.php?route=entegrasyon/product/delete_error&{{ token_link }}',{product_id:product_id,code:code},function (json){
+
+
+                $thisBtn.parent().parent().parent('tr').slideUp(1000,function (){
+
+                    $.toast({
+                        heading: 'Başarılı',
+                        text: 'Hata Raporu Başarıyla Silindi',
+                        position: 'top-right',
+                        loader: true,
+                        allowToastClose: false,
+                        showHideTransition: 'slide',
+                        icon: 'success'
+                    });
+                    $thisBtn.button('reset');
+
+
+                });
+
+            },'JSON');
+
+        })
+
+    </script>
+
+
+    <script>
+
+        $('.btnVariant').on('click',function (event) {
+
+            event.preventDefault();
+            var $thisBtn=$(this);
+            var name=$thisBtn.attr('name');
+
+            var product_id=$thisBtn.attr('product_id');
+
+            BootstrapDialog.show({
+                title: name +' Varyant Ayarları',
+                closable: true,
+                draggable: true,
+                size: BootstrapDialog.SIZE_WIDE,
+
+                message: function(dialog) {
+                    var $message = $('<div></div>');
+                    var pageToLoad = dialog.getData('pageToLoad');
+                    $message.load(pageToLoad);
+                    return $message;
+                },
+                data: {
+                    'pageToLoad':'index.php?route=entegrasyon/product/variants&product_id='+product_id+'&{{ token_link }}'
+                },onhide: function(dialogRef){
+
+
+                },buttons: [{
+                    label: 'Kapat',
+                    cssClass: 'btn-danger',
+                    action: function(dialogItself){
+                        dialogItself.close();
+                    }
+                }]
+            });
+
+
+
+
+        })
+
+    </script>
+
+
+    <script>
+        $('.btnSetting').on('click',function (event) {
+
+
+            event.preventDefault();
+            var $thisBtn=$(this);
+            var name=$thisBtn.attr('name');
+            var code=$thisBtn.attr('code');
+            var marketname=$thisBtn.attr('marketname');
+            var product_id=$thisBtn.attr('product_id');
+            var thistr=$('#tr_'+product_id);
+
+            thistr.addClass('bg-info');
+            $('.'+code).addClass('bg-info');
+            $thisBtn.parent().parent().css('background','#fff');
+
+            BootstrapDialog.show({
+                title:name+  '- '+marketname + '-' +' Ürün Ayarları ',
+                closable: true,
+                draggable: true,
+                size: BootstrapDialog.SIZE_WIDE,
+
+                message: function(dialog) {
+                    var $message = $('<div></div>');
+                    var pageToLoad = dialog.getData('pageToLoad');
+                    $message.load(pageToLoad);
+                    return $message;
+                },
+                data: {
+                    'pageToLoad':'index.php?route=entegrasyon/product/setting&code='+code+'&product_id='+product_id+'&{{ token_link }}'
+                },onhide: function(dialogRef){
+                    $('.'+code).removeClass('bg-info');
+                    thistr.removeClass('bg-info');
+                    $thisBtn.parent().parent().css('background','');
+
+                },buttons: [{
+                    label: 'Kapat',
+                    cssClass: 'btn-danger',
+                    action: function(dialogItself){
+                        dialogItself.close();
+                    }
+                }]
+            });
+
+
+        })
+
+    </script>
+
+
+
+{{ footer }}

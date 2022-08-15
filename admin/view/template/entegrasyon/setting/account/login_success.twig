@@ -1,0 +1,46 @@
+{{ header }}{{ column_left }}
+<div id="content">
+    <div class="page-header">
+        <div class="container-fluid">
+            <div class="pull-right">
+                <div class="pull-right">
+                    <img class="hidden" src="view/image/entegrasyon/logo.png" />
+                </div>
+
+            </div>
+            <ul class="breadcrumb">
+                {% for breadcrumb in breadcrumbs %}
+                    <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="container-fluid">{% if error_warning %}
+            <div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+            </div>
+        {% endif %}
+        {% if success %}
+            <div class="alert alert-success alert-dismissible"><i class="fa fa-check-circle"></i> {{ success }}
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+            </div>
+        {% endif %}
+
+        <div class="row well"  style="border-top: 2px solid #27ad5e;">
+
+
+            <div class="col-sm-1">
+                <img class="img-responsive" src="view/image/entegrasyon/bilgi.png"/>
+            </div>
+            <div class="col-sm-11">
+                <h1 style="color:#27ad5e;font-weight: bolder ">Pazaryeri Entegrasyonuna Başarıyla Giriş Yapıldı</h1>
+                <p class="lead">Pazaryeri Entegrasyonuna giriş işlemini başarıyla tamamladınız. Toplam {{ marketplace_count }} pazaryeri kullanımınıza açılmıştır. </p>
+                <p class="lead"><strong>Demo Hesap:</strong> 15 gün süreyle sipariş çekme, ürün güncelleme,ürün soruları vb servisler sınırsız kullanımıza açılmıştır. Her pazaryeri için 20 adet ürün gönderebilir yada pazaryerinden sitenize ürün aktarabilirsiniz.</p>
+                <p class="lead"><strong>Premium Hesap:</strong> Herhangi bir kısıtlama olmaksızın sınırsız ürün ekleme, güncelleme, sipariş aktarma vb servisleri kullanabilirsiniz.</p>
+                <p class="lead">Api bilgilerinize girerek pazaryerlerini aktif etmek için <strong>Devam Et</strong> butonuna tıklayınız.</p>
+                <p class="lead"><a href="{{ setting_url }}" class="btn btn-lg btn-primary">Devam et</a> </p>
+            </div>
+        </div>
+
+
+{{ footer }}

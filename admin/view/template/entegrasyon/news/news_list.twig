@@ -1,0 +1,68 @@
+
+
+{{ header }}
+
+{{ column_left }}
+
+
+<div id="content">
+
+    <div class="panel-body">
+        <div class="container" style="width:auto">
+
+
+
+            <div id="content">
+
+                <div class="page-header">
+
+
+
+                    <div class="panel-body">
+
+
+                        <div class="panel panel-default" style="bquestion-top: 2px solid #27ad5e;">
+                            <div class="panel-heading">
+                                <h2 class="panel-title" style="margin: 10px;"><i class="fa fa-bullhorn"></i> Duyurular Ve Haberler</h2>
+
+                            </div>
+                            <div class="panel-body">
+
+                                <div id="blog" class="row">
+
+                                    <div class=" paddingTop20">
+                                        {% for result in news %}
+                                        <div class="col-md-10 blogShort">
+                                            <h1>{{ result.information_title }}</h1>
+
+                                            <img style=" margin:5px; width: 130px; height: 130px;" src="{{result.title_img }}" alt="post img" class="pull-left img-responsive thumb margin10 img-thumbnail">
+
+                                            <article><p>
+                                                    {{ result.information_content }}
+                                                </p></article>
+                                            <a class="btn btn-primary pull-right " href="{{ result.link }}">Devamını Oku</a>
+                                            <span class="badge" style="margin-left:10px">{{ result.date_added }}</span>
+                                            <!--  <span style="margin-left: 10px" class="label label-success">blog</span>-->
+                                        </div>
+                                        {% endfor %}
+
+                                    </div>
+                                </div>
+
+                                <!-- <div >
+                                <span class="label label-default">alice</span>
+                                <span class="label label-primary">story</span>
+                                <span class="label label-success">blog</span>
+                                <span class="label label-info">personal</span>
+                                <span class="label label-warning">Warning</span>
+                                <span class="label label-danger">Danger</span>
+                                </div> -->
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

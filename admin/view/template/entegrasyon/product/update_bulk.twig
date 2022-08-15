@@ -1,0 +1,113 @@
+<div class="row">
+
+    <div class="panel">
+        <div class="panel-body">
+
+            <table class="table well table-bordered">
+
+                <thead>
+                <th>Toplam Ürün</th>
+                <th>Güncellenen</th>
+                <th>Güncelenemeyen</th>
+
+                </thead>
+
+                <tbody>
+                <div class="well"><p>Yaptığınız {{ controller }} bazlı Komisyon değişikliği sonrası, İlgili {{ controller }} ile ilişkili ürünlerin değişen fiyatlarını {{ marketplace }} mağazanızdaki ürünlerlerle eşitleyebilirsiniz. İskonto özelden genele doğru bir hiyearşik yapıdadır. Eğer kategori için bir komisyon belirlediyseniz bu kategorinin altındaki ürünler için ürün ve marka bazında komisyon belirlemememiz gerekir. aksi taktirde otomatik güncelleme önce ürün sonra markadaki komisyon oranınına göre işlem yapar.</p></div>
+                <div class="progress active" style="margin-top:20px;"> <div class="progress-bar"  role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width:0%"><span class="yuzde"></span></div></div>
+
+                <tr>
+                    <td><span class="btn btn-primary btn-block">{{ total }}</span></td>
+                    <td><span class="btn btn-success btn-block btnSuccess">0</span></td>
+                    <td><span class="btn btn-danger btn-block btnUnSuccess">0</span></td>
+
+                </tr>
+
+
+                </tbody>
+
+            </table>
+
+            <div id="report"  style="overflow-y:scroll; overflow-x:hidden; height:100px;" ></div>
+
+
+        </div>
+
+        <div class="panel-footer">
+            <button data-loading-text="Güncelleniyor..." class="btn btn-block btn-lg btn-default btn-start">Güncellemeyi Başlat</button>
+
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+
+
+<script>
+
+    var updated_products=0;
+    var totalpage;
+    var current=1;
+    $('.btn-start').on('click',function () {
+        $('#report').empty();
+        $('.btn-start').button('loading');
+        $('.btnCurrent').text(current);
+        $('.btnSuccess').text(0);
+        $('.btnUnSuccess').text(0);
+        matched_products=parseInt($('#matched_product').text());
+        page= parseInt('{{ current }}');
+        totalpage =parseInt('{{ total }}');
+        starttool('index.php?route=entegrasyon/product/update_bulk_price&total={{ total }}&code={{ code }}&page=1&commission={{ commission }}&controller={{ controller }}&{{ controller }}={{ value }}&{{ token_link }}')
+
+
+    })
+
+    var lastnext='';
+
+    function starttool(url) {
+        lastnext=url;
+
+        $.ajax({
+            url: url,
+            type: 'post',
+            dataType: 'json',
+            success: function(json) {
+                var yuzde = Math.round(json['current'] * 100 / {{ total }});
+                $('#currentPage').html(json['page']);
+
+                $('#updated_product').html(json['total_matched']);
+                $('.progress  .progress-bar').css('width', yuzde + '%');
+                $('.progress  .yuzde').html(yuzde + '%' + ' tamamlandı');
+                if(!json['status']){
+                    $('.btn-start').button('reset');
+
+
+                }else {
+                    starttool(json['next']);
+                }
+
+                if(json['update_status']){
+
+                    $('.btnSuccess').text(parseInt($('.btnSuccess').text())+1);
+
+                    $('#report').prepend('<p class="text-success"><i class="fa fa-check-circle" aria-hidden="true"></i> '+json['message']+'</p>');
+
+                }else {
+                    $('.btnUnSuccess').text(parseInt($('.btnUnSuccess').text())+1)
+                    $('#report').prepend('<p class="text-danger"><i class="fa fa-window-close" aria-hidden="true"></i> '+json['message']+'</p>');
+
+                }
+            },
+            error: function (request, status, error) {
+                //alert(request.responseText);
+                starttool(lastnext);
+            }
+        });
+    }
+
+</script>
+

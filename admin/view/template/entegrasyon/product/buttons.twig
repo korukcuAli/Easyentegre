@@ -1,0 +1,220 @@
+<div class="btn-group- well">
+    <button action="delete" code="{{ code }}" hidesuccess="true" product_id="{{ product_id }}" url="index.php?route=entegrasyon/product/deleteproduct&{{ token_link }}" class="btn btn-danger  btnAction  {% if  not marketplace_data %} hidden {% endif %} " data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Siliniyor"><i class="fa fa-stop" aria-hidden="true"> </i> Sil
+    </button>
+    <button action="close" code="{{ code }}" hidesuccess="true" product_id="{{ product_id }}"  class="btn btn-warning  btnAction  {% if  marketplace_data  %}  {% if not  marketplace_data.sale_status  %}   hidden  {% endif %}  {% else %} hidden {% endif %}  " url="index.php?route=entegrasyon/product/close_for_sale&{{ token_link }}" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Satışa Kapatılıyor..."><i class="fa fa-pause" aria-hidden="true"> </i> Satışa Kapat
+    </button>
+    <button action="open" code="{{ code }}" hidesuccess="true" product_id="{{ product_id }}"  class="btn btn-success   btnAction  {% if not marketplace_data.approval_status %} hidden {% endif %}   {% if  marketplace_data  %}  {% if   marketplace_data.sale_status  %}   hidden  {% endif %}  {% else %} hidden {% endif %}   " url="index.php?route=entegrasyon/product/open_for_sale&{{ token_link }}" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Satışa Açılıyor..."><i class="fa fa-play" aria-hidden="true"> </i> Satışa Aç
+    </button>
+    <button action="update" code="{{ code }}" hidesuccess="false" product_id="{{ product_id }}"  class="btn btn-info  btnAction   {% if  not marketplace_data %} hidden {% endif %} " url="index.php?route=entegrasyon/product/update&{{ token_link }}&mode=0"  data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Güncelleniyor..."><i class="fa fa-refresh" aria-hidden="true"> </i> Stok&Fiyat Güncelle
+    </button>
+    <button action="update_all" code="{{ code }}" hidesuccess="false" product_id="{{ product_id }}"  class=" {% if code == 'hb' or code == 'eptt'  %}  hidden  {% endif %} btn btn-update-all  btnAction   {% if  not marketplace_data %} hidden {% endif %} " url="index.php?route=entegrasyon/product/update&{{ token_link }}&mode=1"  data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Güncelleniyor..."><i class="fa fa-refresh" aria-hidden="true"> </i> Tüm Özellikleri Güncelle
+    </button>
+    <button action="add" code="{{ code }}" hidesuccess="true"  aria-hidden="true" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Ürün Gönderiliyor..." product_id="{{ product_id }}"  url="index.php?route=entegrasyon/product/addproduct&{{ token_link }}" class="btn btn-primary   btnAction  {% if marketplace_data %} hidden {% endif %} "><i class="fa fa-play"> </i> Ürünü Gönder
+    </button>
+    <button action="view"  code="{{ code }}" hidesuccess="false" product_id="{{ product_id }}"  url="index.php?route=entegrasyon/product/view_product&{{ token_link }}" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Ürün sayfasına gidiyor..." class="btn btn-primary   btnView  {% if marketplace_data  %}  {% if not  marketplace_data.sale_status  %}   hidden  {% endif %}  {% else %} hidden {% endif %}  "><i class="fa fa-eye"   aria-hidden="true" > </i> Ürüne Git
+    </button>
+    <button action="variants" code="{{ code }}" product_id="{{ product_id }}" url="index.php?route=entegrasyon/product/view_product_variant&{{ token_link }}" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Ürün varyantları Açılıyor" style="background: #8b8b8b; color: white" class="btn    btnVariants  {% if code == 'ty'  %}  {% else %} hidden  {% endif %}  "><i class="fa fa-list-alt" aria-hidden="true" > </i> Varyant Listesi
+    </button>
+    <!-- <button action="match"  code="{{ code }}" hidesuccess="false" product_id="{{ product_id }}" url="index.php?route=entegrasyon/product/match_product&{{ token_link }}" class="btn btn-lg btnProductMatch hidden  {% if marketplace_data %} hidden {% endif %} " style="background-color:#FF407F; color: white "><i class="fa fa-balance-scale"  data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Ürün Eşitleniyor..." aria-hidden="true"></i> Eşitle </button>
+-->
+</div>
+
+<script>
+    
+    $('.btnAction').on('click',function () {
+
+        var thisbtn=$(this);
+        var url =thisbtn.attr('url');
+        var action =thisbtn.attr('action');
+
+        var hidesuccess =thisbtn.attr('hidesuccess');
+        var product_id=thisbtn.attr('product_id');
+        var code=thisbtn.attr('code');
+        var colorn='';
+        thisbtn.button("loading");
+        var currentSpan = $('#span-'+code+'-'+product_id);
+
+        $.post(url,{product_id:product_id,code:code},function (json) {
+
+            if(action !=='update'){
+                currentSpan.animate({
+                    color: '#FFEB3B'},500);
+            }
+
+
+            thisbtn.button("reset");
+
+            if(json['status']){
+
+                if(action=='add'){
+
+                    currentSpan.text(json['price']);
+                    currentSpan.removeClass("text-danger","text-small");
+
+
+                    if(code=='ty' || code=='hb' || code=='cs'  ){
+                        currentSpan.addClass("pasif");
+                        currentSpan.animate({color:'#c0c0c0'},500);
+
+                    }else {
+                        currentSpan.addClass("aktif");
+                        currentSpan.animate({color:'#27ad5f'},500);
+
+
+                    }
+
+                }else   if(action=='delete'){
+                    currentSpan.text('Mevcut Değil');
+                    currentSpan.removeClass("aktif");
+                    currentSpan.addClass("text-danger","text-small");
+
+                    currentSpan.animate({color:'#f56b6b'},500);
+
+                } else if(action=='update'){
+                    currentSpan.text(json['price']);
+
+                  /*  if(currentSpan.attr('class')=='aktif'){
+                        currentSpan.animate({color:'#27ad5f'},500);
+
+                    }else {
+
+                        currentSpan.animate({color:'#c0c0c0'},500);
+
+                    }*/
+
+
+                }else if(action=='open'){
+
+                    currentSpan.removeClass("pasif");
+                    currentSpan.addClass("aktif");
+                    currentSpan.text(json['price']);
+                    currentSpan.animate({color:'#27ad5f'},500);
+
+
+
+                }else if(action=='close'){
+                    currentSpan.animate({color:'#c0c0c0'},500);
+                    currentSpan.text(json['price']);
+                    currentSpan.addClass("pasif");
+                    currentSpan.removeClass("aktif");
+
+
+                }
+
+
+                $.toast({heading: 'Başarılı',text: json['message'], position: 'top-right',loader: false,allowToastClose: false,showHideTransition: 'slide',icon: 'success'});
+
+                $( ".reload" ).trigger( "click" );
+                // $('.buttonContainer').load('index.php?route=entegrasyon/product/get_buttons&code={{ code }}&{{ token_link }}&product_id={{ product_id }}');
+                //thisbtn.hide();
+
+            } else {
+                var title='Uyarı';
+                var alert_type='warning';
+
+
+                if (typeof json['alert_type'] !== 'undefined') {
+                    // your code here
+                    alert_type =json['alert_type'];
+
+                    if(json['alert_type']=='error'){
+
+                        title='Uyarı';
+
+                    }else {
+
+                        title='Bir Öneri';
+
+                    }
+                }
+
+
+                Swal.fire({
+                    title: title,
+                    text: json['message'],
+                    icon: alert_type,
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'Tamam'
+                });
+
+
+            }
+
+        },'JSON');
+
+
+
+    });
+
+
+
+
+    $('.btnView').on('click',function () {
+
+        var thisbtn=$(this);
+        var url =thisbtn.attr('url');
+
+        var hidesuccess =thisbtn.attr('hidesuccess');
+        var product_id=thisbtn.attr('product_id');
+        var code=thisbtn.attr('code');
+        thisbtn.button("loading");
+
+        $.post(url,{product_id:product_id,code:code},function (json) {
+
+            thisbtn.button("reset");
+
+            if(json['status']){
+
+                window.open(json['url'], '_blank');
+
+            }else {
+
+                Swal.fire("Hata",json['message'],'error') ;
+
+            }
+
+        },'JSON');
+
+
+
+    })
+
+    $('.btnVariants').on('click',function () {
+
+        var thisbtn=$(this);
+
+        var product_id=thisbtn.attr('product_id');
+        var code=thisbtn.attr('code');
+
+
+
+
+
+
+        BootstrapDialog.show({
+            title: "Varyant Listesi",
+            closable: true,
+            draggable: true,
+            closable: true,
+            size: BootstrapDialog.SIZE_WIDE,
+
+            message: function (dialog) {
+                var $message = $('<div></div>');
+                var pageToLoad = dialog.getData('pageToLoad');
+                $message.load(pageToLoad);
+                return $message;
+            },
+            data: {
+                'pageToLoad': 'index.php?route=entegrasyon/product/get_variants&code='+code+'&product_id='+product_id+'&{{ token_link }}'
+            }
+        });
+
+
+
+
+
+
+
+    })
+
+</script>

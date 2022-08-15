@@ -1,0 +1,201 @@
+<div class="row well"  style="border-top: 2px solid #27ad5e;">
+
+
+    <div class="col-sm-1">
+        <img class="img-responsive" src="view/image/entegrasyon/bilgi.png"/>
+    </div>
+    <div class="col-sm-11">
+        <h3 style="color:#27ad5e;font-weight: bolder ">Bilgilendirme</h3>
+        <p class="" >Ürün için belirlediğiniz seçenekler referans alınarak otomatik oluşturalan varyantlar aşağıda listelenmiştir. Her varyanta özel ürün görseli ve barkod belirleyebilirsiniz. Dilerseniz ürün seçeneklerine yeni değerler ekleyip varyanları yeniden oluşutabilirsiniz. ancak bu durumuda önce varyantlar için belirlediğiniz görsel ve barkodlar silineceği için bu alanları yeniden düzenlemeniz gerekebilir.</p>
+
+    </div>
+</div>
+{% if product_variants %}
+
+    <table class="table">
+
+        <tr>
+            <th>Görsel</th>
+            <th>Varyant</th>
+            <th>Ürün Kodu</th>
+
+            <th>Barkod</th>
+
+        </tr>
+        {% for variant in product_variants %}
+            <tr>
+                <td>
+
+                    <a href="" variant_id="{{ variant.variant_id }}" id="thumb-image{{ variant.variant_id }}" data-toggle="image" class="img-thumbnailx"><img style="border: 1px solid #dddddd" src="{{ variant.image  }}" alt="" title="" data-placeholder="görsel" /></a>
+                    <input class="txtimage"  type="hidden" name="image" value="{{ variant.image  }}" id="input-image{{ variant.variant_id }}" />
+
+                </td>
+
+                <td>{{ variant.name }}</td>
+                <td>{{ variant.model }}</td>
+                <td>
+
+                    <a href="" id="barcode" class="editable" data-type="text" data-pk="{{ variant.variant_id }}"
+                       data-value="{{ variant.barcode }}" data-emptytext="Barkod Giriniz"
+                       data-url="index.php?route=entegrasyon/product/update_variant&{{ token_link }}"
+                       data-title="Barkod Giriniz."></a></td>
+
+            </tr>
+
+        {% endfor %}
+
+    </table>
+{% else  %}
+    <div class="alert alert-danger alert-dismissible fade in">
+        Otomatik varyant oluşturulabilmesi için önce ürününüz için ürün seçenekleri belirlemelisiniz. Varyantlar ürün seçenekleri refarans alınarak oluşturulmaktadır.
+    </div>
+{% endif  %}
+
+
+<script>
+
+    var variant_id;
+    var one=true;
+    var ival="";
+
+    $('.img-thumbnailx').on('click',function (event) {
+        variant_id = $(this).attr('variant_id');
+
+        //alert($.fn.val);
+        //$('#input-image'+variant_id).val('');
+        var $val = $.fn.val;
+        one = true;
+        // $('#input-image'+variant_id).trigger('input');
+
+        /*
+                $.fn.val = function(newVal) {
+                    if(one)
+                    {
+                        if (this.attr('id') === 'input-image'+variant_id) this.trigger('input');
+                        newVal = this.attr('value');
+                        //this.attr('value').val()
+                        //setval('#input-image'+variant_id,newVal);
+                        ival = newVal;
+                        //alert();
+                        $val.call(this, newVal);
+                        //this.trigger('change');
+                    }
+                };*/
+
+
+        $(document).on('change','#input-image'+variant_id, function() {
+
+
+            alert(variant_id);
+            //alert("id "+variant_id);
+            //alert('#input-image'+variant_id);
+            //$('#input-image'+variant_id).val(ival);
+            //
+            /*$('#input-image'+variant_id).on('input',function () {
+
+            });*/
+            //var vl = $('#input-image'+variant_id).val();
+            //$val = null;
+            //alert('ok_'+ival);
+            /*
+                        $.post('index.php?route=entegrasyon/product/update_variant&{{ token_link }}',{pk:variant_id,value:ival,name:'image'},function (json) {
+
+                if(json['status']){
+                    $.toast({
+                        heading: 'Başarılı',
+                        text: 'Varyant görseli başarıyla kaydedildi!',
+                        position: 'top-right',
+                        loader: true,
+                        allowToastClose: true,
+                        showHideTransition: 'slide',
+                        icon: 'success'
+                    });
+
+                }
+            },'JSON');
+*/
+            //setval('#input-image'+variant_id,ival);
+            //alert(val);
+
+
+            // one = false;
+        });
+
+    });
+
+
+    $(document).on('click','#filemanager  .thumbnail',function (event) {
+
+
+        if(one) {
+            var img_url = $('#thumb-image' + variant_id + ' img').attr('src');
+
+            $.post('index.php?route=entegrasyon/product/update_variant&{{ token_link }}', {
+                pk: variant_id,
+                value: img_url,
+                name: 'image'
+            }, function (json) {
+
+                if (json['status']) {
+                    $.toast({
+                        heading: 'Başarılı',
+                        text: 'Varyant görseli başarıyla kaydedildi!',
+                        position: 'top-right',
+                        loader: true,
+                        allowToastClose: true,
+                        showHideTransition: 'slide',
+                        icon: 'success'
+                    });
+
+                }
+            }, 'JSON');
+            one = false;
+            // $('#input-image'+variant_id).trigger('input');
+        }
+    })
+
+
+
+
+
+
+
+</script>
+
+<script>
+
+
+
+    $('.editable').editable({
+        inputclass: 'intclass input-sm', success: function (json, newValue) {
+
+            if (json['status']) {
+
+                $.toast({
+                    heading: 'Başarılı',
+                    text: 'Güncelleme Başarılı',
+                    position: 'top-right',
+                    loader: true,
+                    allowToastClose: false,
+                    showHideTransition: 'slide',
+                    icon: 'success'
+                });
+
+            }
+
+        }
+    });
+
+
+
+
+    $.fn.editableform.buttons =
+        '<button type="submit" class="btn btn-primary btn-sm editable-submit">' +
+        '<i class="fa fa-check"></i>' +
+        '</button>' +
+        '<button type="button" class="btn btn-danger btn-sm editable-cancel">' +
+        '<i class="fa fa-times"></i>' +
+        '</button>';
+
+
+</script>

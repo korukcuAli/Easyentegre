@@ -1,0 +1,482 @@
+{{ header }}{{ column_left }}
+<div id="content">
+    <div class="page-header">
+        <div class="container-fluid">
+            <div class="{{ easy_visibility }} pull-right easy-mode ">
+                <img src="view/image/entegrasyon/logo.png" />
+
+
+            </div>
+            <h1>{{ heading_title }}</h1>
+            <ul class="breadcrumb">
+                {% for breadcrumb in breadcrumbs %}
+                    <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+
+    <div class="panel panel-default" style="border-top: 2px solid #27ad5e;">
+
+        <div class="panel-heading" style="border-bottom: none;"><h3 class="panel-title">Siparişler</h3>
+            <div class="pull-right {{ easy_ticket }}"> <a href="{{ticket_link}}" style="font-size: medium; margin-left:10px">  <i class="fa fa-file"></i> Destek Taleplerim </a></div>
+            <div class="{{ easy_visibility }} pull-right hidden "> <a href="{{information_link}}" style="font-size: medium">  <i class="fa fa-file"></i> Duyurular </a></div>
+
+        </div>
+
+
+
+
+        <div class="panel-body">
+
+
+            <div class="row">
+                {% for marketplace in marketplaces %}
+
+                    <div class="col-md order-{{ marketplace.code }}"  >
+                        <div class="tile">
+                            <div class="tile-heading" ><strong>{{ marketplace.name }}</strong> <span class="pull-right">
+
+                     <i class="fa fa-caret-up">Bugün</i>
+
+
+
+
+                    </span>
+                            </div>
+                            <div class="tile-body"><img class="img-thumbnail" src="{{ marketplace.logo }}"/> </i>
+                                <h2 class="pull-right">{{ marketplace.order_today }}</h2>
+                            </div>
+                            <div class="tile-footer">Toplam Sipariş:{{ marketplace.order_total }}</div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+            </div>
+
+
+        </div>
+
+
+
+        <div class="panel-body">
+
+            <div class="col-sm-4">
+
+                <div class="panel panel-default" style="border-top: 2px solid #27ad5e;">
+
+                    <div class="panel-heading"><h2 class="panel-title">Pazaryerlerindeki Ürün Sayısı</h2> </div>
+
+                    <table class="table">
+                        {% for marketplace in marketplaces %}
+
+
+                            <tr>
+                                <td><img class="" src="{{ marketplace.logo }}"/> </td>
+                                <td><p>{{ marketplace.name }}</p></td>
+                                <td><p class="pull-right">{{ marketplace.product_count }}</p></td>
+                            </tr>
+
+
+                        {% endfor %}
+
+                    </table>
+                </div>
+            </div>
+
+            <div class="col-sm-4">
+                <div class="panel panel-default" style="border-top: 2px solid #27ad5e;">
+
+                    <div class="panel-heading"><h2 class="panel-title">Son 5 Soru</h2>
+                        <a  id="btnCheckquestion"  style="cursor:pointer" data-toggle="tooltip" title="Yeni soruları kontrol et"
+                            data-loading-text="Sorular Güncelleniyor.. <i class='fa fa-refresh fa-spin'></i>"
+                            class="pull-right">Soruları Güncelle  <i class="fa fa-refresh"></i></a>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table">
+
+
+                            {% if questions %}
+                                {% for question in questions %}
+                                    <tr  {% if question.is_rejected %}
+                                        style="background: rgba(255,0,70,0.22)"
+
+                                    {% elseif question.answered %}
+
+                                    {% else %}
+
+                                        style="background: rgba(255,255,0,0.22) "
+
+                                    {% endif %} >                                        <td class="text-left"><img
+                                                    src="https://www.egitimsetleri.com/tr/image/cache/entegrasyon-logo/{{ question.code }}-logo-40x40.png"/>
+                                        </td>
+                                        <td class="text-right hidden">{{ question.question_id |slice(0, 7)}}</td>
+                                        <td class="text-left" >{% if question.is_rejected  %} <b>Onaylanmadı </b>{% elseif question.answered %} Cevaplandı
+                                            {% else %} <strong>Yeni Mesaj </strong>  {% endif %}</td>
+                                        <td class="text-left">{{ question.date_added }}</td>
+                                        <td class="text-right"><div style="min-width: 120px;">
+                                                <a data-toggle="tooltip"
+                                                   title="{% if question.answered %} Görüntüle {% else %} Cevapla  {% endif %}"
+                                                   code="{{ question.code }}"
+                                                   question_id="{{ question.question_id }}"
+                                                   class="btn {% if question.is_rejected %} btn-danger {% elseif question.answered %} btn-info {% else %} btn-primary {% endif %} btnReply"><i
+                                                            class="fa {% if  question.is_rejected %} fa-eye {% elseif question.answered %} fa-eye {% else %} fa-send {% endif %} "></i>
+                                                </a>
+                                            </div></td>
+                                    </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td class="text-center" colspan="8">{{ text_no_results }}</td>
+                                </tr>
+                            {% endif %}
+
+                        </table>
+
+                    </div>
+
+                    <div class="panel-footer text-center"><a href="index.php?route=entegrasyon/product_question&{{ token_link }}"  >Tüm Soruları Gör <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+
+
+
+                    </div>
+
+
+                </div>
+            </div>
+
+
+            <div class="col-sm-4">
+                <div class="panel panel-default" style="border-top: 2px solid #27ad5e;">
+
+                    <div class="panel-heading"><h2 class="panel-title">Son 5 Sipariş</h2>
+
+                        <a  id="btnCheckOrder" style="cursor:pointer" data-toggle="tooltip" title="Yeni siparişleri kontrol et"
+                            data-loading-text="Siparişler Güncelleniyor.. <i class='fa fa-refresh fa-spin'> </i>"
+                            class="pull-right">Siparişleri Güncelle  <i class="fa fa-refresh"></i></a>
+
+
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table">
+
+
+                            {% if orders %}
+                                {% for order in orders %}
+                                    <tr>
+                                        <td class="text-left"><img src="{{ order.logo }}" /></td>
+
+                                        <td class="text-right hidden">{{ order.market_order_id }}</td>
+                                        <td class="text-left">{{ order.customer }}</td>
+                                        <td class="text-right">{{ order.total }}</td>
+                                        <td class="text-left hidden">{{ order.date_added }}</td>
+                                        <td class="text-right"><div style="min-width: 120px;">
+                                                <a order_id="{{ order.order_id }}" data-toggle="tooltip" title="{{ button_view }}" class="btn btn-primary view_order"><i class="fa fa-eye"></i></a>
+
+
+                                            </div></td>
+                                    </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td class="text-center" colspan="8">{{ text_no_results }}</td>
+                                </tr>
+                            {% endif %}
+
+                        </table>
+
+                    </div>
+
+                    <div class="panel-footer text-center"><a href="index.php?route=entegrasyon/order&{{ token_link }}"  >Tüm Siparişleri Gör <i class="fa fa-arrow-right" aria-hidden="true"></i></a>
+
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="panel panel-default" style="border-top: 2px solid #27ad5e;">
+            <div class="panel-heading">
+                <div class="pull-right"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-calendar"></i> <i class="caret"></i></a>
+                    <ul id="range" class="dropdown-menu dropdown-menu-right">
+                        <li><a href="day">Gün</a></li>
+                        <li><a href="week">Hafta</a></li>
+                        <li class="active"><a href="month">Ay</a></li>
+                        <li><a href="year">Yıl</a></li>
+                    </ul>
+                </div>
+                <div class="panel-title"><i class="fa fa-bar-chart-o"></i> Satış Analizi</div>
+            </div>
+            <div class="panel-body">
+                <div id="chart-sale" style="width: 100%; height: 260px;"></div>
+            </div>
+        </div>
+        <script type="text/javascript" src="view/javascript/jquery/flot/jquery.flot.js"></script>
+        <script type="text/javascript" src="view/javascript/jquery/flot/jquery.flot.resize.min.js"></script>
+        <script>
+            $('#btnCheckquestion').on('click', function (event) {
+
+                var $btn = $(this);
+                $btn.button('loading');
+
+                $.post('{{ catalog_url }}index.php?route=entegrasyon/update/questions', {}, function (data) {
+
+                    $btn.button('reset');
+                    if (data['total'] > 0) {
+
+                        Swal.fire({
+                            title: 'Ürün Sorusu Kontrol',
+                            text: 'Toplam' + data['total'] + ' Yeni Sorularınız Var. Sorular Sayfasını Yenilecenektir.',
+                            icon: 'info',
+                            showCancelButton: false,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Sayfayı Yenile!'
+                        }).then((result) => {
+                            if (result.value) {
+
+                                window.location.href = 'index.php?route=entegrasyon/dashboard&{{ token_link }}';
+
+                            }
+                        })
+
+                    } else {
+
+                        if (data['message']) {
+
+                            Swal.fire({
+                                title: 'Ürün Sorusu Kontrol',
+                                icon: 'warning',
+                                text: data['message'],
+                                confirmButtonColor: '#3085d6',
+                                icon: 'warning',
+                                confirmButtonText: 'Tamam'
+                            })
+
+                        } else {
+
+                            Swal.fire({
+                                title: 'Ürün Sorusu Kontrol',
+                                icon: 'info',
+                                text: 'Hiç Yeni Soru Yok!.',
+                                confirmButtonColor: '#3085d6',
+                                icon: 'success',
+                                confirmButtonText: 'Tamam'
+                            })
+                        }
+
+                    }
+
+
+                }, 'JSON');
+
+            })
+
+        </script>
+        <script>
+
+            $('.btnReply').on('click', function (event) {
+
+                var thisBtn = $(this);
+
+                var code = thisBtn.attr('code');
+                var question_id = thisBtn.attr('question_id');
+                BootstrapDialog.show({
+                    title: 'Soru Detayı',
+                    closable: true,
+                    size: BootstrapDialog.SIZE_WIDE,
+
+                    message: function (dialog) {
+                        var $message = $('<div></div>');
+                        var pageToLoad = dialog.getData('pageToLoad');
+                        $message.load(pageToLoad);
+                        return $message;
+                    },
+                    data: {
+                        'pageToLoad': 'index.php?route=entegrasyon/product_question/reply_form&code=' + code + '&question_id=' + question_id + '&{{ token_link }}'
+                    }
+                });
+
+
+            })
+
+            $('.view_order').on('click', function () {
+
+
+                var thisBtn = $(this);
+
+                var order_id = thisBtn.attr('order_id');
+
+                BootstrapDialog.show({
+                    title: 'Sipariş Detayları',
+                    closable: true,
+                    size: BootstrapDialog.SIZE_WIDE,
+
+                    message: function (dialog) {
+                        var $message = $('<div></div>');
+                        var pageToLoad = dialog.getData('pageToLoad');
+                        $message.load(pageToLoad);
+                        return $message;
+                    },
+                    data: {
+                        'pageToLoad': 'index.php?route=entegrasyon/order/info&{{ token_link }}&order_id=' + order_id + ''
+                    }
+                });
+
+            })
+
+        </script>
+        <script>
+            /*
+                        $(function () {
+
+                            $.post('{{  catalog_url }}index.php?route=entegrasyon/update/orders',{},function (data) {
+
+
+                    if(data['total']>0){
+
+                        window.location.href='index.php?route=entegrasyon/dashboard&{{ token_link }}';
+
+                    }
+
+                });
+            });*/
+        </script>
+
+        <script type="text/javascript"><!--
+            $('#range a').on('click', function(e) {
+                e.preventDefault();
+
+                $(this).parent().parent().find('li').removeClass('active');
+
+                $(this).parent().addClass('active');
+
+                $.ajax({
+                    type: 'get',
+                    url: 'index.php?route=entegrasyon/order/chart&{{ token_link }}&range=' + $(this).attr('href'),
+                    dataType: 'json',
+                    success: function(json) {
+
+                        var option = {
+                            shadowSize: 0,
+                            colors: [{% for marketplace in marketplaces %}"{{ marketplace.color }}",{% endfor %}],
+                            bars: {
+                                barWidth: 100,
+                                align: "left",
+                                horizontal: true
+                            },
+                            grid: {
+                                show: true,
+                                aboveData: true,
+                                color: "#3f3f3f",
+                                labelMargin: 20,
+                                axisMargin: 0,
+                                borderWidth: 0,
+                                borderColor: null,
+                                minBorderMargin: 5,
+                                clickable: true,
+                                hoverable: true,
+                                labelFormatter: function(label, series) {
+                                    // series is the series object for the label
+                                    return '<a href="#' + label + '">' + label + '</a>';
+                                },
+                                autoHighlight: true,
+                                mouseActiveRadius: 100
+                            },
+                            points: {
+                                show: false,
+                                radius: 4.5,
+                                symbol: "circle",
+                                lineWidth: 3.0
+                            },
+                            xaxis: {
+                                show: true,
+                                ticks: json['xaxis']
+                            }
+
+
+                        };
+
+                        $.plot('#chart-sale', [{% for marketplace in marketplaces %}json['{{ marketplace.code }}'],{% endfor %}], option);
+
+                        $('#chart-sale').bind('plothover', function(event, pos, item) {
+                            $('.tooltip').remove();
+
+                            if (item) {
+                                $('<div id="tooltip" class="tooltip top in"><div class="tooltip-arrow"></div><div class="tooltip-inner">' + item.datapoint[1].toFixed(2) + '</div></div>').prependTo('body');
+
+                                $('#tooltip').css({
+                                    position: 'absolute',
+                                    left: item.pageX - ($('#tooltip').outerWidth() / 2),
+                                    top: item.pageY - $('#tooltip').outerHeight(),
+                                    pointer: 'cusror'
+                                }).fadeIn('slow');
+
+                                $('#chart-sale').css('cursor', 'pointer');
+                            } else {
+                                $('#chart-sale').css('cursor', 'auto');
+                            }
+                        });
+                    },
+                    error: function(xhr, ajaxOptions, thrownError) {
+                        alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+                    }
+                });
+            });
+
+            $('#range .active a').trigger('click');
+            //--></script>
+
+
+        <script>
+            $('#btnCheckOrder').on('click',function (event) {
+
+                var $btn=$(this);
+                $btn.button('loading');
+
+                $.post('{{  catalog_url }}index.php?route=entegrasyon/update/orders',{},function (data) {
+
+                    $btn.button('reset');
+                    if(data['total']>0){
+
+                        Swal.fire({
+                            title: 'Sipariş Kontrol',
+                            text: 'Toplam'+data['total']+' Yeni Siparişiniz Var. Siparişler Sayfasını Yenilecenektir.',
+                            icon: 'info',
+                            showCancelButton: false,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Sayfayı Yenile!'
+                        }).then((result) => {
+                            if (result.value) {
+
+                                window.location.href='index.php?route=entegrasyon/dashboard&{{ token_link }}';
+
+                            }
+                        })
+
+                    }else {
+
+                        Swal.fire({
+                            title: 'Sipariş Kontrol',
+                            icon: 'info',
+                            text: 'Hiç Yeni Sipariş Yok!.',
+                            confirmButtonColor: '#3085d6',
+                            icon: 'success',
+                            confirmButtonText: 'Sağlık Olsun!'
+                        })
+                    }
+
+
+
+                },'JSON');
+
+            })
+
+        </script>
+
+    </div>
+{{ footer }}

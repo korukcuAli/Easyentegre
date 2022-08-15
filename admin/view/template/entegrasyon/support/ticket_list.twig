@@ -1,0 +1,257 @@
+{{ header }}
+{{ column_left }}
+<div id="content">
+
+    <div class="page-header">
+        <div class="container-fluid">
+
+            <ul class="breadcrumb">
+                {% for breadcrumb in breadcrumbs %}
+
+                    {%  if breadcrumb.text == "home" %}
+                        <li> <a class="fa fa-home" href="{{ breadcrumb.href }}"></a></li>
+                    {% else %} <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div style="border-top: 2px solid #27ad5e;
+    padding-top: 11px;"></div>
+
+
+    <div class="panel-body" >
+
+
+        <div class="panel panel-default" style="bquestion-top: 2px solid #27ad5e;">
+            <div class="panel-heading">
+                <h2 class="panel-title"style="margin: 10px;"> <i class="fa fa-list"></i> Destek Taleplerim </h2>
+                <div class="pull-right" >
+                    {% if want_ftp_admin == 1 %}
+
+                    {% else %}
+                        <button id="btnNewTicket"  data-toggle="tooltip"
+                                data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Destek Formu Açılıyor.. "
+                                class="btn btn-primary"> <i class="fa fa-plus"></i> Yeni Ticket Oluştur
+                        </button>   {% endif %}
+                    <button id="reload"  data-toggle="tooltip"
+                            data-loading-text="<i class='fa fa-refresh fa-spin'></i> Destek Talepleri Güncelleniyor.. "
+                            class="btn btn-warning"> <i class="fa fa-refresh"></i> Güncelle
+                    </button>
+
+
+                </div>
+            </div>        <div class="panel-body">
+                {% if want_ftp_admin == 1 %}
+
+                <h1 class="lead well" style="color: red"><i class="fa fa-info"></i> -   Uzman Destek Paneline Açmış Olduğunuz Ticket'ta Belirttiğiniz Sorunu Yakından Takip Etmek ve Çözebilmek
+                    İçin Uzman Ekibimiz Sizden Ftp ve Admin Bilgilerini Belirtmenizi Talep Ediyor.</h1>
+
+                <div class="form-group">
+                    <label for="email">Opencart Admin</label>
+                    <input type="text" class="form-control" id="admin_id">
+                </div>
+                <div class="form-group">
+                    <label for="text">Opencart Şifre</label>
+                    <input type="password" class="form-control" id="admin_pass">
+                </div>
+                <div class="form-group">
+                    <label for="text">Site Ftp Host</label>
+                    <input type="text" class="form-control" id="host">
+                </div>
+                <div class="form-group">
+                    <label for="email">Site Ftp Kullanıcı Adı</label>
+                    <input type="text" class="form-control" id="ftp_id">
+                </div>
+                <div class="form-group">
+                    <label for="pwd">Ftp Şifre</label>
+                    <input type="password" class="form-control" id="ftp_pass">
+                </div>
+
+                <button  id="send_info" class="btn btn-primary">Gönder</button>
+
+
+                <script>
+                    $('#send_info').click(function () {
+                        var admin_id = $('#admin_id').val();
+                        var admin_pass = $('#admin_pass').val();
+                        var host = $('#host').val();
+                        var ftp_id = $('#ftp_id').val();
+                        var ftp_pass = $('#ftp_pass').val();
+
+                        $.post("index.php?route=entegrasyon/support/want_ftp_admin&{{ token_link }}", {
+                                admin_id: admin_id,
+                                admin_pass: admin_pass,
+                                host: host,
+                                ftp_id: ftp_id,
+                                ftp_pass: ftp_pass
+                            },
+                            function (donenVeri) {
+
+                               $(location).attr('href', 'index.php?route=entegrasyon/support&{{token_link}}')
+
+
+
+                            });
+
+
+
+                    })
+
+                </script>
+
+                {% else %}
+
+
+                <td method="post" action="" enctype="multipart/form-data" id="form-question">
+                    <div class="table-responsive">
+                        <input class="form-control" style="width: 15%" id="myInput" type="text" placeholder="Ticket Ara..">
+                        <br>
+
+
+                        <table  class="table table-bordered table-hover">
+                            <thead>
+                            <tr>
+
+                                <td class="text-left">#</td>
+                                <td class="text-left">Tarih</td>
+                                <td class="text-center">Pazaryeri</td>
+
+                                <td class="text-left">Başlık</td>
+
+
+                                <td class="text-left">Durum
+                                </td>
+                              <!--  <td class="text-center">Aşama</td> -->
+
+
+                            </tr>
+                            </thead>
+                            <tbody id="myTable">
+
+
+                            {% for ticket in tickets %}
+
+                                <tr>
+                                    <td class="text-left">{{ticket.ticket_id}}</td>
+                                    <td class="text-left">{{ticket.date_added}}</td>
+                                    <td class="text-center">
+                                        {% if ticket.marketplace ==  "n11" %}
+                                            N11
+                                        {% elseif ticket.marketplace == "hb" %}
+                                            HepsiBurada
+                                        {% elseif ticket.marketplace == "ty" %}
+                                            Trendyol
+                                        {% elseif ticket.marketplace == "cs" %}
+                                            Çiçek Sepeti
+                                        {% elseif ticket.marketplace == "gg" %}
+                                            Gitti Gidiyor
+                                        {% elseif ticket.marketplace == "eptt" %}
+                                            EpttAvm
+                                        {% else %}
+                                            Genel
+
+
+                                        {% endif %}
+
+
+
+
+                                    </td>
+
+                                    <td class="text-left ticket" style="cursor:pointer" title="{{ticket.subject}}" id="ticket_id_{{ticket.ticket_id  }}" ticket_id="{{ticket.ticket_id  }}">
+                                        <a href="{{ ticket.view }}"  style="text-transform: capitalize;  {% if not  ticket.statu %} color: rgba(0,0,0,0.71) {% endif %} "><i class="fa fa-file"></i></i> {{ticket.subject}}</a></td>
+
+
+                                    <td class="text-left {% if not  ticket.statu %} danger {% endif %}" >  {% if ticket.statu %} Açık {% else %} Kapalı {% endif %}
+                                    </td>
+
+                                    <!--    <td class="text-center " >  {% if ticket.stage == 0  %} Destek Bekliyor {% elseif ticket.stage == 1 %} Kontrol Ediliyor {% else %} Sorun Çözüldü {% endif %}  </td> -->
+
+
+                                </tr>
+
+                            {% endfor %}
+
+
+                            </tbody>
+
+                        </table>
+                    </div>{% endif %}
+            </div>
+            </form>
+            <div class="row">
+                <div class="col-sm-6 text-left">{{ pagination }}</div>
+                <div class="col-sm-6 text-right">{{ results }}</div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+    {{ footer }}
+
+    <script>
+
+        $('#reload').click(function () {
+
+            var $btn = $(this);
+            $btn.button('loading');
+            location.reload();
+
+        })
+
+
+    </script>
+
+    <script>
+
+
+        $('#btnNewTicket').on('click', function (event) {
+            var $btn = $(this);
+            $btn.button('loading');
+            $(location).attr('href', 'index.php?route=entegrasyon/support/ticket_form&{{token_link}}')
+
+            Swal.fire({
+                title: 'Auto close alert!',
+                html: 'I will close in <b></b> milliseconds.',
+                timer: 2000,
+                timerProgressBar: true,
+                willOpen: () => {
+                    Swal.showLoading()
+                    timerInterval = setInterval(() => {
+                        const content = Swal.getContent()
+                        if (content) {
+                            const b = content.querySelector('b')
+                            if (b) {
+                                b.textContent = Swal.getTimerLeft()
+                            }
+                        }
+                    }, 100)
+                },
+                willClose: () => {
+                    clearInterval(timerInterval)
+                }
+            })
+
+
+        })
+    </script>
+
+    <script>
+        $(document).ready(function(){
+            $("#myInput").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                $("#myTable tr").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+    </script> </div>

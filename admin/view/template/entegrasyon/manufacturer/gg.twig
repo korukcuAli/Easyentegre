@@ -1,0 +1,73 @@
+<div class="panel-body">
+
+    <table class="table">
+
+
+        <tr>
+            <td><label class="control-label">Sabit Fiyat Artış Oranı <span data-toggle="tooltip" title="" data-original-title="Zorunlu Değil!, Eğer markaya özel bir komisyon oranı belirlyecekseniz buraya sadece rakamla bir komisyon oranı girin, örneğin ürünü %20 fiyat artışı ile göndermek isterseniz bu alana 20 yazınız. Ürüne özel bir komisyon oranı girilmediyse markaya özel oran işleme alınır."></span></label></td>
+            <td><a href="#" id="gg_commission" class="editable" data-pk="{{ manufacturer_id }}"
+                   data-emptytext="Sabit Fiyat Artış Oranı Giriniz" data-value="{{ gg_commission }}"
+                   data-url="index.php?route=entegrasyon/genel/save_setting&code=gg&controller=manufacturer&{{ token_link }}"
+                   data-title="Lütfen Sabit Fiyat Artış Oranı Giriniz"></a>
+            </td>
+        </tr>
+
+
+        <tr>
+            <td><label class="control-label">Dinamik Fiyat Artış Oranları <span data-toggle="tooltip" title="" data-original-title="Ürün fiyatına bağlı olarak mevcut fiyatı belirlenen oranla çarpın, örneğin 10 TL'nin altındaki tüm fiyatlara yüzde 100 fiyat artışı uygulamak istiyorsanız, sadece 10:100 yazın, yada örneğin 50'nin altındaki tüm fiyatları %50 artış uygulamak için yeni satır ekleyin ve 50:50' yazın. 200 tl nin altındaki fiyatlara %30 fiyat artışı uygulama için yeni satır ekleyin ve 200:30 yazın. Dilediğiniz kadar satır ekleyebilirsiniz."></span></label></td>
+            <td><a href="#" data-type="textarea" id="gg_price_multiplier" class="editable" data-pk="{{ manufacturer_id }}"
+                   data-emptytext="Dinamik Fiyat Artış Oranları Ekleyin" data-value="{{ gg_price_multiplier }}"
+                   data-url="index.php?route=entegrasyon/genel/save_setting&code=ty&controller=manufacturer&{{ token_link }}"
+                   data-title="Dinamik Fiyat Artış Oranları Ekleyin"></a>
+            </td>
+        </tr>
+
+        <tr>
+            <td><label class="control-label">Kargo Ücreti <span data-toggle="tooltip" title="" data-original-title="Zorunlu Değil!, Eğer markaya özel kargo ücreti belirleyecekseniz buraya sadece rakamla bir kargo ücreti girin. Girilen değer ürün fiyatına eklenir."></span></label></td>
+            <td><a href="#" id="gg_shipping_price" class="editable"  data-pk="{{ manufacturer_id }}" data-emptytext="Kargo ücreti giriniz" data-value="{{ gg_shipping_price }}" data-url="index.php?route=entegrasyon/genel/save_setting&code=gg&controller=manufacturer&{{ token_link }}" data-title="Lütfen kargo ücreti giriniz"></a>
+            </td>
+        </tr>
+
+        <tr>
+            <td> <label class="control-label">Para Birimi <span data-toggle="tooltip" title="" data-original-title="Zorunlu Değil!,  Üreticide yer alan ürünler için TL haricinde bir para birimi kullanıyorsanız, kullanığınız para birimini seçiniz. Üreticide yer alan ürün tutarı, seçilen para biriminden TL ye çevrilerek işlem yapılacaktır. TL para birimini kullanıyorsanız seçim yapmanıza gerek yoktur. Ürüne özel bir para birimi girilmediyse markaya özel para birimi işleme alınır."></span></label></td>
+            <td><a href="#" id="gg_currency" class="editable"  data-type="select" data-source='index.php?route=entegrasyon/genel/currencies&{{ token_link }}' data-pk="{{ manufacturer_id  }}" data-emptytext="Para birimi seçiniz" data-value="{{ gg_currency }}" data-url="index.php?route=entegrasyon/genel/save_setting&code=gg&controller=manufacturer&{{ token_link }}" data-title="Lütfen para birimi seçiniz"></a>
+            </td>
+        </tr>
+
+    </table>
+
+</div>
+<script>
+
+
+
+    $(document).ready(function(){
+
+
+        $('.editable').editable({mode : 'inline', inputclass: 'intclass input-sm'}).on('save', function(e, params) {
+            console.log(params);
+            if(params.newValue == ''){
+
+                $.toast({heading: 'Başarılı',text: 'Seçilen Değer Silindi!', position: 'top-right',loader: false,allowToastClose: false,showHideTransition: 'slide',icon: 'success'});
+
+            } else {
+                $.toast({heading: 'Başarılı' ,text: params.newValue +' Değer Eklendi', position: 'top-right',loader: false,allowToastClose: false,showHideTransition: 'slide',icon: 'success'});
+
+            }
+        });;
+
+
+
+    });
+
+    $.fn.editableform.buttons =
+        '<button type="submit" class="btn btn-primary btn-sm editable-submit">'+
+        '<i class="fa fa-check"></i>'+
+        '</button>'+
+        '<button type="button" class="btn btn-danger btn-sm editable-cancel">'+
+        '<i class="fa fa-times"></i>'+
+        '</button>';
+
+
+</script>
+

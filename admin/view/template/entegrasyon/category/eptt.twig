@@ -1,0 +1,161 @@
+<div class="panel-body">
+
+    <table class="table">
+
+        <tr>
+            <td class="col-md-4"><label class="control-label required">Kategori Eşleştir <span data-toggle="tooltip" title="Zorunlu Alan! Arama alanına kategorinizi tanımalayan anahtar kelimeler girerek arama yapabilirsiniz.Listlenen EpttAvm kategorilerinden birini seçerek eşleştirme yapabilisiniz."></span></label></td>
+
+            <td class="col-md-8">
+                <a href="#" id="eptt_category_id" class="eslestir" data-type="typeaheadjs" data-pk="{{ category_id }}" data-value="{{ eptt_category_id }}" data-emptytext="Kategori Eşleştirin" data-url="index.php?route=entegrasyon/genel/save_setting&controller=category&action=category_match&&code=eptt&{{  token_link }}" data-title="Lütfen Kategori Arayın"></a></td>
+        </tr>
+
+        <tr>
+            <td class="col-sm-4"> <label class="control-label">Kargo Ücreti <span data-toggle="tooltip" title="" data-original-title="Zorunlu Değil!, Eğer ürüne özel bir kargo ücreti belirleyecekseniz buraya sadece rakamla bir kargo ücreti girin, Ürün fiyatına kargo ücreti eklenerek ürün gönderilir yada güncellenir."></span></label></td>
+            <td class="col-sm-8"><a href="#" id="eptt_shipping_price" class="editable"  data-pk="{{ category_id }}" data-emptytext="Kargo ücreti giriniz" data-value="{{ eptt_shipping_price }}" data-url="index.php?route=entegrasyon/genel/save_setting&code=eptt&controller=category&{{ token_link }}" data-title="Lütfen Kargo ücreti Giriniz"></a>
+            </td>
+        </tr>
+
+        <tr>
+            <td> <label class="control-label">Para Birimi <span data-toggle="tooltip" title="" data-original-title="Zorunlu Değil!,  Kategoride yer alan ürünler için TL haricinde bir para birimi kullanıyorsanız, kullanığınız para birimini seçiniz. Kategoride yer alan ürün tutarı, seçilen para biriminden TL ye çevrilerek işlem yapılacaktır. TL para birimini kullanıyorsanız seçim yapmanıza gerek yoktur. Ürüne yada markaya özel bir para birimi girilmediyse kategoriye özel para birimi işleme alınır."></span></label></td>
+            <td><a href="#" id="eptt_scurrency" class="editable"  data-pk="{{ category_id }}" data-type="select" data-source='index.php?route=entegrasyon/genel/currencies&{{ token_link }}' data-emptytext="Para birimi seçiniz" data-value="{{ eptt_scurrency }}" data-url="index.php?route=entegrasyon/genel/save_setting&code=eptt&controller=category&{{ token_link }}" data-title="Lütfen para birimi seçiniz"></a>
+            </td>
+        </tr>
+
+        <tr>
+            <td><label class="control-label">Sabit Fiyat Artış Oranı <span data-toggle="tooltip" title="" data-original-title="Zorunlu Değil!, Eğer Kategoriye özel bir Sabit Fiyat artış oranı belirlyecekseniz buraya sadece rakamla bir Sabit Fiyat artış oranı girin, örneğin ürünü %20 fiyat artışı ile göndermek isterseniz bu alana 20 yazınız. Ürüne özel bir Sabit Fiyat artış oranı girilmediyse markaya özel oran işleme alınır."></span></label></td>
+            <td><a href="#" id="eptt_commission" class="editable" data-pk="{{ category_id }}"
+                   data-emptytext="Sabit Fiyat Artış Oranı Giriniz" data-value="{{ eptt_commission }}"
+                   data-url="index.php?route=entegrasyon/genel/save_setting&code=eptt&controller=category&{{ token_link }}"
+                   data-title="Lütfen Sabit Fiyat Artış Oranı Giriniz"></a>
+            </td>
+        </tr>
+
+
+        <tr>
+            <td><label class="control-label">Dinamik Fiyat Artış Oranları <span data-toggle="tooltip" title="" data-original-title="Ürün fiyatına bağlı olarak mevcut fiyatı belirlenen oranla çarpın, örneğin 10 TL'nin altındaki tüm fiyatlara yüzde 100 fiyat artışı uygulamak istiyorsanız, sadece 10:100 yazın, yada örneğin 50'nin altındaki tüm fiyatları %50 artış uygulamak için yeni satır ekleyin ve 50:50' yazın. 200 tl nin altındaki fiyatlara %30 fiyat artışı uygulama için yeni satır ekleyin ve 200:30 yazın. Dilediğiniz kadar satır ekleyebilirsiniz."></span></label></td>
+            <td><a href="#" data-type="textarea" id="eptt_price_multiplier" class="editable" data-pk="{{ category_id }}"
+                   data-emptytext="Dinamik Fiyat Artış Oranları Ekleyin" data-value="{{ eptt_price_multiplier }}"
+                   data-url="index.php?route=entegrasyon/genel/save_setting&code=eptt&controller=category&{{ token_link }}"
+                   data-title="Dinamik Fiyat Artış Oranları Ekleyin"></a>
+            </td>
+        </tr>
+
+        {% if easy_setting_store_category =='Mücevherat' %}
+            <tr>
+                <td><label class="control-label">Ürün Fiyatı Ağırlık ile Çarpılsın mı ? <span data-toggle="tooltip" title="Zorunlu Değil! Ürün fiyatı ürün ağırılığına göre değişiyorsa fiyat hesaplanırken ağırlık ile çarpılır. Mücevherat sektörü için gerekli bir ayardır."></span></label></td>
+                <td><a href="#" id="eptt_need_product_weight" class="editable" data-type="select"  data-pk="{{ category_id }}" data-emptytext="Ürün ağırlığı önemli mi?" data-value="{{ eptt_need_product_weight }}" data-source='{"1":"Evet","0":"Hayır"}' data-url="index.php?route=entegrasyon/genel/save_setting&controller=category&code=eptt&{{ token_link }}" data-title="Lütfen Seçiniz."></a>
+                </td>
+            </tr>
+        {% endif %}
+
+
+    </table>
+
+</div>
+<div class="panel-footer">
+    <button id="btnComplate" class="btn btn-primary btn-lg btn-block">Bitti</button>
+
+
+</div>
+<script>
+
+    $(document).ready(function(){
+        $('.eslestir').editable({
+            mode : 'inline',
+            typeahead: {
+                limit: 200,
+                remote:"index.php?route=entegrasyon/genel/getjson&page=categories&code=eptt&filter_name=%QUERY&{{ token_link }}",
+                displayKey: 'name',
+                valueKey : 'name',
+                display: function(item){ return item.name }
+            }
+        }).on('save', function(e, params) {
+            console.log(params);
+            if(params.newValue == ''){
+
+                $.toast({heading: 'Başarılı',text: 'Eşleştirme Silindi!', position: 'top-right',loader: false,allowToastClose: false,showHideTransition: 'slide',icon: 'success'});
+                var category_id = '{{ category_id }}_{{ code }}';
+                $('#'+category_id).addClass("btn-default");
+                $('#'+category_id).remove( "btn-primary" );
+
+            } else {
+                var category_id = '{{ category_id }}_{{ code }}';
+                $('#'+category_id).removeClass("btn-default");
+                $('#'+category_id).addClass( "btn-primary" );
+
+                $.toast({heading: 'Başarılı',text: params.newValue +' Başarıyla Eşleşti', position: 'top-right',loader: false,allowToastClose: false,showHideTransition: 'slide',icon: 'success'});
+
+            }
+        });
+
+
+        $('.editable').editable({mode : 'inline', inputclass: 'intclass input-sm',success:function (json,newValue) {
+
+
+                if(json['status']){
+
+                    $.toast({heading: 'Başarılı',text: json['message'], position: 'top-right',loader: true,allowToastClose: false,showHideTransition: 'slide',icon: 'success'});
+
+                    if(json['alert_type']==2){
+
+                        Swal.fire({
+                            title: 'Komisyon Oranı Değişti!',
+                            text: json['message'],
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Evet, Şimdi Güncelle!',
+                            cancelButtonText: 'Şimdi Değil!'
+                        }).then((result) => {
+                            if (result.value) {
+
+                                BootstrapDialog.show({
+                                    title:'Toplu Güncelleme',
+                                    message: function(dialog) {
+                                        var $message = $('<div></div>');
+                                        var pageToLoad = dialog.getData('pageToLoad');
+                                        $message.load(pageToLoad);
+                                        return $message;
+                                    },
+                                    data: {
+                                        'pageToLoad': json['url']+'&{{ token_link }}'
+                                    }
+                                });
+
+
+
+                            }
+                        })
+
+
+
+                    }
+
+
+                }else {
+
+
+                    Swal.fire('Hata',json['message'],'warning');
+
+
+
+                }
+
+            }});
+
+
+
+    });
+
+    $.fn.editableform.buttons =
+        '<button type="submit" class="btn btn-primary btn-sm editable-submit">'+
+        '<i class="fa fa-check"></i>'+
+        '</button>'+
+        '<button type="button" class="btn btn-danger btn-sm editable-cancel">'+
+        '<i class="fa fa-times"></i>'+
+        '</button>';
+
+
+</script>
+

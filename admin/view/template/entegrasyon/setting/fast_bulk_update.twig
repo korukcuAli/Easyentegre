@@ -1,0 +1,127 @@
+
+
+
+
+<div class="row">
+
+    <div  style="width: 100%" class="panel">
+
+
+
+        <div class="panel-body"> 
+
+            <table  style="width: 100%" class="table well table-bordered">
+
+                <thead>
+                <th class="bg-info">
+
+                    <label class="control-label">Toplam Ürün<span data-toggle="tooltip" title="" data-original-title="Kataloğunuzda bulunan toplam ürünün adedi."></span></label>
+                </th>
+                <th class="bg-info label-success    ">
+
+                    <label class="control-label" style="color: white">Güncellenen Ürün Sayısı<span data-toggle="tooltip" title="" data-original-title="İşlem Sonucu İşleme Alınan Ürün Sayısını Belirtir."></span></label>
+                </th>
+
+                </thead>
+
+                <tbody>
+                <div class="well">
+
+                    <p class="lead">{{ marketplace }} Mazağanızda ki ürünleri hızlı bir şekilde toplu güncelleyebilirsiniz.</p>
+                    <div class="btn-group-">
+
+                        <button class="btn btn-primary btn-block btn-lg " data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Güncelleniyor... " id="fast_update">Güncelle</button>
+
+                    </div>
+
+                </div>
+                <div class="progress active" style="margin-top:20px;"> <div class="progress-bar progress-bar-striped progress-bar-animated"  role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width:0%"><span class="yuzde"></span></div></div>
+
+                <tr>
+                    <td><span class=" btn-block">{{ total_products }}</span></td>
+                    <td><span id="updated_products" class=" btn-block">0</span></td>
+
+                </tr>
+
+
+                </tbody>
+
+            </table>
+
+            <div id="report"  style="overflow-y:scroll; overflow-x:hidden; height:100px;" >
+
+            {% for marketplace in marketplaces %}
+
+                {% if marketplace.status %}
+                    <button class="btn bulk_update_basic" style="background: #45864820;border:solid 1px" type="button" marketplace="{{ marketplace.name }}" code="{{ marketplace.code }}"> <img src="{{ marketplace.logo }}" />  </button>
+                {% endif %}
+
+            {% endfor %}
+            </div>
+        </div>
+
+
+
+    </div>
+
+
+</div>
+
+
+<script>
+
+    $( "#fast_update" ).click(function() {
+
+
+
+        var url = "https://www.nikadu.com/index.php?route=api/notejs/update_products_fast&code={{ code }}&request_limit=1000&last_product_index=0"
+        starttool(url);
+        $(this).prop('disabled',true);
+        $(this).button('loading');
+
+
+
+    })
+
+</script>
+
+<script>
+
+    var k = 0;
+    var total_products = "{{ total_products }}";
+    function starttool(url) {
+        lastnext=url;
+
+        $.ajax({
+            url: url,
+            type: 'post',
+            dataType: 'json',
+            success: function(json) {
+                var yuzde = Math.round(json['last_product_id'] / total_products * 100 );
+
+
+                $('#updated_product').html(json['total_matched']);
+                $('.progress  .progress-bar').css('width', yuzde + '%');
+                $('.progress  .yuzde').html(yuzde + '%' + ' tamamlandı');
+
+                if(json['last_product_id'] < total_products ){
+                    k++;
+                    starttool("https://www.nikadu.com/index.php?route=api/notejs/update_products_fast&code={{ code }}&request_limit=1000&last_product_index="+json['last_product_id']+"&k="+k);
+
+                    $('#updated_products').text(json['last_product_id']);
+
+                }else {
+                    $('#updated_products').text(json['last_product_id']);
+                    $( "#fast_update" ).button('reset');
+                }
+
+
+            },
+            error: function (request, status, error) {
+                //alert(request.responseText);
+            }
+        });
+    }
+
+
+</script>

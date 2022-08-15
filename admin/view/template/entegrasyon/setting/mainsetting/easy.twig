@@ -1,0 +1,400 @@
+
+<div class="panel panel-panel-default">
+
+    <div class="panel-heading">
+        <h3>Genel ayarlar</h3>
+
+
+        <div class="pull-right">
+
+            <button id="btnSave" code="easy" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary btnSave "><i class="fa fa-save"></i></button>
+            <button  data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default btnVazgec"><i class="fa fa-reply"></i></button></div>
+
+
+    </div>
+
+
+</div>
+<div class="row">
+
+    <div class="row well"  style="border-top: 2px solid #27ad5e;">
+
+
+        <div class="col-sm-1">
+            <img class="img-responsive" src="view/image/entegrasyon/bilgi.png"/>
+        </div>
+        <div class="col-sm-11">
+            <h3 style="color:#27ad5e;font-weight: bolder ">Bilgilendirme</h3>
+            <p class="lead">Genel Ayarlar tüm pazaryerlerinde standart olarak uygulanacak ayarları içerir. Pazaryerine, kategoriye, markaya yada ürüne özel bir ayar girilmediyse burada belirlediğiniz ayarlar alınacaktır. </p>
+
+        </div>
+    </div>
+
+    <form id="form-setting" class="inline-form">
+        <div class="col-sm-6">
+
+            <div class="panel-body">
+
+
+                <div class="form-group">
+                    <label class="control-label">Ağırlıklı Ürün Kategoriniz nedir ? <span data-toggle="tooltip" title="" data-original-title="Seçilen ürün kategorisine göre yeni özellik grupları eklenmektedir. Özel ayar gerektiren bir kategoriniz varsa lütfen seçiniz."></span></label>
+
+
+
+                        <select class="form-control" name="easy_setting_store_category">
+                            <option value="0">==Seçiniz==</option>
+                            {% for category in store_categories %}
+                                {% if easy_setting_store_category == category %}
+                                    <option selected value="{{ category }}">{{ category }}</option>
+                                {% else  %}
+                                    <option value="{{ category }}">{{ category }}</option>
+                                {% endif %}
+
+                            {% endfor %}
+                        </select>
+
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">Kargo Etiketine Logonuz Eklensin mi ? <span data-toggle="tooltip" title="" data-original-title="Kargo etiketi sayfasına pazaryeri logosunun yanına logonuzu eklemek isterseniz bu seçeneği aktif ediniz. "></span></label>
+
+
+                    <select class="form-control" name="easy_setting_shipping_logo">
+
+                        {%  if  easy_setting_shipping_logo %}
+
+                            <option value="1"  selected >Eklensin</option>
+                            <option  value="0">Eklenmesin</option>
+
+                        {% else %}
+
+                            <option value="1" >Eklensin</option>
+                            <option selected  value="0">Eklenmesin</option>
+
+                        {% endif %}
+
+                    </select>
+
+
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">Liste fiyatı dahil edilsin mi <span data-toggle="tooltip" title="" data-original-title="Kampanyalı fiyatlarda liste fiyatını pazaryerine gönderilip gönderilmeyeceğine karar verebilirsiniz."></span></label>
+
+
+                    <select class="form-control" name="easy_setting_list_price">
+
+                        {%  if  not easy_setting_list_price %}
+
+                            <option value="0"  selected >Edilsin</option>
+                            <option  value="1">Edilmesin</option>
+
+                        {% else %}
+
+                            <option value="0" >Edilsin</option>
+                            <option selected  value="1">Edilmesin</option>
+
+                        {% endif %}
+
+                    </select>
+
+
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Opencart siparişler sayfasına pazaryeri sütunu dahil edilsin mi ? <span data-toggle="tooltip" title="" data-original-title="Opencart siparişler sayfasında siparişin hangi pazaryerinden geldiğini görüntüleyebilmeniz için ek sütun açar."></span></label>
+
+
+                    <select class="form-control" name="easy_setting_marketplace_row_in_orders">
+
+                        {%  if  easy_setting_marketplace_row_in_orders %}
+
+                            <option value="1"  selected >Aktif</option>
+                            <option  value="0">Pasif</option>
+
+                        {% else %}
+                            <option value="1"  >Aktif</option>
+                            <option selected  value="0">Pasif</option>
+                        {% endif %}
+
+                    </select>
+
+
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">Sipariş & Ürün Soruları Email Bildirimleri <span data-toggle="tooltip" title="" data-original-title="Aktif pazaryerlerinden sipariş yada ürün sorusu aldığınızda email yoluyla bilgilendirilmek istiyorsanız bu alanı aktif ediniz."></span></label>
+
+
+                    <select class="form-control" name="easy_setting_notification">
+
+                        {%  if  easy_setting_notification %}
+
+                            <option value="1"  selected >Aktif</option>
+                            <option  value="0">Pasif</option>
+
+                        {% else %}
+
+                            <option value="1"  >Aktif</option>
+                            <option selected  value="0">Pasif</option>
+                        {% endif %}
+
+                    </select>
+
+
+                </div>
+
+
+
+                <div class="form-group">
+                    <label class="control-label">Bildirim Email Adresi <span data-toggle="tooltip" title="" data-original-title="Aktif pazaryerlerinizden sipariş yada ürün sorusu aldığınızda bildirimi göndereceğimiz eposta adresinizi giriniz. "></span></label>
+
+                    <input type="text" value="{{ easy_setting_email }}" name="easy_setting_email" class="form-control">
+
+                </div>
+
+
+
+                <div class="form-group">
+                    <label class="control-label">Sipariş SMS Bildirimleri  <span data-toggle="tooltip" title="" data-original-title="Aktif pazaryerlerinden sipariş yada ürün sorusu aldığınızda Sms yoluyla bilgilendirilmek istiyorsanız bu alanı aktif ediniz. NOT: Bu hizmeti kullanabilmeniz için netgsm modülü sitenizde kurulu ve aktif olmalıdır."></span></label>
+                    <p class="small text-danger">Netgsm modülü kurulu ve aktif olmalıdır!</p>
+
+
+                    <select class="form-control" name="easy_setting_sms_notification">
+
+                        {%  if  easy_setting_sms_notification %}
+
+                            <option value="1"  selected >Aktif</option>
+                            <option  value="0">Pasif</option>
+
+                        {% else %}
+
+                            <option value="1"  >Aktif</option>
+                            <option selected  value="0">Pasif</option>
+                        {% endif %}
+
+                    </select>
+
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">SMS Bildirim Numaraları <span data-toggle="tooltip" title="" data-original-title="Aktif pazaryerlerinizden sipariş yada ürün sorusu aldığınızda bildirimi göndereceğimiz Gsm numaralarını  giriniz. "></span></label>
+                    <p class="small text-danger">Birden fazla numara girmek için her numaradan sonra virgül ekleyiniz</p>
+
+                    <input type="text" value="{{ easy_setting_sms_numbers }}" name="easy_setting_sms_numbers" class="form-control">
+
+                </div>
+
+                <div class="form-group ">
+                    <label class="control-label">Mevcut Domain Harici Görsel Url'si Belirle <span data-toggle="tooltip" title="" data-original-title="ZORUNLU DEĞİLDİR.!! Mevcut Domian Yerine Başka Domianden Görsel Çekmek İçin Kullanılır.  "></span></label>
+
+                    <input type="text" value="{{ easy_setting_img_domain }}" name="easy_setting_img_domain" class="form-control">
+
+                </div>
+
+
+
+            </div>
+
+        </div>
+
+        <div class="col-sm-6">
+            <div class="panel-body">
+
+
+                <div class="form-group">
+                    <label class="control-label">Kritik Stok Adedi<span data-toggle="tooltip" title="" data-original-title="Girdiğiniz Kritik stok rakamına eşit ve küçük olan tüm ürünler otomatik ve manuel güncelleme sonrası satışa kapanır. örneğin kritik stok 2 ise, 2 ve 2 den küçük stoğa sahip ürünler satışa kapatılır. "></span></label>
+
+                    <input type="text" placeholder="kritik stok giriniz" value="{{ easy_setting_critical_stock }}" name="easy_setting_critical_stock" class="form-control">
+
+                </div>
+
+
+                <div class="form-group">
+                    <label class="control-label">Ürün görselleri yeniden boyutlandırılsın mı? <span data-toggle="tooltip" title="" data-original-title="Tüm görseller 900x900 boyutunda yeniden oluşturularak pazaryerine gönderilir, seçenek aktif edilmediyse ürünler orjinal boyutları ile gönderilir."></span></label>
+                    <select class="form-control" name="easy_setting_resize_image">
+
+                        {%  if  easy_setting_resize_image %}
+
+                            <option value="1" selected >Aktif</option>
+                            <option  value="0">Pasif</option>
+
+                        {% else %}
+
+                            <option value="1">Aktif</option>
+                            <option  selected   value="0">Pasif</option>
+                        {% endif %}
+
+                    </select>
+                </div>
+
+
+                <div class="form-group">
+                    <label class="control-label required">Varsayılan Müşteri Grubu <span data-toggle="tooltip" title="" data-original-title="Kampayalı ürün fiyatları için hangi müşteri grubuna ait fiyatların alınacağını belirleyiniz. "></span></label>
+                    <select class="form-control" name="easy_setting_customer_group">
+
+                        <option value="0">==Seçiniz==</option>
+                        {% for customer_group in customer_groups %}
+                            {% if customer_group.customer_group_id == easy_setting_customer_group %}
+                                <option value="{{ customer_group.customer_group_id  }}"
+                                        selected> {{ customer_group.name  }}</option>
+                            {% else %}
+
+                                <option value="{{ customer_group.customer_group_id}}"> {{ customer_group.name   }}</option>
+
+                            {% endif %}
+
+                        {% endfor %}
+
+                    </select>
+
+
+
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Pazaryerlerinden Sipariş aldığınızda diğer pazaryerlerinde güncellensin mi ?<span data-toggle="tooltip" title="" data-original-title="Aktif pazaryerlerinden sipariş yada ürün sorusu aldığınızda email yoluyla bilgilendirilmek istiyorsanız bu alanı aktif ediniz."></span></label>
+
+
+                    <select class="form-control" name="easy_setting_update_after_market_sale">
+
+                        {%  if  easy_setting_update_after_market_sale %}
+
+                            <option value="1"  selected >Evet</option>
+                            <option  value="0">Hayır</option>
+
+                        {% else %}
+
+                            <option value="1"  >Evet</option>
+                            <option selected  value="0">Hayır</option>
+                        {% endif %}
+
+                    </select>
+
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">E-ticaret sitenizden sipariş aldığınızda pazaryerlerinde güncellensin mi ?<span data-toggle="tooltip" title="" data-original-title="Aktif pazaryerlerinden sipariş yada ürün sorusu aldığınızda email yoluyla bilgilendirilmek istiyorsanız bu alanı aktif ediniz."></span></label>
+
+
+                    <select class="form-control" name="easy_setting_update_after_oc_sale">
+
+                        {%  if  easy_setting_update_after_oc_sale %}
+
+                            <option value="1"  selected >Evet</option>
+                            <option  value="0">Hayır</option>
+
+                        {% else %}
+
+                            <option value="1"  >Evet</option>
+                            <option selected  value="0">Hayır</option>
+
+                        {% endif %}
+
+                    </select>
+
+
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">Fiyat Hangi Alandan Alınsın?<span data-toggle="tooltip" title="" data-original-title="Fiyatlar doğrudan belirlenen alandan alınır."></span></label>
+
+                    <select class="form-control" name="easy_setting_price_place">
+
+                        <option value="0">==Seçiniz==</option>
+                        {% for price_place in price_places %}
+                            {% if price_place == easy_setting_price_place %}
+                                <option value="{{ price_place   }}"
+                                        selected> {{ price_place   }}</option>
+                            {% else %}
+
+                                <option value="{{ price_place }}"> {{ price_place   }}</option>
+
+                            {% endif %}
+
+                        {% endfor %}
+
+                    </select>
+
+
+                </div>
+
+                <div class="form-group hidden">
+                    <label class="control-label">Gelen Siparişte Kdv Ürün Fiyatına Eklensin mi?<span data-toggle="tooltip" title="" data-original-title="Cevabınız evet ise gelen siparişte opencart > siparişler bölümüne fiyata kdv eklenmiş olarak gelecektir."></span></label>
+
+                    <select class="form-control" name="easy_setting_order_price_with_tax">
+
+                        {%  if  easy_setting_order_price_with_tax %}
+
+                            <option value="1"  selected >Evet</option>
+                            <option  value="0">Hayır</option>
+
+                        {% else %}
+
+                            <option value="1"  >Evet</option>
+                            <option selected  value="0">Hayır</option>
+
+                        {% endif %}
+
+                    </select>
+
+
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Komisyon, Kargo ücretinden sonra hesaplansın.<span data-toggle="tooltip" title="" data-original-title="Cevabınız evet ise komisyon, kargo ücreti eklendikten sonra hesaplanacaktır."></span></label>
+
+                    <select class="form-control" name="easy_setting_add_after_shipping_price">
+
+                        {%  if  easy_setting_add_after_shipping_price %}
+
+                            <option value="1"  selected >Evet</option>
+                            <option  value="0">Hayır</option>
+
+                        {% else %}
+
+                            <option value="1"  >Evet</option>
+                            <option selected  value="0">Hayır</option>
+
+                        {% endif %}
+
+                    </select>
+
+
+                </div>
+             <!--   <div class="form-group">
+                    <label class="control-label">Kritik Stok<span data-toggle="tooltip" title="" data-original-title="Belirlediğiniz miktarın altında olan ürünler satışa kapanır.!"></span></label>
+
+                        <input  type="text" value="{{ easy_critical_stock }}"  name="easy_critical_stock" class="form-control">
+
+
+                </div> -->
+            <!--  <div class="form-group">
+                    <label class="control-label">Ürün kartındaki fiyat değişikliğinde pazar yerlerinde otomatik güncellensin mi?<span data-toggle="tooltip" title="" data-original-title="Aktif pazaryerlerinden sipariş yada ürün sorusu aldığınızda email yoluyla bilgilendirilmek istiyorsanız bu alanı aktif ediniz."></span></label>
+
+
+                    <select class="form-control" name="easy_setting_auto_update_price">
+
+                        {%  if  easy_setting_auto_update_price %}
+
+                            <option value="1"  selected >Evet</option>
+                            <option  value="0">Hayır</option>
+
+                        {% else %}
+
+                            <option value="1"  >Evet</option>
+                            <option selected  value="0">Hayır</option>
+
+                        {% endif %}
+
+                    </select>
+
+
+                </div> -->
+
+
+
+            </div>
+
+        </div>
+    </form>
+
+</div>
+

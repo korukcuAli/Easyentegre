@@ -1,0 +1,90 @@
+{{ header }}{{ column_left }}
+
+
+<div id="content">
+    <div class="page-header">
+
+        <div class="container-fluid">
+            <ul class="breadcrumb">
+                {% for breadcrumb in breadcrumbs %}
+                    <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+                {% endfor %}
+            </ul>
+            <div class="pull-right easy-mode {{ easy_visibility }}">
+                <img src="view/image/entegrasyon/logo.png" />
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid"> {% if success %}
+            <div class="alert alert-success alert-dismissible"><i class="fa fa-check-circle"></i> {{ success }}
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+            </div>
+        {% endif %}
+        {% if error %}
+            {% for error_message in error %}
+                <div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ error_message }}</div>
+            {% endfor %}
+        {% endif %}
+
+        <style>
+            .tool{
+                margin: 20px;
+            }
+            .tool_title{
+                padding-top: 5px;
+            }
+        </style>
+
+
+
+        <div class="panel panel-default" style="border-top: 2px solid #27ad5e;">
+
+
+
+            <div class="panel-heading">
+
+                <h3 class="panel-title"><i class="fa fa-clock-o" style="margin-bottom: 10px" ></i> Araç Kullanım Geçmişi {{ variant_reset }}</h3>
+                <a href="index.php?route=entegrasyon/setting/tool_history_list&{{ token_link }}"> <button data-toggle="tooltip" title="Sayfa Yenile" class="pull-right btn btn-warning"> <i class="fa fa-refresh" aria-hidden="true"></i> </button></a>
+
+                <a href="index.php?route=entegrasyon/setting/tool&{{ token_link }}"> <button data-toggle="tooltip" title="Araçlar Sayfası" style="margin-right: 10px" class="pull-right btn btn-info " > <i  class="fa fa-cogs"></i></button></a>
+            </div>
+
+            <div class="panel-body">
+
+                <table class="table">
+                <thead>
+                <tr>
+                    <th>Araç Kategorisi</th>
+                    <th>İşlem</th>
+                    <th>Pazaryeri</th>
+                    <th>Tarih</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                    {% for history in historys %}
+                    <tr>
+                        <td>{{ history.tool_category }}</td>
+                        <td>{{ history.tool_name }}</td>
+                        <td>{{ history.code }}</td>
+                        <td>{{ history.date }}</td>
+                    </tr>
+
+                    {% endfor %}
+
+
+                </tbody>
+                </table>
+
+
+
+
+</div>
+</div>
+</div>
+</div>
+
+
+
+
+{{ footer }}

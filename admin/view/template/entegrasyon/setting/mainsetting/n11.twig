@@ -1,0 +1,364 @@
+
+<div class="panel panel-panel-default">
+
+    <div class="panel-heading">
+        <h3>N11 Standart Ayaralar</h3>
+        <div class="pull-right">
+            <button id="btnSave" code="n11" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary btnSave "><i class="fa fa-save"></i></button>
+            <button  data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default btnVazgec"><i class="fa fa-reply"></i></button></div>
+    </div>
+
+
+</div>
+<div class="row">
+    <div class="row well"  style="border-top: 2px solid #27ad5e;">
+
+
+        <div class="col-sm-1">
+            <img class="img-responsive" src="view/image/entegrasyon/bilgi.png"/>
+        </div>
+        <div class="col-sm-11">
+            <h3 style="color:#27ad5e;font-weight: bolder ">Bilgilendirme</h3>
+            <p>Standart ayarlar tüm N11 mağazanızda işlem yaparken kullanılan genel ayarlardır. Bu ayarlardan bazıları, ürün, marka yada kategori ayarlarında da bulunmaktadır. Eğer ürüne markaya yada kategoriye özel bir ayarlama yapmadıysanız burada belirlediğiniz ayarlar işleme alınacaktır. Ayarların öncelik sırası 1:Ürün, 2:Marka, 3:Kategori, 4:Genel şeklindedir. </p>
+        </div>
+    </div>
+
+    <form id="form-setting" class="inline-form">
+        <div class="col-sm-6">
+
+            <div class="panel-body">
+
+
+                <div class="form-group">
+
+              <label class="control-label required">Teslimat Şablonu Seçiniz <span data-toggle="tooltip" title="" data-original-title="Zorunlu Alan!, Tüm ürünlere standart olarak uygulanacak teslimat şablonu. Ürüne,markaya yada kategoriye özel bir teslimat şablonu girilmediyse buradaki oran işleme alınır. Henüz bir teslimat şablonu oluşturmadıyanız N11.com panelinizden Hesabım->Teslimat bilgileri bölümünden yeni bir teslimat Şablonu oluşturunuz."></span></label>
+
+                    <select class="form-control" name="n11_setting_shipping_template">
+                        <option value="0">==Seçiniz==</option>
+                        {% for template in shipping_templates %}
+                            {% if n11_setting_shipping_template == template %}
+                                <option selected value="{{ template }}">{{ template }}</option>
+                            {% else  %}
+                                <option value="{{ template }}">{{ template }}</option>
+                            {% endif %}
+
+                        {% endfor %}
+                    </select>
+
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label required">Hazırlık Süresi <span data-toggle="tooltip" title="" data-original-title="Zorunlu Alan!, Ürün Satıldığı andan itibaren kaç gün içinde ürüü kargolayacağınızı belirtir. N11'de yeni mağaza oluşturduysanız bu süre en az 3 gün seçilmelidir. Eğer ürüne, kategoriye yada markaya özel bir hazırlık süresi girilmediyse burada belirlediğiniz süre tüm ürünlere uygulanacaktır."></span></label>
+                    <input type="text" value="{{ n11_setting_shipping_time }}" name="n11_setting_shipping_time" class="form-control">
+
+                </div>
+
+
+                <div class="form-group">
+                    <label class="control-label">Sabit Fiyat Artış Oranı <span data-toggle="tooltip" title="" data-original-title="Zorunlu Alan!, Eğer ürüne, kategoriye yada markaya özel bir komisyon oranı girilmediyse burada belirlediğiniz sabit fiyat oranı tüm ürünlere uygulanacaktır. Ürüne,markaya yada kategoriye özel bir sabit fiyat artış oranı girilmediyse buradaki oran işleme alınır."></span></label>
+
+                    <input type="text" value="{{ n11_setting_commission }}" name="n11_setting_commission" class="form-control">
+
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">Sabit Fiyat Artış Oranları <span data-toggle="tooltip" title="" data-original-title="Ürün fiyatına bağlı olarak mevcut fiyatı belirlenen oranla çarpın, örneğin 10 TL'nin altındaki tüm fiyatlara yüzde 100 fiyat artışı uygulamak istiyorsanız, sadece 10:100 yazın, yada örneğin 50'nin altındaki tüm fiyatları %50 artış uygulamak için yeni satır ekleyin ve 50:50' yazın. 200 tl nin altındaki fiyatlara %30 fiyat artışı uygulama için yeni satır ekleyin ve 200:30 yazın. Dilediğiniz kadar satır ekleyebilirsiniz."></span></label>
+
+                    <textarea name="n11_setting_price_multiplier" placeholder="örnek: 80:50" class="form-control">{{ n11_setting_price_multiplier }}</textarea>
+
+
+                </div>
+
+
+
+                <div id="shipping_price" class="form-group">
+                    <label class="control-label">Kargo Ücreti <span data-toggle="tooltip" title="" data-original-title="N11 Mağazanıza Ürün göndeme yada güncelleme işlemi yaparken ürün fiyatına kargo ücreti eklemek isterseniz sabit kargo tutarınız bu alana giriniz."></span></label>
+
+                    <input type="text" name="n11_setting_shipping_price" value="{{ n11_setting_shipping_price }}" placeholder="Sabit kargo ücreti" class="form-control">
+
+                </div>
+                <div class="form-group">
+                    <label class="control-label required">Maksimum Sipariş Adedi <span data-toggle="tooltip" title="" data-original-title="Ürünlerinizden tek seferde kaç adet sipariş verilebilsin. "></span></label>
+                    <input type="text" value="{{ n11_setting_maximum_order }}" name="n11_setting_maximum_order" class="form-control">
+
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Ürün Menşei Seçiniz<span data-toggle="tooltip" title="" data-original-title="Zorunlu Değil!, Ürününüzün yerli malımı yada yabancı malımı olduğunu seçiniz  "></span></label>
+                    <select class="form-control" name="n11_setting_domestic">
+
+                        {%  if  n11_setting_domestic %}
+
+                            <option value="0"  >Yerli</option>
+                            <option selected  value="1">Yabancı</option>
+
+                        {% else %}
+
+                            <option value="1">Yabancı</option>
+                            <option  selected   value="0">Yerli</option>
+                        {% endif %}
+
+                    </select>
+                </div>
+
+                <div class="form-group hidden">
+
+                    <label class="control-label">Ürün Seçenekleri<span data-toggle="tooltip" title="" data-original-title="Pazaryerinin kategoriye özel seçeneklerinin sadece zorunlu olanlarını yada tümünü görüntüleyebilirsiniz."></span></label>
+
+                    <select class="form-control" name="n11_setting_product_option">
+
+                        {%  if  n11_setting_product_option %}
+
+                            <option value="1"  selected >Tümü</option>
+                            <option  value="0">Zorunlu</option>
+
+                        {% else %}
+
+                            <option value="1"  >Tümü</option>
+                            <option selected  value="0">Zorunlu</option>
+                        {% endif %}
+
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">Ürüne Özel Kategori Seçilebilsin mi ? <span data-toggle="tooltip" title="" data-original-title="Ürünleriniz herhangi bir kategoriye bağlı değilse pazaryerine ürüne gönderirken sadece ürüne özel bir kategori seçebilirsiniz."></span></label>
+                    <select class="form-control" name="n11_setting_product_category">
+
+                        {%  if  n11_setting_product_category %}
+                            <option value="1"  selected >Evet</option>
+                            <option  value="0">Hayır</option>
+
+                        {% else %}
+                            <option value="1"   >Evet</option>
+
+                            <option selected value="0">Hayır</option>
+
+                        {% endif %}
+                    </select>
+
+
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Ürüne Özel Para Birimi Seçilebilsin mi ? <span data-toggle="tooltip" title=""
+                                                                                                data-original-title="Ürünlerinize genel olarak herhangi bir Para Birimi belirtilmemiş ise pazaryerine
+                       ürüne gönderirken sadece ürüne özel bir Para Birimi seçebilirsiniz."></span></label>
+                    <select class="form-control" name="n11_setting_product_iscurrency">
+
+                        {%  if  n11_setting_product_iscurrency %}
+                            <option value="1"  selected >Evet</option>
+                            <option  value="0">Hayır</option>
+
+                        {% else %}
+                            <option value="1"   >Evet</option>
+
+                            <option selected value="0">Hayır</option>
+
+                        {% endif %}
+                    </select>
+
+
+                </div>
+
+                <div class="form-group variant">
+                    <label class="control-label">Seçenek & Varyant Gönderilsin mi ? <span data-toggle="tooltip" title="" data-original-title="Zorunlu Değil!, Ürününüzü seçeneklekli yada varyantlı olarak gönderebilirsiniz "></span></label>
+                    <select class="form-control" name="n11_setting_variant">
+
+                        {%  if  n11_setting_variant %}
+
+                            <option value="0"  >Gönderme</option>
+                            <option selected  value="1">Gönder</option>
+
+                        {% else %}
+
+                            <option value="1">Gönder</option>
+                            <option  selected   value="0">Gönderme</option>
+                        {% endif %}
+
+                    </select>
+                </div>
+            </div>
+
+
+
+
+        </div>
+
+
+
+        <div class="col-sm-6">
+            <div class="panel-body">
+
+
+                <div class="form-group">
+
+                    <label class="control-label required">KDV Eklensin mi ? <span data-toggle="tooltip" title="" data-original-title="Zorunlu Alan!, Ürüne KDV oranının eklenip eklenmeyeceğiniz belirler. Eğer ürününüze herhangi bir vergi sınıfı eklediyseniz, buradaki vergi oranı baz alınacaktır."></span></label>
+
+                    <select class="form-control" name="n11_setting_kdv_setting">
+
+                        {%  if  n11_setting_kdv_setting %}
+
+                            <option value="1"  selected >Eklensin</option>
+                            <option  value="0">Eklenmesin</option>
+
+                        {% else %}
+
+                            <option value="1"  >Eklensin</option>
+                            <option selected  value="0">Eklenmesin</option>
+                        {% endif %}
+
+                    </select>
+                </div>
+
+
+
+                <div class="form-group">
+                    <label class="control-label required">Kampanya Uygulansın mı ? <span data-toggle="tooltip" title="" data-original-title="Ürünleriniz için belirlemiş olduğunuz kampanyalı fiyatların N11 mağazanızda da geçerli olup olmayacağını belirler."></span></label>
+                    <select class="form-control" name="n11_setting_product_special">
+
+                        {%  if  n11_setting_product_special %}
+                            <option value="1"  selected >Evet</option>
+                            <option  value="0">Hayır</option>
+
+                        {% else %}
+                            <option value="1"   >Evet</option>
+
+                            <option selected value="0">Hayır</option>
+
+                        {% endif %}
+                    </select>
+
+
+
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">Gelen siparişler, site siparişlerine de aktarılsın mı ? <span data-toggle="tooltip" title="" data-original-title="N11'den aldığınız siparişler modül menüsündeki siparişler alanına aktarılmaktadır, siparişleri aynı zamanda sitenizin siparişerine de aktarılmasını istiyorsanız, aktarılsın seçeneğini seçiniz."></span></label>
+                    <select class="form-control" name="n11_setting_oc_order">
+
+                        {%  if  n11_setting_oc_order %}
+
+                            <option value="1" selected >Aktarılsın</option>
+                            <option  value="0">Aktarılmasın</option>
+
+                        {% else %}
+
+                            <option value="1">Aktarılsın</option>
+                            <option  selected   value="0">Aktarılmasın</option>
+                        {% endif %}
+
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">Varsayılan Altbaşlık <span data-toggle="tooltip" title="" data-original-title="Ürün başlığı altında yer alan altbaşlık alanı. Tüm ürünlere aynı altbaşlığı eklemek isterseniz bu alana bir altbaşlık giriniz."></span></label>
+
+                    <input type="text" name="n11_setting_subtitle" value="{{ n11_setting_subtitle }}" placeholder="Alt başlık giriniz" class="form-control">
+
+                </div>
+
+
+
+
+
+                <div class="form-group hidden">
+                    <label>Ürün Özellikleri</label>
+                    <select class="form-control" name="n11_setting_product_attribute">
+
+                        {%  if  n11_setting_option_setting %}
+                            <option value="1"  selected   >Zorunlu</option>
+                            <option  value="0">Tümü</option>
+
+                        {% else %}
+                            <option value="1" >Zorunlu</option>
+
+                            <option selected value="0">Tümü</option>
+
+                        {% endif %}
+                    </select>
+
+                </div>
+
+
+
+                <div class="form-group">
+                    <label class="control-label">Ek Ürün Açıklaması <span data-toggle="tooltip" title="" data-original-title="N11 Mağazanıza ürün gönderimi yaparken yada güncellerken ürün açıklamalarına standart ek içerik eklemek için içeriği oluşturduğunuz bilgi sayfasını seçiniz. Seçtiğiniz bilgi sayfasını içeriği ürün açıklamalarından sonra eklenecektir. "></span></label>
+                    <select class="form-control" name="n11_setting_additional_content">
+
+                        <option value="0">==Seçiniz==</option>
+                        {% for information in informations %}
+                            {% if information.information_id == n11_setting_additional_content%}
+                                <option value="{{ information.information_id  }}"
+                                        selected> {{ information.title  }}</option>
+                            {% else %}
+
+                                <option value="{{ information.information_id}}"> {{ information.title  }}</option>
+
+                            {% endif %}
+
+                        {% endfor %}
+
+                    </select>
+
+
+
+                </div>
+
+                <div class="form-group">
+
+                    <label class="control-label">Ürün Kodu Ön Eki <span data-toggle="tooltip" title="" data-original-title="Zorunlu değil!, Ürünü pazaryerini gönderirken başka bir ürünle çakışmaması için ürün koduna ekleme yapabilirsiniz."></span></label>
+
+
+                    <input type="text" name="n11_setting_model_prefix" value="{{ n11_setting_model_prefix }}" placeholder="Ürün Kodu Ön Eki" class="form-control">
+
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Ürün Barkod Alanı <span data-toggle="tooltip" title="" data-original-title="Ürünüze ait barkod yada gtin kodunu tanımladığınız alanı seçiniz. Ürününüzde seçtiğiniz alana ait herhangi bir giriş yok yoksa ürün kodu barkod olarak işleme alınır. "></span></label>
+                    <select class="form-control" name="n11_setting_barkod_place">
+
+                        <option value="0">==Seçiniz==</option>
+                        {% for barkod_place in barkod_places %}
+                            {% if barkod_place == n11_setting_barkod_place %}
+                                <option value="{{ barkod_place   }}"
+                                        selected> {{ barkod_place   }}</option>
+                            {% else %}
+
+                                <option value="{{ barkod_place }}"> {{ barkod_place   }}</option>
+
+                            {% endif %}
+
+                        {% endfor %}
+
+                    </select>
+
+
+                </div>
+
+
+                <div class="form-group ">
+                    <label class="control-label">Siperişe TC Kimlik No Eklensin Mi? <span data-toggle="tooltip" title="" data-original-title="Adresin sonuna tc kimlik no eklensin mi? "></span></label>
+                    <select class="form-control" name="n11_setting_add_tc">
+
+                        {%  if  n11_setting_add_tc %}
+                            <option value="1"
+                                    selected> Eklensin</option>
+
+                            <option value="0"> Eklenmesin</option>
+
+                        {% else %}
+                            <option value="1"
+                            > Eklensin</option>
+
+                            <option value="0"       selected > Eklenmesin</option>
+                        {% endif %}
+
+
+
+                    </select>
+                </div>
+
+            </div>
+        </div>
+    </form>
+</div>
+
+

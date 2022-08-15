@@ -1,0 +1,139 @@
+{{ header }}
+{{ column_left }}
+<div id="content">
+
+<div class="page-header">
+    <div class="container-fluid">
+        <div class="pull-right {{ easy_visibility }}">
+            <img src="view/image/entegrasyon/logo.png" />
+        </div>
+        <ul class="breadcrumb">
+            {% for breadcrumb in breadcrumbs %}
+
+                {%  if breadcrumb.text == "home" %}
+                 <li> <a class="fa fa-home" href="{{ breadcrumb.href }}"></a></li>
+                    {% else %} <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+    </div>
+<div style="border-top: 2px solid #27ad5e;
+    padding-top: 11px;"></div>
+
+
+
+
+    <div class="panel-body" >
+        <div class="container">
+            <h2 class=" text-center" style="color: green">{{ title }} <br><br></h2>
+            <div class="pull-left" style=" margin-bottom: 10px" ><a style="font-size: 16px" href="index.php?route=entegrasyon/support&{{ token_link }}"> <i class="fa fa-arrow-left"></i><i> Destek Listesine Dön..</i></a></div>
+
+             <div class="messaging">
+                <div class="inbox_msg">
+                    <br>
+        <h3 class="text-center" style="text-transform: capitalize; ">{{ticket.subject}}</h3>
+                    <div style="border-top: 1px solid #27ad5e; "></div>
+
+                    <div class="mesgs">
+                        <div class="msg_history">
+                            {% for message in messages %}
+                                {% if message.message %}
+
+
+                                <div class=" outgoing_msg">
+                                    <div class="sent_msg">  <b><p>Siz</p></b>
+                                        <div style="border-top: 1px solid #177034; "></div>
+                                        <p> {{ message.message }}</p>
+                                        <span class="time_date"> {{ message.date_added}}</span></div>
+
+                                </div>                                {% endif %}
+
+                                {% if message.text_answer %}
+                                    <div class="incoming_msg">
+                                        <div class="received_msg">
+                                            <div class="received_withd_msg">
+                                                <b><p>{{ message.answering }}</p></b>
+                                                <div style="border-top: 1px solid #27ad5e; "></div>
+                                                <p>{{ message.text_answer }}  </p>
+                                                <span class="time_date"> {{ message.date_answer  }}</span></div>
+
+                                        </div>
+                                    </div>
+
+
+                                {% endif %}
+
+                                {% if  not message.text_answer %}
+                                    <div id="permisson" permisson="0"></div>
+                                {% endif %}
+
+
+
+
+                            {% endfor %}
+
+
+
+                        </div>
+                        <div id="anan" class="type_msg">
+                            <div class="input_msg_write">
+                                <textarea  id="txt_message" style="margin-bottom: 10px; margin-top: 10px; margin-right: 15px"  data-toggle="summernote"
+                                           data-lang="{{ summernote }}"  class="write_msg form-control summernote"  placeholder="Mesajınızı Yazın"/></textarea>
+
+
+
+                                <button id="send" class="msg_send_btn"  data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i>" style="margin-bottom: 10px; margin-top: 10px ; alignment: center" type="button"><i class="fa fa-paper-plane-o"
+                                                                                        aria-hidden="true"></i></button>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+
+
+</div>
+
+
+
+{{ footer }}
+
+
+<script type="text/javascript" src="view/javascript/entegrasyon/summernote-support.js"></script>
+<link href="view/javascript/summernote/summernote.css" rel="stylesheet" />
+<script type="text/javascript" src="view/javascript/summernote/opencart.js"></script>
+
+
+<script>
+
+
+    $( ".msg_history" ).scrollTop( 10000 );
+
+</script>
+<script>
+
+
+
+    $('#send').on('click',function (){
+        
+        var $btn = $(this);
+        $btn.button('loading');
+        $.post("index.php?route=entegrasyon/support/send_message&{{ token_link }}", {
+            message: $('#txt_message').val(),
+            domain_id: "{{ domain_id }}",
+            ticket_id:"{{ ticket_id }}"
+        }, function (donenVeri) {
+            location.reload();
+        });
+
+    })
+
+</script>

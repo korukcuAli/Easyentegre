@@ -1,0 +1,96 @@
+<div class="row">
+    <div class="panel panel-default"  style=" width:100%;border-top: 2px solid #27ad5e;">
+        {% if category_name is defined %}
+            <div class="panel-heading"><small>Gittigidiyor Kategorisi: {{ category_name }} </small><br>Kaynak:{{ category_source }} -- <small class="text-danger">Sadece Kırmızı Alanlar Zorunludur</small></div>
+        {% endif %}
+        <div class="panel-body">
+
+            {% if(message) %}
+
+            <p class="text-info">{{ message }}</p>
+
+
+            {% elseif attributes %}
+
+            <form id="myform" >
+                {% for index,attribute in attributes.result %}
+
+                    {% if attribute %}
+                        <div class="col-sm-4 form-group">
+
+                            {% if attribute.required %}
+
+                                <label class="required text-danger" style="font-size: 10px;height: 25px;display: block;vertical-align: bottom;" >{{ attribute.name}}</label>
+
+                            {% else %}
+
+                                <label style="font-size: 10px;height: 25px;display: block;vertical-align: bottom;">{{ attribute.name }}</label>
+
+                            {% endif %}
+
+                            <select name="{{attribute.name}}" data-live-search="true" class="select2 form-control attribute  ">
+
+                                <option value='0'>==Seçiniz==</option>
+                                {% for value in attribute.values %}
+                                    {% if (value  | replace({'"':'‟'}))  in s_attr %}
+                                        <option selected="selected" value='{{ value | replace({'"':'‟'}) }}'>{{ value | replace({'"':'‟'})}}</option>
+
+                                    {% else %}
+                                        <option value="{{ value | replace({'"':'‟'}) }}">{{ value | replace({'"':'‟'}) }}</option>
+                                    {% endif %}
+                                {% endfor %}
+
+                            </select>
+
+
+                        </div>
+                    {% endif %}
+
+                {% endfor %}
+            </form>
+
+        </div>
+
+        <div class="panel-footer">
+
+            <div class="form-group">
+
+                <button id="btn-send" class="btn btn-lg btn-primary btn-block">Kaydet</button>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+    {% else %}
+
+        <p style="margin-top: 10px " class="text-info">Bu ürünün bulunduğu kategori için herhangi bir zorunlu Gittigidiyor özelliği bulunmamaktadır. Ürünlerinizi Gönderebilirsiniz.</p>
+
+    {% endif %}
+</div>
+<script>
+
+    $('.select2').selectpicker();
+
+    $('#btn-send').on('click',function () {
+
+        var attributes=$('#myform').serializeArray();
+
+
+
+        var product_id='{{ product_id}}';
+
+        $.post('index.php?route=entegrasyon/genel/save_setting&code=gg&controller={{ controller }}&{{ token_link }}&product_id='+product_id,{pk:+'{{  primary_id}}',name:'selected_attributes',value:attributes},
+            function(datas){
+
+
+                $.toast({heading: 'Başarılı',text: 'Ürün Özelliği Güncellendi!', position: 'top-right',loader: false,allowToastClose: false,showHideTransition: 'slide',icon: 'success'});
+
+                $('#btn-send').html("Güncellendi");
+                $('.gg_default_category_attributes_container').empty().hide('slow');
+
+            },'JSON');
+    })
+</script>

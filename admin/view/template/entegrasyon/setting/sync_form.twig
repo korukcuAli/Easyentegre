@@ -1,0 +1,139 @@
+
+<div class="container-fluid">{% if message %}
+        <div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i>{{ marketplace}} Mağazanız için {{ marketplace_info.name }} {{ message }}
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+        </div>
+    {% endif %}
+<div class="row">
+
+    <div class="panel">
+        <div class="panel-body">
+
+            <table class="table well table-bordered">
+
+                <thead>
+                <th>Toplam Ürün</th>
+                <th>Eşitlenen</th>
+                <th>Eşitlenmeyen</th>
+
+                </thead>
+
+                <tbody>
+                <div class="row well"  style="border-top: 2px solid #27ad5e;">
+
+
+                    <div class="col-sm-1">
+                        <img class="img-responsive" src="view/image/entegrasyon/bilgi.png"/>
+                    </div>
+                    <div class="col-sm-11">
+                        <h3 style="color:#27ad5e;font-weight: bolder ">Bilgilendirme - </h3> 
+                    <p>{{ info }}</p>
+                    </div>
+                </div>
+
+
+                <div class="progress active" style="margin-top:20px;"> <div class="progress-bar"  role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width:0%"><span class="yuzde"></span></div></div>
+
+                <tr>
+                    <td><span class="btn btn-primary btn-block">{{ total }}</span></td>
+                    <td><span class="btn btn-success btn-block btnSuccess">0</span></td>
+                    <td><span class="btn btn-danger btn-block btnUnSuccess">0</span></td>
+
+                </tr>
+
+
+                </tbody>
+
+            </table>
+
+            <div id="report"  style="overflow-y:scroll; overflow-x:hidden; height:100px;" ></div>
+
+
+        </div>
+
+        <div class="panel-footer">
+
+          <center> <div class="btn-group ">
+            <button data-loading-text="Eşitleniyor..." class="btn  btn-lg  btn-primary btn-start">Eşitlemeyi Başlat</button>
+        <button data-loading-text="Siliniyor..." class="btn  btn-lg  btn-warning btn-del">Tüm Eşleştirmeleri Sil</button>
+
+
+
+    </div>
+
+
+</div>
+
+
+
+
+<script>
+
+    var updated_products=0;
+    var totalpage;
+    var current=1;
+    var lastnext='';
+
+
+    $('.btn-del').on('click',function () {
+        $('.btn-del').button('loading');
+
+        $.post("index.php?route=entegrasyon/setting/unmatch_all&code={{ code }}&{{ token_link }}", {
+
+        }, function (donenVeri) {
+
+            if (donenVeri['status']){
+                $('.btn-del').button('reset');
+
+                Swal.fire('Başarılı','Tüm Eşleşmeler Silindi','success');
+            }
+
+
+        },'json');
+
+
+    });
+
+    $('.btn-start').on('click',function () {
+        $('#report').empty();
+       $('.btn-start').button('loading');
+        starttool('index.php?route=entegrasyon/setting/sync&code={{ code }}&matched=0&unmatched=0&{{ token_link }}')
+
+
+    });
+
+    function starttool(url) {
+
+        lastnext=url;
+
+        $.ajax({
+            url: url,
+            type: 'post',
+            dataType: 'json',
+            success: function(json) {
+                var yuzde = Math.round(json['current_page'] * 100 / json['total_page']);
+
+                $('#updated_product').html(json['total']);
+                $('.progress  .progress-bar').css('width', yuzde + '%');
+                $('.progress  .yuzde').html(yuzde + '%' + ' tamamlandı');
+                if(!json['status']){
+                    $('.btn-start').button('reset');
+
+                }else {
+                    starttool(json['next']);
+                }
+
+
+                $('.btnSuccess').text(parseInt(json['matched']));
+                $('.btnUnSuccess').text(parseInt(json['unmatched']));
+
+            },
+            error: function (request, status, error) {
+                //alert(request.responseText);
+                starttool(lastnext);
+            }
+        });
+    }
+
+</script>
+

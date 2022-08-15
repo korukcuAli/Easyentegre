@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modification>
+    <id></id>
+    <name>Easyentegre</name>
+    <code>new_ent</code>
+    <version>v3</version>
+    <author>www.easyentegre.com</author>
+    <link>www.easyentegre.com</link>
+    <file path="admin/controller/common/column_left.php">
+        <operation>
+            <search ><![CDATA[$catalog = array();]]></search>
+            <add position="before"><![CDATA[
+        //Entegrasyon
+
+
+             $module_name =  $easy_visibility=$this->config->get('easy_visibility') ? 'Easy Entegre':'Pazaryeri Entegrasyon';
+
+
+        if(VERSION < 3){
+            $token = $this->session->data['token'];
+            $token_link = 'token=' . $this->session->data['token'];
+        } else {
+            $token = $this->session->data['user_token'];
+            $token_link = 'user_token=' . $this->session->data['user_token'];
+        }
+        $data['token']=$token;
+        $data['token_link']=$token_link;
+
+            $entegrasyon = array();
+
+     if ($this->user->hasPermission('access', 'entegrasyon/dashboard')) {
+                $entegrasyon[] = array(
+                    'name'	   => 'Dashboard',
+                    'href'     => $this->url->link('entegrasyon/dashboard', $token_link, true),
+                    'children' => array()
+                );
+            }
+
+     if ($this->user->hasPermission('access', 'entegrasyon/product')) {
+                $entegrasyon[] = array(
+                    'name'	   => 'Ürünler',
+                    'href'     => $this->url->link('entegrasyon/product', $token_link, true),
+                    'children' => array()
+                );
+            }
+ if ($this->user->hasPermission('access', 'entegrasyon/product_question')) {
+                    $entegrasyon[] = array(
+                    'name'	   => 'Ürün Soruları',
+                    'href'     => $this->url->link('entegrasyon/product_question', $token_link, true),
+                    'children' => array()
+                );
+            }
+
+          /*   if ($this->user->hasPermission('access', 'entegrasyon/easyxml')) {
+                    $entegrasyon[] = array(
+                    'name'	   => 'Xml İşlemleri',
+                    'href'     => $this->url->link('entegrasyon/easyxml', $token_link, true),
+                    'children' => array()
+                );
+            }*/
+
+            if($this->config->get('easy_ticket')){
+             if ($this->user->hasPermission('access', 'entegrasyon/support')) {
+                    $entegrasyon[] = array(
+                    'name'	   => 'Destek Talepleri',
+                    'href'     => $this->url->link('entegrasyon/support', $token_link, true),
+                    'children' => array()
+                );
+            }
+            }
+
+
+            if ($this->user->hasPermission('access', 'entegrasyon/category')) {
+                $entegrasyon[] = array(
+                    'name'	   => 'Kategoriler',
+                    'href'     => $this->url->link('entegrasyon/category', $token_link, true),
+                    'children' => array()
+                );
+            }
+
+            if ($this->user->hasPermission('access', 'entegrasyon/manufacturer')) {
+                $entegrasyon[] = array(
+                    'name'	   => 'Üreticiler',
+                    'href'     => $this->url->link('entegrasyon/manufacturer', $token_link, true),
+                    'children' => array()
+                );
+            }
+
+            if ($this->user->hasPermission('access', 'entegrasyon/order')) {
+                $entegrasyon[] = array(
+                    'name'	   => 'Siparişler',
+                    'href'     => $this->url->link('entegrasyon/order', $token_link, true),
+                    'children' => array()
+                );
+            }
+
+            if ($this->user->hasPermission('access', 'entegrasyon/setting')) {
+                $entegrasyon[] = array(
+                    'name'	   => 'Ayarlar',
+                    'href'     => $this->url->link('entegrasyon/setting', $token_link, true),
+                    'children' => array()
+                );
+            }
+
+            if ($entegrasyon) {
+                $data['menus'][] = array(
+                    'id'       => 'menu-entegrasyon',
+                    'icon'	   => 'fa-list',
+                    'name'	   => $module_name,
+                    'href'     => '',
+                    'children' => $entegrasyon
+                );
+            }
+        ]]></add>
+        </operation>
+
+    </file>
+    <file path="admin/controller/sale/order.php" >
+        <operation>
+            <search index="0"><![CDATA[foreach ($results as $result) {]]></search>
+            <add position="after"><![CDATA[
+
+           $data['marketplace_row_status'] = $this->config->get('easy_setting_marketplace_row_in_orders');
+               $order_info_es = $this->db->query("SELECT user_agent, payment_code  from ".DB_PREFIX."order where order_id = '".$result['order_id']."'");
+            if($order_info_es->row['payment_code'] == "Trendyol" || $order_info_es->row['payment_code'] == "Hepsiburada" || $order_info_es->row['payment_code'] == "N11" || $order_info_es->row['payment_code'] == "Gittigidiyor" || $order_info_es->row['payment_code'] == "Çiçeksepeti" || $order_info_es->row['payment_code'] == "ePttAvm"){
+               $marketplace=$order_info_es->row['payment_code'];
+            }else{
+                $marketplace="Opencart";
+            }
+        ]]></add>
+        </operation>
+        <operation>
+            <search index="0"><![CDATA['customer'      => $result['customer'],
+]]></search>
+            <add position="after"><![CDATA[
+              				'marketplace'   => $marketplace,
+        ]]></add>
+        </operation>
+
+    </file>
+
+    <file path="admin/view/template/sale/order_list.tpl" >
+        <operation>
+            <search index="0"><![CDATA[<td style="width: 1px;" class="text-center"><input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);" /></td>]]></search>
+            <add position="after"><![CDATA[<?php if($marketplace_row_status){ ?><td class="text-center">Pazaryeri</td><?php } ?>
+        ]]></add>
+        </operation>
+        <operation>
+            <search index="0"><![CDATA[ <input type="hidden" name="shipping_code[]" value="<?php echo $order['shipping_code']; ?>" /></td>
+]]></search>
+            <add position="before"><![CDATA[
+              				<?php if($marketplace_row_status){ ?> <td class="text-center"><?php echo $order['marketplace']; ?></td><?php } ?>
+        ]]></add>
+        </operation>
+
+    </file>
+
+
+    <file path="admin/view/template/sale/order_list.twig" >
+        <operation>
+            <search index="0"><![CDATA[<td style="width: 1px;" class="text-center"><input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);" /></td>]]></search>
+            <add position="after"><![CDATA[{% if marketplace_row_status %}<td class="text-center">Pazaryeri</td>{% endif %}
+        ]]></add>
+        </operation>
+        <operation>
+            <search index="0"><![CDATA[<input type="hidden" name="shipping_code[]" value="{{ order.shipping_code }}" /></td>
+]]></search>
+            <add position="before"><![CDATA[
+              				 {% if marketplace_row_status %}<td class="text-center">{{ order.marketplace }}</td>{% endif %}
+        ]]></add>
+        </operation>
+
+    </file>
+    <file path="admin/controller/startup/startup.php">
+        <operation>
+            <search ><![CDATA[$this->registry->set('weight', new Cart\Weight($this->registry));]]></search>
+            <add position="after"><![CDATA[
+            $this->registry->set('entegrasyon', new Entegrasyon ($this->registry));
+        ]]></add>
+        </operation>
+
+    </file>
+    <file path="admin/controller/startup/startup.php">
+        <operation>
+            <search ><![CDATA[$this->registry->set('weight', new Cart\Weight($this->registry));]]></search>
+            <add position="after"><![CDATA[
+            $this->registry->set('entegrasyon', new Entegrasyon ($this->registry));
+        ]]></add>
+        </operation>
+
+    </file>
+
+    <file path="catalog/controller/startup/startup.php">
+        <operation>
+            <search ><![CDATA[$this->registry->set('weight', new Cart\Weight($this->registry));]]></search>
+            <add position="after"><![CDATA[
+            $this->registry->set('entegrasyon', new Entegrasyon ($this->registry));
+        ]]></add>
+        </operation>
+
+    </file>
+
+
+    <file path="catalog/controller/checkout/success.php">
+        <operation>
+            <search ><![CDATA[$this->load->language('checkout/success');]]></search>
+            <add position="after"><![CDATA[
+            $data['order_id']=$this->session->data['order_id'];
+        ]]></add>
+        </operation>
+
+    </file>
+
+    <file path="catalog/view/theme/*/template/common/success.tpl">
+        <operation>
+            <search ><![CDATA[<?php echo $footer; ?>]]></search>
+            <add position="before"><![CDATA[
+
+<script>
+
+  $(function (event){
+
+    var order_id=parseInt('<?php echo $order_id ?>');
+    $.post('index.php?route=entegrasyon/update/update_after_order',{order_id:order_id},function (json){
+
+
+    },'JSON')
+
+  })
+
+
+
+</script>
+
+        ]]></add>
+        </operation>
+
+    </file>
+
+    <file path="catalog/view/theme/*/template/common/success.twig">
+        <operation>
+            <search ><![CDATA[<?php echo $footer; ?>]]></search>
+            <add position="before"><![CDATA[
+
+
+<script>
+
+  $(function (event){
+
+    var order_id=parseInt('{{ order_id }}');
+    $.post('index.php?route=entegrasyon/update/update_after_order',{order_id:order_id},function (json){
+
+
+    },'JSON')
+
+  })
+
+
+
+</script>
+
+
+        ]]></add>
+        </operation>
+
+    </file>
+
+
+
+
+
+</modification>

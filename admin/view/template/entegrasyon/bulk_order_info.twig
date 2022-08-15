@@ -1,0 +1,134 @@
+
+<div class="container-fluid">
+    <div class="row ">
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-shopping-cart"></i> {{ text_order_detail }}</h3>
+                </div>
+                <table class="table">
+                    <tbody>
+                    <tr>
+                        <td style="width: 1%;"><button data-toggle="tooltip" title="{{ text_store }}" class="btn btn-info btn-xs"><i class="fa fa-shopping-cart fa-fw"></i></button></td>
+                        <td><a href="#" target="_blank">{{ store_name }}</a></td>
+                    </tr>
+                    <tr>
+                        <td><button data-toggle="tooltip" title="{{ text_date_added }}" class="btn btn-info btn-xs"><i class="fa fa-calendar fa-fw"></i></button></td>
+                        <td>{{ date_added }}</td>
+                    </tr>
+
+                    <tr class="hidden">
+                        <td><button data-toggle="tooltip" title="Sipariş Durumu" class="btn btn-info btn-xs"><i class="fa fa-calendar fa-fw"></i></button></td>
+                        <td>{{ order_status }}</td>
+                    </tr>
+
+                    {% if shipping_method %}
+                        <tr>
+                            <td><button data-toggle="tooltip" title="{{ text_shipping_method }}" class="btn btn-info btn-xs"><i class="fa fa-truck fa-fw"></i></button></td>
+                            <td>{{ shipping_method }}</td>
+                        </tr>
+                    {% endif %}
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="fa fa-user"></i> {{ text_customer_detail }}</h3>
+                </div>
+                <table class="table">
+                    <tr>
+                        <td style="width: 1%;"><button data-toggle="tooltip" title="{{ text_customer }}" class="btn btn-info btn-xs"><i class="fa fa-user fa-fw"></i></button></td>
+                        <td>{% if customer %} <a href="{{ customer }}" target="_blank">{{ firstname }} {{ lastname }}</a> {% else %}
+                                {{ firstname }} {{ lastname }}
+                            {% endif %}</td>
+                    </tr>
+
+                    <tr>
+                        <td><button data-toggle="tooltip" title="{{ text_email }}" class="btn btn-info btn-xs"><i class="fa fa-envelope-o fa-fw"></i></button></td>
+                        <td><a href="mailto:{{ email }}">{{ email }}</a></td>
+                    </tr>
+                    <tr>
+                        <td><button data-toggle="tooltip" title="{{ text_telephone }}" class="btn btn-info btn-xs"><i class="fa fa-phone fa-fw"></i></button></td>
+                        <td>{{ telephone }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title"><i class="fa fa-info-circle"></i> {{ text_order }}</h3>
+        </div>
+        <div class="panel-body">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <td style="width: 50%;" class="text-left">{{ text_payment_address }}</td>
+                    {% if shipping_method %}
+                        <td style="width: 50%;" class="text-left">{{ text_shipping_address }}</td>
+                    {% endif %} </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="text-left">{{ payment_address }}</td>
+                    {% if shipping_method %}
+                        <td class="text-left">{{ shipping_address }}</td>
+                    {% endif %} </tr>
+                </tbody>
+            </table>
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <td class="text-left">{{ column_product }}</td>
+                    <td class="text-left">{{ column_model }}</td>
+                    <td class="text-right">{{ column_quantity }}</td>
+                    <td class="text-right">{{ column_price }}</td>
+                    <td class="text-right">{{ column_total }}</td>
+                </tr>
+                </thead>
+                <tbody>
+
+                {% for product in products %}
+                    <tr>
+                        <td class="text-left"><a href="{{ product.href }}">{{ product.name }}</a> {% for option in product.option %} <br />
+                                {% if option.type != 'file' %}
+                                    &nbsp;<small> - {{ option.name }}: {{ option.value }}</small> {% else %}
+                                    &nbsp;<small> - {{ option.name }}: <a href="{{ option.href }}">{{ option.value }}</a></small> {% endif %}
+                            {% endfor %}</td>
+                        <td class="text-left">{{ product.isbn }}</td>
+                        <td class="text-right">{{ product.quantity }}</td>
+                        <td class="text-right">{{ product.price }}</td>
+                        <td class="text-right">{{ product.price * product.quantity}}</td>
+                    </tr>
+
+                    {% if product.kdv  %}
+                        <tr>
+                            <td colspan="4" class="text-right">Kdv</td>
+                            <td class="text-right">{{ product.kdv }}</td>
+                        </tr> {% endif %}
+                    {% if product.discount >1  %}
+
+                        <tr>
+                            <td colspan="4" class="text-right">İndirim</td>
+                            <td class="text-right">{{ product.discount }}</td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+
+
+                <tr>
+                    <td colspan="4" class="text-right">Toplam Tutar</td>
+                    <td class="text-right">{{ total }}</td>
+                </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+    </div>
+
+</div>

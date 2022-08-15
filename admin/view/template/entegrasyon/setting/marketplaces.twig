@@ -1,0 +1,42 @@
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <td class="text-center" width="10%">Logo</td>
+                <td class="text-left" width="15%">Pazaryeri</td>
+                <td class="{{ easy_visibility }} text-center easy-mode " width="10%">Üyelik</td>
+                <td class="{{ easy_visibility }} text-center easy-mode " width="10%">Hesap</td>
+                <td class="text-center" width="15%">Kalan Gün</td>
+
+                <td class="text-center" width="10%">Durumu</td>
+
+                <td class="text-right" width="35%">Eylem</td>
+            </tr>
+            </thead>
+            <tbody>
+
+            {% for marketplace in marketplaces %}
+                <tr>
+                    <td class="text-center"><img src="{{ marketplace.logo }}"></td>
+                    <td class="text-left">{{ marketplace.name }}</td>
+                    <td class=" {{ easy_visibility }} text-center easy-mode ">{{ marketplace.member_type }}</td>
+                    <td class=" {{ easy_visibility }} easy-mode">
+                        {% if marketplace.member_type=='Demo'  %} <a href="index.php?route=entegrasyon/setting/account_info&{{ token_link }}" class="btn btn-primary btn-block">Satın Al</a> {% else %} <a href="index.php?route=entegrasyon/setting/account_info&{{ token_link }}" class="btn btn-info btn-block">Süre Uzat</a>  {% endif %}
+
+                    </td>
+                    <td class="text-center">{{ marketplace.left_day }}</td>
+
+
+                    <td class="text-center">{{ marketplace.status ? 'Aktif':'Pasif' }}</td>
+                    <td class="text-right"> {%  if marketplace.status %}<button code="{{ marketplace.code }}" style="margin-right: 3px" data-toggle="tooltip" title="{{ marketplace.name }} {% if marketplace.code=='hb' or marketplace.code=='eptt' %} Mağazasından ürün aktarımı yapılamamaktadır! {% else %}Mağazanızdaki ürünleri  sitenize aktarır. {% endif %}"    class="btn {% if marketplace.code=='hb' or marketplace.code=='eptt' %} btn-default {% else %} btn-info  {% endif %} btnDown" data-loading-text="<i class='fa fa-spinner fa-spin '></i>"> <i class="fa fa-download"></i></button>
+                            <button code="{{ marketplace.code }}" style="margin-right: 3px" data-toggle="tooltip" title="{{ marketplace.name }} Mağazanızdaki ürünlerle sitenizdeki ürünleri eşleştirir."    class="btn btn-warning btnGetProducts" data-loading-text="<i class='fa fa-spinner fa-spin '></i>"> <i class="fa fa-refresh"></i></button>
+                            <button code="{{ marketplace.code }}" style="margin-right: 3px" data-toggle="tooltip" title="{{ marketplace.name }} Mağazanızdaki ürünlerle sitenize aktarır."    class="btn hidden btn-danger btnGetProducts" data-loading-text="<i class='fa fa-spinner fa-spin '></i>"> <i class="fa fa-refresh"></i></button>
+
+                            <button code="{{ marketplace.code }}" data-toggle="tooltip" title="{{ marketplace.name }} Ayarları"   class="btn btn-primary btnEdit" data-loading-text="<i class='fa fa-spinner fa-spin '></i>"> <i class="fa  fa-edit"></i></button> {%  endif %}  <button code="{{ marketplace.code }}" data-toggle="tooltip" title="{{ marketplace.name }} api bilgilerinizi girin"   class="btn btn-success {% if not permission %} hidden {% endif %} btnPazar" data-loading-text="<i class='fa fa-spinner fa-spin '></i> ..." > <i class="fa fa-wrench"></i></button> </td>   </tr>
+            {% endfor %}
+            </tbody>
+
+        </table>
+    </div>
+</div>

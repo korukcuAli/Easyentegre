@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+
+    <file path="admin/view/template/common/header.twig">
+        <operation>
+            <search trim="true" index="1"><![CDATA[
+		                <script src="view/javascript/bootstrap/js/bootstrap-editable.min.js"></script>
+
+            ]]></search>
+
+
+            <add position="replace" trim="false" offset="0"><![CDATA[
+           		                <script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+
+           <script type="text/javascript" src="view/javascript/entegrasyon/typeahead.js"></script>
+<script type="text/javascript" src="view/javascript/entegrasyon/typeaheadjs.js"></script>
+
+            ]]></add>
+        </operation>
+    </file>
+    <file path="admin/view/template/common/header.tpl">
+        <operation>
+            <search trim="true" index="1"><![CDATA[
+		                <script src="view/javascript/bootstrap/js/bootstrap-editable.min.js"></script>
+
+            ]]></search>
+
+
+            <add position="replace" trim="false" offset="0"><![CDATA[
+           		                <script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+
+           <script type="text/javascript" src="view/javascript/entegrasyon/typeahead.js"></script>
+<script type="text/javascript" src="view/javascript/entegrasyon/typeaheadjs.js"></script>
+
+            ]]></add>
+        </operation>
+    </file>
+
+</modification>

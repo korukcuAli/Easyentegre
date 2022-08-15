@@ -1,0 +1,77 @@
+<div class="panel-body">
+
+    {% if product_datas %}
+
+
+    <table class="table">
+
+        <thead>
+        <tr>
+            <th>Görsel</th>
+            <th>Ürün Adı</th>
+            <th>Model Kodu</th>
+            <th>Eylem</th>
+        </tr>
+        </thead>
+    {% for pd in product_datas %}
+
+
+            <tbody>
+            <tr>
+                <td><img src="{{  pd.image}}" alt=""></td>
+                <td>{{ pd.name }}</td>
+                <td>{{ pd.model }}</td>
+                <td><a class="btn btn-primary btnMatched" code="{{ code }}" product_id="{{ pd.product_id }}">Eşleştir</a></td>
+            </tr>
+
+            </tbody>
+
+
+    {% endfor %}
+    </table>
+    {% else %}
+        <center><h3 style="color: #80000f"> <i class="fa fa-warning"></i> Sitenizde Ürün Bulunamadı...</h3></center>
+
+
+    {% endif %}
+</div>
+
+<script>
+    $('.btnMatched').on('click',function () {
+        var thisBtn = $(this);
+        var barcode ='{{ barcode }}';
+        var product_id = thisBtn.attr('product_id');
+
+        thisBtn.text('Eşleştirildi');
+        thisBtn.append(' <i class="fa fa-check"></i>');
+        thisBtn.removeClass('btn-primary');
+        thisBtn.removeClass('btn');
+        thisBtn.removeClass('btnMatched');
+
+        //alert(product_id)
+
+       $.post('index.php?route=entegrasyon/product/product_match&code={{ code }}&{{ token_link }}',{product_id:product_id,barcode:barcode},function (json) {
+
+           if (json['status']) {
+               Swal.fire({
+                   position: 'top-end',
+                   icon: 'success',
+                   title: 'Başarılı',
+                   showConfirmButton: false,
+                   timer: 1500
+               })
+           }else{ Swal.fire({
+               position: 'top-end',
+               icon: 'warning',
+               title: 'Başarısız',
+               showConfirmButton: false,
+               timer: 1500
+           })
+
+           }
+
+        },'JSON');
+
+    })
+
+</script>

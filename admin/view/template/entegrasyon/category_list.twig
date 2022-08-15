@@ -1,0 +1,257 @@
+{{ header }}{{ column_left }}
+<div id="content">
+    <div class="page-header">
+        <div class="container-fluid">
+
+
+            <ul class="breadcrumb">
+                {% for breadcrumb in breadcrumbs %}
+                    <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+                {% endfor %}
+            </ul>
+            <div class="{{ easy_visibility }} pull-right easy-mode ">
+                <img src="view/image/entegrasyon/logo.png" />
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        {% if error_warning %}
+            <div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+            </div>
+        {% endif %}
+        {% if success %}
+            <div class="alert alert-success alert-dismissible"><i class="fa fa-check-circle"></i> {{ success }}
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+            </div>
+        {% endif %}
+
+        <div class="panel">
+
+            <div class="row well"  style="border-top: 2px solid #27ad5e;">
+
+
+                <div class="col-sm-1">
+                    <img class="img-responsive" src="view/image/entegrasyon/bilgi.png"/>
+                </div>
+                <div class="col-sm-11">
+                    <h3 style="color:#27ad5e;font-weight: bolder ">Bilgilendirme</h3>
+                    <p style="font-size: larger">
+                        Mağazanızdaki kategorilerlerle seçtiğiniz pazaryeri kategorisini eşleştirme, kategoriye özel komisyon oranı belirleme vb ayarları yapmak için seçtiğiniz kategori ile pazaryerinin kesiştiği ayar butonuna tıklayınız.<strong> Eğer mağazanızdaki Ana kategori için eşleştirme ve diğer ayarları yaptıysanız alt kategoriler için de eşleştirme yapmak zorunda değilsiniz.</strong>
+                        Ürün gönderimi için gerekli olan ürünün bağlı olduğu en az bir kategorinin eşleşmiş olmasıdır. Eğer isterseniz seçtiğiniz kategoriye özel komisyon oranı teslimat süresi gibi ayarları yapabilirsiniz ancak bunlar zorunlu değildir.
+                    </p>
+                </div>
+            </div>
+
+
+
+            <div class="well" style="border-top: 2px solid #27ad5e;">
+                <div class="row">
+
+
+                    <div class="col-sm-11">
+
+                            <label class="control-label" for="input-model">Kategori</label>
+                            <input type="text" value="{{ filter_category_name }}" placeholder="Otomatik Tamamlama" class="form-control" data-live-search="true" name="category" data-size="20" data-title="Kategori Seçiniz">
+                            <input type="hidden" value="{{ filter_category }}" name="filter_category">
+
+                    </div>
+                        <div class="col-sm-1" style="margin-top: 20px">
+                            <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-search"></i> {{ button_filter }}</button>
+
+
+                    </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        <div class="panel panel-default" style="border-top: 2px solid #27ad5e;">
+            <div class="panel-heading">
+                <h2 class="panel-title"><i class="fa fa-list"></i> {{ text_list }}</h2>
+                <div class="pull-right" style="margin-top: -10px">
+                    <a href="{{ add }}" data-toggle="tooltip" title="{{ button_add }}" class="btn btn-primary"><i class="fa fa-plus"></i></a> <a href="{{ repair }}" data-toggle="tooltip" title="{{ button_rebuild }}" class="btn btn-default"><i class="fa fa-refresh"></i></a>
+                    <button type="button" data-toggle="tooltip" title="{{ button_delete }}" class="btn btn-danger" onclick="confirm('{{ text_confirm }}') ? $('#form-category').submit() : false;"><i class="fa fa-trash-o"></i></button>
+                </div>
+            </div>
+
+            <div class="panel-body">
+                <form action="{{ delete }}" method="post" enctype="multipart/form-data" id="form-category">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover">
+                            <thead>
+                            <tr>                  <td style="width: 1px;" class="text-center"><input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);" /></td>
+
+                                <td class="text-left">{% if sort %}
+                                        <a href="{{ sort_name }}" class="{{ order|lower }}">{{ column_name }}</a>
+                                    {% else %}
+                                        <a href="{{ sort_name }}">{{ column_name }}</a>
+                                    {% endif %}</td>
+
+                            {% for marketplace in marketplaces %}
+
+                                {% if marketplace.status %}
+
+                                    <td class="text-center"> <img src="{{ marketplace.logo }}" />  <span class="hidden-xs">{{ marketplace.name }}</span></td>
+                                {% endif %}
+
+                                {% endfor %}
+
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% if categories %}
+                                {% for category in categories %}
+                                    <tr>
+                                        <td class="text-center" width="10px">{% if category.category_id in selected %}
+                                                <input type="checkbox" name="selected[]" value="{{ category.category_id }}" checked="checked" />
+                                            {% else %}
+                                                <input type="checkbox" name="selected[]" value="{{ category.category_id }}" />
+                                            {% endif %}</td>
+                                        <td class="text-left">{{ category.name }}</td>
+
+
+                                        {% for marketplace in marketplaces %}
+
+                                            {% if marketplace.status %}
+
+                                                <td class="text-center">
+                                                    <button id="{{ category.category_id }}_{{ marketplace.code }}"
+                                                            category_name="{{ category.name }}"
+                                                            category_id="{{category.category_id  }}"
+                                                            name="{{ marketplace.name }}"
+                                                            code="{{ marketplace.code }}"
+                                                            class="btn btnSetting   {% if not  category[marketplace.code] %} btn-default {% else %} btn-primary {% endif %} "> <i id="fa_{{ category.category_id }}_{{ marketplace.code }}" class="fa {% if not category[marketplace.code]%} fa-wrench {% else %} fa-edit {% endif %}"></i>  </button>
+                                                </td>
+
+
+                                            {% endif %}
+
+                                        {% endfor %}
+
+
+
+                                    </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td class="text-center" colspan="4">{{ text_no_results }}</td>
+                                </tr>
+                            {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </form>
+                <div class="row">
+                    <div class="col-sm-6 text-left">{{ pagination }}</div>
+                    <div class="col-sm-6 text-right">{{ results }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript"><!--
+    $('#button-filter').on('click', function() {
+        var url = 'index.php?route=entegrasyon/category&{{ token_link }}';
+
+
+        var filter_category = $('input[name=\'filter_category\']').val();
+
+        if (filter_category != '*') {
+            url += '&filter_category=' + encodeURIComponent(filter_category);
+        }
+
+        location = url;
+    });
+    //--></script>
+
+<script>
+
+    $('input[name=\'category\']').autocomplete({
+        'source': function(request, response) {
+            $.ajax({
+                url: 'index.php?route=catalog/category/autocomplete&{{ token_link }}&filter_name=' + encodeURIComponent(request),
+                dataType: 'json',
+                success: function(json) {
+                    response($.map(json, function(item) {
+                        return {
+                            label: item['name'],
+                            value: item['category_id']
+                        }
+                    }));
+                }
+            });
+        },
+        'select': function(item) {
+
+
+            $('input[name=\'category\']').val(item['label']);
+            $('input[name=\'filter_category\']').val(item['value']);
+
+
+        }
+    });
+
+
+</script>
+
+<script>
+
+
+    $('.btnSetting').on('click',function (event) {
+
+
+
+
+        event.preventDefault();
+        var $thisBtn=$(this);
+        var code=$thisBtn.attr('code');
+        var name=$thisBtn.attr('name');
+        var category_name=$thisBtn.attr('category_name');
+        var category_id=$thisBtn.attr('category_id')
+
+
+        BootstrapDialog.show({
+            title:name+' - '+category_name+'- Kategori Ayarları',
+            closable: true,
+            draggable: true,
+            size: BootstrapDialog.SIZE_WIDE,
+            message: function(dialog) {
+                var $message = $('<div></div>');
+                var pageToLoad = dialog.getData('pageToLoad');
+                $message.load(pageToLoad);
+                return $message;
+            },
+            data: {
+                'pageToLoad':'index.php?route=entegrasyon/category/setting&code='+code+'&category_id='+category_id+'&{{ token_link }}'
+            }
+        });
+
+
+    })
+
+    $(document).on('click','#btnComplate',function () {
+
+
+        $.each(BootstrapDialog.dialogs, function(id, dialog){
+            dialog.close();
+        });
+    })
+
+
+
+
+</script>
+
+
+
+
+
+
+{{ footer }}

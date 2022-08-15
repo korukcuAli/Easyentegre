@@ -1,0 +1,60 @@
+<div class="panel panel-panel-default">
+
+    <div class="row well"  style="border-top: 2px solid #27ad5e;">
+
+
+        <div class="col-sm-1">
+            <img class="img-responsive" src="view/image/entegrasyon/bilgi.png"/>
+        </div>
+        <div class="col-sm-11">
+            <h3 style="color:#27ad5e;font-weight: bolder ">Bilgilendirme</h3>
+            <p>N11 Api Bilgilerinizi almak için <a href="https://so.n11.com">https://so.n11.com</a> yönetim panelinize giriş yapın. <strong>Hesabım</strong> Sekmesinden <strong>Api hesapları</strong> seçeneğin tıklayın. Henüz bir api hesabınız yoksa <strong>Yeni hesap oluştur</strong> butonuna tıklayın. N11'e kayıt olduğunuz email adresine N11 <strong>Api Key</strong> ve <strong>Secret Key</strong> bilgileri gönderilecektir. Bu bilgileri Aşağıdaki alanlara girip <strong>Kaydet</strong> Butonuna Tıklayın.</p>
+        </div>
+    </div>
+
+
+    <div class="panel-heading">
+        <div class="panel-title">N11 Api Ayarları</div>
+        <div class="pull-right" style="    margin-top: -7px;">
+            <button  data-toggle="tooltip" title="Geri Dön" class="btn btn-primary btnVazgec"><i class="fa fa-reply"></i></button></div>
+    </div>
+
+
+</div>
+<div class="row">
+<form>
+    <div class="form-group">
+        <label class="col-sm-2 control-label" for="input-meta-title">N11 Api Anahtarı</label>
+        <div class="col-sm-6">
+            <input type="text" name="n11_api_key" value="{{ n11_api_key }}" placeholder="N11 Api Keyinizi Giriniz" id="input-meta-api-key" class="form-control" />
+            </div>
+    </div>
+
+        <div class="clearfix"></div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label" for="input-meta-title">N11 Api Şifresi</label>
+        <div class="col-sm-6">
+            <input type="text" name="n11_api_secret" value="{{ n11_api_secret }}" placeholder="N11 Api Secret Giriniz" id="input-meta-api-secret" class="form-control" />
+        </div>
+    </div>
+    </form>
+        <div class="clearfix"></div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-6">
+       <div class="btn-group  ">
+
+           <button code="n11" name="N11" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Kontrol Ediliyor..." class="btn btn-success btn-lg btnKaydet">Kaydet</button>
+           <button code="n11" name="N11" class="btn btn-warning btn-lg btnReset" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Yükleniyor..." >Sıfırla</button>
+
+       </div>
+    </div>
+
+    </div>
+    </div>
+
+
+
+
+
+

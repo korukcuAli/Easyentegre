@@ -1,0 +1,144 @@
+{{ header }}{{ column_left }}
+
+<div id="content">
+
+    <div class="page-header">
+        <div class="container-fluid">
+            <div class="pull-right {{ easy_visibility }}">
+                <img src="view/image/entegrasyon/logo.png" />
+            </div>
+            <ul class="breadcrumb">
+                {% for breadcrumb in breadcrumbs %}
+
+                    {%  if breadcrumb.text == "home" %}
+                        <li> <a class="fa fa-home" href="{{ breadcrumb.href }}"></a></li>
+                    {% else %} <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div style="border-top: 2px solid #27ad5e;
+    padding-top: 11px;"></div>
+
+
+
+    <div class="panel-body" >
+        <div class="container">
+            <h2 class=" text-center" style="color: green">{{ title }}<br><br></h2>
+            <div class="messaging">
+
+                <form class="form-horizontal" action="/action_page.php">
+                    <div class="form-group">
+                        <label class="control-label col-sm-1 baslik" for="email">Başlık:</label>
+                        <div class="col-sm-11">
+                            <input type="text" class="form-control" id="subject" placeholder="Konu Başlığını Girin">
+                        </div>
+                    </div>
+
+
+
+                    <div class="form-group ">
+                        <label class="control-label col-sm-1" for="pwd">Pazaryeri:</label>
+                        <div class="col-sm-11">
+                             <select name="filter_marketplace" id="marketplace" class="form-control">
+                                <option value="Genel">Genel</option>
+                                {% for marketplace in marketplaces %}
+
+                                    {% if marketplace.status %}
+
+                                        {% if filter_marketplace==marketplace.code %}
+                                            <option selected value="{{ marketplace.code }}">{{ marketplace.name }}</option>
+                                        {% else %}
+                                            <option value="{{ marketplace.code }}">{{ marketplace.name }}</option>
+
+                                        {% endif %}
+
+                                    {% endif %}
+
+                                {% endfor %}
+
+
+                            </select>
+                        </div>
+                    </div> <div class="col-sm-11 pull-right">
+                        <textarea  name="info"   style="height: 200px" placeholder="Mesajınızı Girin" id="message" data-toggle="summernote"
+                                  data-lang="{{ summernote }}" class="form-control summernote"></textarea>
+                        <br>
+                    </div> <div class="col-sm-11 pull-right">
+                        <button type="button"  data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Gönderiliyor.. " id="send" class="btn btn-primary">Gönder</button>
+                    </div>
+                </form>
+            </div></div>
+    </div>
+
+</div>
+{{ footer }}
+
+
+
+
+<script type="text/javascript" src="view/javascript/entegrasyon/summernote-support.js"></script>
+<link href="view/javascript/summernote/summernote.css" rel="stylesheet" />
+<script type="text/javascript" src="view/javascript/summernote/opencart.js"></script>
+
+
+
+
+<script>
+
+
+
+
+
+
+    $('#send').click(function () {
+        var $btn = $(this);
+
+        var marketplace = $('#marketplace').val();
+        var subject = $('#subject').val();
+        var message = $('#message').val();
+        $btn.button('loading');
+
+        if (subject && message ) {
+
+            $.post("index.php?route=entegrasyon/support/new_ticket&{{ token_link }}", {
+                    marketplace: marketplace,
+                    message: message,
+                    domain_id: "{{ domain_id }}",
+                    subject: subject
+                },
+                function (donenVeri) {
+
+                    $(location).attr('href', 'index.php?route=entegrasyon/support/succes_page&{{token_link}}')
+
+
+
+                });
+
+        }else{
+            Swal.fire({
+                icon: 'error',
+                title: 'Başlık Alanı Boş',
+                text: 'Lütfen destek talebinizi kısaca açıklayan bir başlık belirtin.',
+            })
+            $btn.button('reset');
+            $('.baslik').css("color","red");
+        }
+
+        if(!message){
+            Swal.fire({
+                icon: 'error',
+                title: 'Boş Alan',
+                text: 'Lütfen alanları boş bırakmayınız',
+            })
+            $btn.button('reset');
+
+        }
+
+
+
+    });
+
+</script>

@@ -1,0 +1,495 @@
+<div class="panel-body">
+
+
+
+    <table class="table">
+
+
+        <thead>
+        <th class="{{ product_currency_display }}" >
+            <label class="control-label">Para Birimi <span data-toggle="tooltip" title="" data-original-title="Zorunlu Değil!, Her ürün için farklı para birimi kullanıyorsanız, kullanığınız para birimini seçiniz. Ürün tutarı seçilen para biriminden TL ye çevrilerek işlem yapılacaktır. TL para birimini kullanıyorsanız seçim yapmanıza gerek yoktur."></span></label>
+        </th>
+        <th>
+            <label class="control-label">Kargo Ücreti <span data-toggle="tooltip" title="" data-original-title="Zorunlu Değil!, Eğer ürüne özel bir kargo ücreti belirleyecekseniz buraya sadece rakamla bir kargo ücreti girin, girdiniğiniz kargo ücreti ürün fiyatına eklenecektir."></span></label>
+        </th>
+
+        <th>
+            <label class="control-label">Komisyon <span data-toggle="tooltip" title="" data-original-title="Zorunlu Değil!, Eğer ürüne özel bir komisyon oranı belirleyecekseniz buraya sadece rakamla bir komisyon oranı girin, örneğin ürünü %20 fiyat artışı ile göndermek isterseniz bu alana 20 yazınız. Ürüne yada markaya özel bir komisyon oranı girilmediyse kategoriye özel oran işleme alınır."></span></label>
+        </th>
+
+        <th>
+            <label class="control-label">Teslimat Şablonu <span data-toggle="tooltip" title="" data-original-title="Zorunlu Değil! Eğer ürüne özel bir teslimat şablonu gimek isterseniz n11 teslimat şablonlarınızdan birini seçebilirsiniz. Henüz bir teslimat şablonu oluşturmadıyanız N11.com panelinizden Hesabım->Teslimat bilgileri bölümünden yeni bir teslimat Şablonu oluşturunuz. "></span></label>
+        </th>
+        <th>
+            <label class="control-label"> Katalog ID <span data-toggle="tooltip" title="" data-original-title="Eğer ürününüz  N11'de yer alan katalog ürünlerinden biri ise https://so.n11.com/selleroffice/product/createProduct adresine girip ürününüzün katalog id numaraını buraya girmeniz gerekmektedir. "></span></label>
+        </th>
+        <th>
+            <label class="control-label">Ana Ürün Kodu<span data-toggle="tooltip" title="" data-original-title="Eğer ürününüz  N11'de yer alan katalog ürünlerinden biri ise https://so.n11.com/selleroffice/product/createProduct adresine girip ürününüzün katalog id numaraını buraya girmeniz gerekmektedir. "></span></label>
+        </th>
+
+        </thead>
+
+        <tbody>
+
+        <td class="{{ product_currency_display }}"> <a href="#" id="n11_currency" charset="btn btn-default"  data-url="index.php?route=entegrasyon/genel/save_setting&code=n11&controller=product&{{ token_link }}" data-name="n11_currency" data-type="select" data-source='index.php?route=entegrasyon/genel/currencies&{{ token_link }}'
+                                                       data-value="{{ n11_currency }}" data-title="Para birimi seçin"  data-pk="{{ product_id}}" class="editable btn btn-default" data-emptytext="Para Birimi" title="Bir Para birimi seçin"></a></td>
+
+        <td>
+            <a href="#" id="n11_shipping_price" class="editable btn btn-default"  data-pk="{{ product_id }}" data-emptytext="Kargo ücreti" data-value="{{ n11_shipping_price }}" data-url="index.php?route=entegrasyon/genel/save_setting&code=n11&controller=product&{{ token_link }}" data-title="Kargo Ücreti Giriniz"></a>
+        </td>
+
+        <td>
+            <a href="#" id="n11_commission" class="editable btn btn-default"  data-pk="{{ product_id }}" data-emptytext="Komisyon giriniz" data-value="{{ n11_commission }}" data-url="index.php?route=entegrasyon/genel/save_setting&code=n11&controller=product&{{ token_link }}" data-title="Komisyon Oranı Giriniz"></a>
+        </td>
+
+        <td> <a href="#" id="n11_shipping_template" charset="btn btn-default"  data-url="index.php?route=entegrasyon/genel/save_setting&code=n11&controller=product&{{ token_link }}" data-name="n11_shipping_template" data-type="select" data-source='index.php?route=entegrasyon/genel/n11_shipping_templates&{{ token_link }}'
+                data-value="{{ n11_shipping_template }}" data-title="Teslimat Şablonu Giriniz"  data-pk="{{ product_id}}" class="editable btn btn-default" data-emptytext="Teslimat Şablonu Seçiniz" title="Bir Teslimat Şablonu Seçin"></a></td>
+        <td>
+
+
+            <a href="#"  id="n11_catalog_id" class="editable btn btn-default"  data-pk="{{ product_id }}" data-emptytext="Katalog Numarası" data-value="{{ n11_catalog_id }}" data-url="index.php?route=entegrasyon/genel/save_setting&code=n11&controller=product&{{ token_link }}" data-title="N11 Katalog Numarası"></a>
+
+        </td>
+
+        <td>
+
+            <a href="#" id="n11_product_code" class="editable btn btn-default" data-type="text"
+               data-pk="{{ product_id }}" data-value="{{ n11_product_code }}" data-emptytext="Ana Ürün Kodu Giriniz"
+               data-url="index.php?route=entegrasyon/genel/save_setting&code=n11&&controller=product&{{ token_link }}"
+               data-title="Ana Ürün Kodu Giriniz."></a></td>
+
+        </tbody>
+
+
+
+    </table>
+
+    <table class="table">
+        <thead>
+
+        <th><label id="n11_maximum_order" class="control-label">Maksimum Sipariş Adedi <span data-toggle="tooltip" title="üründen tek seferde kaç adet sipariş verilecebileceğiniz ayarlayabilirsiniz. Varsayılan adet 10"></span></label></th>
+        <th><label id="n11_domestic" class="control-label">Ürün Menşei <span data-toggle="tooltip" title="ZORUNLU ALAN DEĞİLDİR !  Ürünün Menşeini belirler."></span></label></th>
+        <th><label id="price_toggle" class="control-label">Satış Fiyatı <span data-toggle="tooltip" title="ZORUNLU ALAN DEĞİLDİR !  Bu alana fiyat girerseniz, ürünün direkt satış fiyatı, girdiğiniz rakam olacaktır. Bu alan boş bırakılırsa, ürün fiyatı katalogtaki fiyat olacaktır."></span></label></th>
+        <th> <label class="control-label">Üstü Çizili Fiyat<span data-toggle="tooltip" title="ZORUNLU ALAN DEĞİLDİR ! Bu alana girdiğiniz değer, ürünün üstü çizili indirimsiz fiyatı olarak gösterilecektir. Buraya fiyat girmezseniz ürün kampanyasız satış fiyatı ile gidecektir."></span></label></th>
+
+
+        </thead>
+
+        <tbody>
+        <td  > <a href="#" id="n11_maximum_order" charset="btn btn-default"  data-url="index.php?route=entegrasyon/genel/save_setting&code=n11&controller=product&{{ token_link }}" data-name="n11_maximum_order" data-type="text"  data-value="{{ n11_maximum_order }}" data-title="Maksimum sipariş adedi giriniz."  data-pk="{{ product_id}}" class="editable btn btn-default" data-emptytext="Maksimum sipariş adedi" title="Maksimum Sipariş Adedi Giriniz."></a></td>
+        <td> <a href="#" id="n11_domestic" charset="btn btn-default"  data-url="index.php?route=entegrasyon/genel/save_setting&code=n11&controller=product&{{ token_link }}" data-name="n11_domestic" data-type="select" data-source="['','Yerli','Yabancı']" data-value="{{ n11_domestic }}" data-title="Para birimi seçin"  data-pk="{{ product_id}}" class="editable btn btn-default" data-emptytext="Ürün Menşei" title="Ürün Menşei Seçiniz"></a></td>
+        <td> <a href="#" id="n11_product_sale_price" class="editable btn btn-default"  data-pk="{{ product_id }}" data-value="{{ n11_product_sale_price }}" data-emptytext="Fiyat Giriniz" data-url="index.php?route=entegrasyon/genel/save_setting&code=n11&&controller=product&{{  token_link }}" data-title="Fiyat Giriniz"></a></td>
+        <td> <a href="#" id="n11_product_list_price" class="editable btn btn-default"  data-pk="{{ product_id }}" data-value="{{ n11_product_list_price }}" data-emptytext="Fiyat Giriniz" data-url="index.php?route=entegrasyon/genel/save_setting&code=n11&&controller=product&{{  token_link }}" data-title="Fiyat Giriniz"></a></td>
+
+        </tbody>
+
+
+    </table>
+
+
+
+
+    <table class="table">
+        <thead>
+
+        <th><label class="control-label">Ürüne Özel Açıklaması <span data-toggle="tooltip" title="ZORUNLU ALAN DEĞİLDİR ! Eğer katalog ürün kategorisine ürün gönderiyorsanız, bu alana minimum 0 maksimum 150 karakterlik bir ürün açıklaması giriniz. Eğer ürüne ait açıklamayı göndermek istiyorsanız bu alanı boş bırakınız."></span></label></th>
+        <th><label class="control-label">Ürüne Özel Alt Başlık <span data-toggle="tooltip" title="ZORUNLU ALAN DEĞİLDİR ! "></span></label></th>
+        <th><label class="control-label">Ürüne Özel Başlık <span data-toggle="tooltip" title="ZORUNLU ALAN DEĞİLDİR ! "></span></label></th>
+
+        </thead>
+        <tbody >
+
+        {% if n11_product_desciption %}
+            <td><a  href="#" id="n11_product_desciption" class="editable "  data-type="textarea" data-pk="{{ product_id }}"
+                    data-value="{{ n11_product_desciption}}" data-emptytext="Ürün Açıklaması Girin"
+                    data-url="index.php?route=entegrasyon/genel/save_setting&code=n11&&controller=product&{{  token_link }}"
+                    data-title="Açıklama giriniz."> Değiştirmek İçin Tıklayın</a></td>
+        {% else %}
+            <td><a  href="#" id="n11_product_desciption" class="editable "  data-type="textarea" data-pk="{{ product_id }}"
+                    data-value="{{ n11_product_desciption}}" data-emptytext="Ürün Açıklaması Girin"
+                    data-url="index.php?route=entegrasyon/genel/save_setting&code=n11&&controller=product&{{  token_link }}"
+                    data-title="Açıklama giriniz."></a></td>
+        {% endif %}
+
+
+        {% if n11_product_subtitle %}
+            <td><a  href="#" id="n11_product_subtitle" class="editable "  data-type="textarea" data-pk="{{ product_id }}"
+                    data-value="{{ n11_product_subtitle}}" data-emptytext="Ürün Alt Başlığı Girin"
+                    data-url="index.php?route=entegrasyon/genel/save_setting&code=n11&&controller=product&{{  token_link }}"
+                    data-title="Alt Başlık Giriniz.">Alt Başlığı Değiştir</a></td>
+        {% else %}
+            <td><a  href="#" id="n11_product_subtitle" class="editable"  data-type="textarea" data-pk="{{ product_id }}"
+                    data-value="{{ n11_product_subtitle}}" data-emptytext="Ürün Alt Başlığı Girin"
+                    data-url="index.php?route=entegrasyon/genel/save_setting&code=n11&&controller=product&{{  token_link }}"
+                    data-title="Alt Başlık Giriniz."></a></td>
+        {% endif %}
+
+        {% if n11_product_title %}
+            <td><a  href="#" id="n11_product_title" class="editable "  data-type="textarea" data-pk="{{ product_id }}"
+                    data-value="{{ n11_product_title}}" data-emptytext="Ürün  Başlığı Girin"
+                    data-url="index.php?route=entegrasyon/genel/save_setting&code=n11&&controller=product&{{  token_link }}"
+                    data-title="Başlık Giriniz.">Başlığı Değiştir</a></td>
+        {% else %}
+            <td><a  href="#" id="n11_product_title" class="editable "  data-type="textarea" data-pk="{{ product_id }}"
+                    data-value="{{ n11_product_title}}" data-emptytext="Ürün Başlığı Girin"
+                    data-url="index.php?route=entegrasyon/genel/save_setting&code=n11&&controller=product&{{  token_link }}"
+                    data-title="Başlık Giriniz."></a></td>
+        {% endif %}
+
+
+        </tbody>
+
+
+        <table class="table">
+            <thead>
+            <th><label>Hazırlık Süresi</label></th>
+
+            </thead>
+
+            <tbody>
+            <td><a href="#" id="n11_shipping_time" class="editable" data-pk="{{ product_id }}" data-emptytext="Hazırlık Süresi" data-value="{{ n11_shipping_time }}" data-url="index.php?route=entegrasyon/genel/save_setting&controller=product&code=n11&{{ token_link }}" data-title="Lütfen Hazırlık Süresi Girin"></a>
+            </td>
+            </tbody>
+
+        </table>
+
+
+    </table>
+
+
+    <table class="table">
+        <thead>
+
+        <th><label id="n11_product_image" class="control-label">Pazar Yerine Özel Ana Görsel<span data-toggle="tooltip" title="Ana ürün görselini buradan değiştirebilirsiniz.."></span></label></th>
+
+
+        </thead>
+
+        <tbody>
+
+        <td><a href=""  id="thumb-image" data-toggle="image" class="send_main_img" ><img style="border: 1px solid #aca7a7" src="{{ image  }}" alt="" title="" data-placeholder="görsel" /></a>
+            <input class="txtimage" type="hidden" name="n11_main_image" value="{{ image  }}" id="input-image" /></td>
+
+        </tbody>
+
+
+
+
+    </table>
+
+
+    <table class="table">
+
+        <tr class="{{ product_category_display }}">
+            <td>
+                <label class="control-label">Kategori Seç <small class="text-success">(Ürüne Özel)</small> <span data-toggle="tooltip" title=" ZORUNLU ALAN DEĞİLDİR ! Ürüne özel kategori seçebilirsiniz, eğer ürün bulunduğu kategoriyi eşleştirdiyseniz ürüne özel kategori seçmek zorunda değilsiniz. eğer ürüne özel kategori seçildiyse ürün seçilen kategoriye gönderilir."></span></label>
+            </td>
+
+            <td>
+                <a href="#" id="n11_category_id" class="eslestir" data-type="typeaheadjs" data-pk="{{ product_id }}" data-value="{{ n11_category_id }}" data-emptytext="Kategori Seçin" data-url="index.php?route=entegrasyon/genel/save_setting&code=n11&&controller=product&{{  token_link }}" data-title="Lütfen Kategori Arayın"></a>
+            </td>
+        </tr>
+
+    </table>
+
+
+    {% if product_categories is defined  and  not category_id %}
+        {% if product_categories %}
+
+            </hr>
+
+            <label class="control-label">Ürünün Bağlı Olduğu Kategoriler  <span data-toggle="tooltip" title="Ürününüz aşağıdaki kategoriler ile bağlantılıdır. kategorilerden birini eşleştirdiğinizde eğer ürüne özel bir kategori seçmediyseniz eşleştirdiğiniz kategori işleme alınacaktır."></span></label>
+
+            <table class="table well">
+                {% if product_categories | length > 1  %}
+
+
+
+                    <p class="text-warning">Sadece 1 kategori eşleştirmeniz yeterlidir!</p>
+                {% endif %}
+                {% for product_category in product_categories %}
+
+                    <tr>
+                        <td class="text-left">
+                            {{ product_category.name }}
+                        </td>
+                        <td class="text-right"><button id="btnMatch" name="{{ product_category.name }}" category_id="{{ product_category.category_id }}" class="btnMatch btn btn-primary"> Eşleştir</button></td>
+
+                    </tr>
+
+                {% endfor %}
+            </table>
+
+        {% endif %}
+    {% endif %}
+
+
+
+
+    <div id="attributes"></div>
+
+</div>
+
+<script>
+
+
+
+
+</script>
+
+<script>
+
+    var one=true;
+    var ival="";
+    var i = 0;
+
+    $('.send_main_img').on('click',function (event) {
+
+        var $val = $.fn.val;
+        one=true;
+        i++;
+        if (i == 1) {
+
+            $.fn.val = function (newVal) {
+                if (one) {
+                    if (this.attr('id') === 'input-image') this.trigger('input');
+                    newVal = this.attr('value');
+                    ival = newVal;
+                    $val.call(this, newVal);
+                }
+            };
+
+
+            $('#input-image').on('input', function () {
+                $.post('index.php?route=entegrasyon/genel/save_setting&code=n11&&controller=product&{{ token_link }}', {
+                    pk:{{ product_id }},
+                    value: ival,
+                    name: 'n11_main_image'
+                }, function (json) {
+
+
+                    if (json['status']) {
+                        $.toast({
+                            heading: 'Başarılı',
+                            text: 'Ürün Görseli N11 İçin Değiştirildi!',
+                            position: 'top-right',
+                            loader: true,
+                            allowToastClose: true,
+                            showHideTransition: 'slide',
+                            icon: 'success'
+                        });
+
+                    }
+
+                    i = 2;
+
+                }, 'JSON');
+
+                one = false;
+
+
+            });
+
+        }
+
+    });
+
+
+
+
+</script>
+
+
+<script>
+
+    $('#attributes').load('index.php?route=entegrasyon/category/attributes&code=n11&category_id={{ oc_category_id }}&product_id={{ product_id }}&{{ token_link }}');
+
+    $('.eslestir').editable({
+        typeahead: {
+            limit: 200,
+            remote:"index.php?route=entegrasyon/genel/getjson&page=categories&code=n11&filter_name=%QUERY&{{ token_link }}",
+            displayKey: 'category_id',
+            valueKey : 'name',
+            display: function(item){ return item.name },
+
+        }, success:function (json,newValue) {
+
+            if(!json['status']){
+                if(json['alert_type']==2){
+
+                    Swal.fire('Hata',json['message'],'danger');
+                }else {
+
+                    $.toast({heading: 'Hata',text: json['message'], position: 'top-right',loader: true,allowToastClose: false,showHideTransition: 'slide',icon: 'warning'});
+
+                }
+
+
+            }else {
+
+                $('#attributes').load('index.php?route=entegrasyon/category/attributes&code=n11&product_id={{ product_id }}&{{ token_link }}').hide('slow').show('fast');
+
+
+                if(json['option']){
+
+                    Swal.fire("Bilgi","Seçtiğiniz Kategori için Varyantlı ürün gönderebilirsiniz.Aşağıdaki Listeden Seçeneklerinizi Eşleştiriniz.","success");
+                    // $.toast({heading: 'Başarılı',text: json['message'], position: 'top-right',loader: true,allowToastClose: false,showHideTransition: 'slide',icon: 'success'});
+                    $('.option').load('index.php?route=entegrasyon/category/match_option_form&code=n11&category_id='+json['category_id']+'&{{ token_link }}');
+
+
+                }
+
+            }
+
+        }
+    });
+</script>
+
+
+
+
+
+
+
+</div>
+
+
+
+<script>
+
+    /*
+        $('.attribute').on('change',function (event) {
+
+            var $this = $(this);
+
+            var name=$this.attr('name');
+            var value =$this.val();
+            var primary_key=parseInt({{ product_id }});
+
+        $.post('index.php?route=entegrasyon/genel/save_setting&code=n11&controller=product&{{ token_link }}',{pk:primary_key,name:name,value:value},function (json) {
+
+            $.toast({heading: 'Başarılı',text: 'Ürün Özelliği Güncellendi!', position: 'top-right',loader: false,allowToastClose: false,showHideTransition: 'slide',icon: 'success'});
+
+        },'JSON');
+
+
+
+
+
+    }) */
+
+    $(document).ready(function(){
+
+        var auto_update_price = '{{ easy_setting_auto_update_price }}'
+        var aup = 0;
+
+        var product_id = parseInt({{ product_id }});
+
+        $('#n11_product_sale_price').on('click', function () {
+            aup=1;
+        })
+
+        $('.editable').editable({ inputclass: 'intclass input-sm',success:function (json,newValue) {
+
+
+                if(json['status']){
+
+                    $.toast({heading: 'Başarılı',text: json['message'], position: 'top-right',loader: true,allowToastClose: false,showHideTransition: 'slide',icon: 'success'});
+
+                    /*  if (auto_update_price){
+                          if (aup){
+                              Swal.fire('Güncelleniyor..', 'Lütfen bekleyin ürün Güncelleniyor..', 'info');
+
+                              $.post('index.php?route=entegrasyon/product/update&{{ token_link }}', {
+                                product_id: product_id,
+                                code: 'n11'
+                            }, function (json) {
+
+                                // $.toast({heading: 'Başarılı',text: 'Ürün Özelliği Güncellendi!', position: 'top-right',loader: false,allowToastClose: false,showHideTransition: 'slide',icon: 'success'});
+
+                                if (json['status']) {
+
+                                    Swal.fire('Güncellendi!', json['message'], 'success');
+
+                                }
+
+
+                            }, 'JSON');
+
+
+
+                        }
+                    }*/
+
+                    if(json['alert_type']==2){
+
+                        Swal.fire({
+                            title: 'Komisyon Oranı Değişti!',
+                            text: json['message'],
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Evet, Şimdi Güncelle!',
+                            cancelButtonText: 'Şimdi Değil!'
+                        }).then((result) => {
+                            if (result.value) {
+
+                                BootstrapDialog.show({
+                                    title:'Toplu Güncelleme',
+                                    message: function(dialog) {
+                                        var $message = $('<div></div>');
+                                        var pageToLoad = dialog.getData('pageToLoad');
+                                        $message.load(pageToLoad);
+                                        return $message;
+                                    },
+                                    data: {
+                                        'pageToLoad': json['url']+'&{{ token_link }}'
+                                    }
+                                });
+
+
+
+                            }
+                        })
+
+
+
+                    }
+
+
+                }else {
+
+
+                    Swal.fire('Hata',json['message'],'warning');
+
+
+
+                }
+
+            }});
+
+
+
+    });
+
+
+
+    $.fn.editableform.buttons =
+        '<button type="submit" class="btn btn-primary btn-sm editable-submit">'+
+        '<i class="fa fa-check"></i>'+
+        '</button>'+
+        '<button type="button" class="btn btn-danger btn-sm editable-cancel">'+
+        '<i class="fa fa-times"></i>'+
+        '</button>';
+
+
+
+
+</script>
+
+
+
+
+
+

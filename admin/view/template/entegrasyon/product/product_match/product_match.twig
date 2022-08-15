@@ -1,0 +1,185 @@
+<style>
+    body {
+        font-family: Arial;
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    div.example input[type=text] {
+        padding: 10px;
+        font-size: 17px;
+        border: 1px solid grey;
+        float: left;
+        width: 80%;
+        background: #f1f1f1;
+    }
+
+    div.example button {
+        float: left;
+        width: 20%;
+        padding: 10px;
+        background: #2196F3;
+        color: white;
+        font-size: 17px;
+        border: 1px solid grey;
+        border-left: none;
+        cursor: pointer;
+    }
+
+    div.example button:hover {
+        background: #0b7dda;
+    }
+
+    div.example::after {
+        content: "";
+        clear: both;
+        display: table;
+    }
+</style>
+
+
+
+</head>
+{% if sample  %}
+
+
+<center><h3 style="color: green">Ürün Önerisi</h3></center>
+
+<div class="panel-body well">
+
+    <table style="height:100px; overflow-y:auto;" class="table">
+
+        <thead>
+        <tr>
+            <th>Görsel</th>
+            <th>Ürün Adı</th>
+            <th>Model Kodu</th>
+            <th>Eylem</th>
+        </tr>
+        </thead>
+        {% for pd in sample_products %}
+
+
+            <tbody>
+            <tr>
+                <td><img src="{{  pd.image}}" alt=""></td>
+                <td>{{ pd.name }}</td>
+                <td>{{ pd.model }}</td>
+                <td><a class="btn btn-primary btnMatched"  code="{{ code }}" product_id="{{ pd.product_id }}">Eşleştir</a></td>
+            </tr>
+
+            </tbody>
+
+
+        {% endfor %}
+    </table>
+</div>
+
+
+{% endif %}
+
+
+<div class="example" >
+    <input type="text" class="product_name" placeholder="Ürün Ara.." name="search">
+    <button class="search_product"><i class="fa fa-search"></i></button>
+</div>
+
+<div class="search_page">
+
+
+
+</div>
+
+
+
+<script>
+    $('.btnMatched').on('click',function () {
+        var thisBtn = $(this);
+        var barcode ='{{ barcode }}';
+        var product_id = thisBtn.attr('product_id');
+        thisBtn.text('Eşleştirildi');
+        thisBtn.append(' <i class="fa fa-check"></i>');
+        thisBtn.removeClass('btn-primary');
+        thisBtn.removeClass('btn');
+        thisBtn.removeClass('btnMatched');
+       // thisBtn.addClass('btn-info');
+
+
+
+      //  alert(barcode);
+       // alert(product_id);
+
+        //alert(product_id)
+
+        $.post('index.php?route=entegrasyon/product/product_match&code={{ code }}&{{ token_link }}',{product_id:product_id,barcode:barcode},function (json) {
+
+            if (json['status']) {
+    Swal.fire({
+        position: 'top-end',
+        icon: 'success',
+        title: 'Başarılı',
+        showConfirmButton: false,
+        timer: 1500
+    })
+
+    $('.'+barcode).removeClass('btn-warning')
+    $('.'+barcode).addClass('btn-default')
+    $('.'+barcode).addClass('btn-default')
+    $('.i'+barcode).removeClass('hidden')
+    }else{ Swal.fire({
+                position: 'top-end',
+                icon: 'warning',
+                title: 'Başarısız',
+                showConfirmButton: false,
+                timer: 1500
+            })
+
+            }
+
+
+        },'JSON');
+
+
+
+
+    })
+
+</script>
+
+<script>
+
+   /* $('.search_product').on('click',function () {
+
+        var gelen =  jQuery.trim($('.product_name').val());
+        var result = gelen.replaceAll(" ", "**");
+
+
+        $('.search_page').load('index.php?route=entegrasyon/product/product_match_search&{{token_link }}&gelen='+result+'');
+
+
+
+    })*/
+
+
+
+
+
+
+    $(document).ready(function(){
+        $(".product_name").keyup(function() {
+
+            var gelen =  jQuery.trim($('.product_name').val());
+            var result = gelen.replaceAll(" ", "**");
+            var model_dirty ='{{ model }}';
+            var barcode ='{{ barcode }}';
+            var model = model_dirty.replaceAll(" ", "**");
+            if (gelen.length > 4){
+            $('.search_page').load('index.php?route=entegrasyon/product/product_match_search&{{token_link }}&barcode='+barcode+'&code={{ code }}&model='+model+'&gelen='+result+'');
+
+            }
+        });
+    });
+
+</script>

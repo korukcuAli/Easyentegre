@@ -1,0 +1,398 @@
+{{ header }}{{ column_left }}
+<div id="content">
+    <div class="page-header">
+        <div class="container-fluid">
+            <div class="{{ easy_visibility }} pull-right easy-mode ">
+                <img src="view/image/entegrasyon/logo.png" />
+            </div>
+            <ul class="breadcrumb">
+                {% for breadcrumb in breadcrumbs %}
+                    <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+                {% endfor %}
+            </ul>
+
+        </div>
+
+
+    </div><div style="border-top: 2px solid #27ad5e;
+    padding-top: 11px;"></div>
+
+
+    <div class="container-fluid">{% if message %}
+            <div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ marketplace_info.name }} {{ message }}
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+            </div>
+        {% endif %}
+
+    <div class="container-fluid">{% if error_warning %}
+            <div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+            </div>
+        {% endif %}
+        {% if success %}
+            <div class="alert alert-success alert-dismissible"><i class="fa fa-check-circle"></i> {{ success }}
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+            </div>
+        {% endif %}
+
+
+        <div class="row well {% if not status %} hidden {% endif %}"  style="border-top: 2px solid #27ad5e;">
+
+
+            <div class="col-sm-1">
+                <img class="img-responsive" src="view/image/entegrasyon/bilgi.png"/>
+            </div>
+            <div class="col-sm-11">
+                <h3 style="color:#27ad5e;font-weight: bolder ">Bilgilendirme</h3>
+                <p class="lead">
+                    {{ marketplace_info.name }} Mağazanızda yer alan tüm ürünler aşağıda listelenmiştir.  Listedeki ürünleri mağazanıza aktarmak için ürünün karşında yer alan indir butonuna tıklayınız. Ürünü belli bir kategori ve marka ile aktarmak için her ürün satırında yer alan bölümden kategori ve marka seçebilirsiniz.
+
+                </p>
+            </div>
+        </div>
+
+
+        <div class="row">
+
+            <div id="progres_bar"></div>
+            <div id="report"></div>
+
+            <div class="panel panel-default" style="border-top: 2px solid #27ad5e;width: 100%">
+                <div class="panel-heading">
+                    <h2 class="panel-title"><i class="fa fa-list"></i> {{ marketplace_info.name }} Mağazanızda yer alan ürünler</h2>
+
+                    <button type="button" style="margin-top: -9px;margin-right: -14px" data-loading-text="<i class='fa fa-spinner fa-spin'></i>  İndiriliyor" class="btnBulk btn btn-primary pull-right">
+                        <i class="fa fa-download"  ></i>  <span class="hidden-xs">Seçilenleri İndir</span>
+                    </button>
+                </div>
+                <div class="panel-body ">
+
+                    {% if status %}
+                        <form action="">
+
+                            <div class="table-responsive">
+
+                                <table class="table table-bordered table-hover" style="width: 100%">
+                                    <thead>
+                                    <tr>
+                                        <td style="width: 1px;" class="text-center"><input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);" /></td>
+                                        <td class="text-left">Ürün Adı</td>
+                                        <td class="text-left">Barkod</td>
+                                        <td class="text-left">Marka Seç</td>
+                                        <td class="text-left">Kategori Seç</td>
+
+                                        <td class="text-right">Liste Fiyatı</td>
+                                        <td class="text-right">Satış Fiyatı</td>
+
+                                        <td class="text-center">Eylem</td>
+
+
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    {% if products %}
+                                        {% for product in products %}
+                                            <tr>
+
+                                                <td class="text-center ">{% if product.product_id in selected %}
+                                                        <input class="select" type="checkbox" name="selected[]" value="{% if code=='ty' %}{{ product.barcode }}{%  elseif code=='cs'   %}{{ product.model }}{% else %}{{ product.market_id }}{% endif %}" checked="checked" />
+                                                    {% else %}
+                                                        <input class="select" type="checkbox" name="selected[]"  value="{% if code=='ty' %}{{ product.barcode }}{%  elseif code=='cs'   %}{{ product.model }}{% else %}{{ product.market_id }}{% endif %}" />
+                                                    {% endif %}</td>
+
+
+                                                <td class="text-left">
+
+                                                    <p> {{ product.name }} <br><span style="font-size: x-small"> <strong>Model:</strong> {{ product.model }}</span> <br><span style="font-size: x-small"> <strong>Stok Kodu:</strong> {{ product.stock_code }}</span><br><span style="font-size: x-small"> <strong>{{ marketplace_info.name }} Ürün Kodu:</strong> {{ product.product_code }}  {{ product.product_code }}</span></p>
+
+                                                </td>
+                                                <td class="text-left">
+                                                    <label>{{ product.barcode }}  </label>                                    </td>
+                                                <td class="text-left">
+                                                    <input  type="text" name="manufacturer" value="" placeholder="Marka Seçiniz" id="{% if code=='ty' or code=='cs' %}{{ product.barcode }}{% else %}{{ product.market_id }}{% endif %}" class="form-control"/> <input id="manufacturer_{% if code=='ty' or code=='cs' %}{{ product.barcode }}{% else %}{{ product.market_id }}{% endif %}" type="hidden" name="manufacturer_id" value=""/>
+                                                </td>
+
+                                                <td class="text-left">
+                                                    <input type="text" name="category" value="" placeholder="Kategori Seçiniz" id="{% if code=='ty' or code=='cs' %}{{ product.barcode }}{% else %}{{ product.market_id }}{% endif %}" class="form-control"/> <input id="category_{% if code=='ty' or code=='cs' %}{{ product.barcode }}{% else %}{{ product.market_id }}{% endif %}" type="hidden" name="category_id" value=""/>
+                                                </td>
+
+                                                <td class="text-right">{{ product.list_price }}</td>
+                                                <td class="text-right">{{ product.sale_price }}</td>
+
+                                                <td class="text-right">
+                                                    <a id="product{{ product.market_id }}" product_id="{% if code=='ty' %}{{ product.barcode }}{%  elseif code=='cs'   %}{{ product.stock_code }}{% else %}{{ product.market_id }}{% endif %}"  {% if product.status or not product.stock_code %} disabled {% endif %} name="{{ product.name }}"  data-toggle="tooltip" title="{% if product.status %} Ürün mağazanızda Mevcut {% elseif not product.stock_code %} Ürüne ait barkod bilgisi bulunamadığı için indirilemez {% else %} Ürünü Mağazanıza Aktarın {% endif %}" class="btn {% if product.status %} btn-default {% elseif not product.stock_code %} btn-danger {% else %} btn-primary {% endif %} btnDownload" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i>"><i class="fa {% if product.status %} fa-check {% elseif not product.stock_code %} fa-times {% else %} fa-download {% endif %}  "></i></a>
+
+                                                    <a id="product{{ product.market_id }}_match"  product_name="{{ product.name }}" product_id="{% if code=='ty' %}{{ product.barcode }}{%  elseif code=='cs'   %}{{ product.stock_code }}{% else %}{{ product.market_id }}{% endif %}"  {% if product.status or not product.stock_code %} disabled {% endif %} name="{{ product.name }}"  data-toggle="tooltip" title="{% if product.status %} Ürün mağazanızda Mevcut {% elseif not product.barcode %} Ürüne ait barkod bilgisi bulunamadığı için indirilemez {% else %} Ürünü Mağazanıza Aktarın {% endif %}" class="btn {% if product.status %} btn-default {% elseif not product.stock_code %} btn btnMatch {% else %} btn-warning {% endif %} btnMatch" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i>"><i class="fa {% if product.status %} fa-check {% elseif not product.stock_code %} fa-times {% else %}  {% endif %}  "></i>Eşitle</a>
+
+
+                                                </td>
+
+                                            </tr>
+                                        {% endfor %}
+                                    {% else %}
+                                        <tr>
+                                            <td class="text-center" colspan="8">{{ text_no_results }}</td>
+                                        </tr>
+                                    {% endif %}
+
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </form>
+                    {% else %}
+
+                        <p class="lead text-danger">  {{ message }} </p>
+
+                    {% endif %}
+                    <div class="row">
+                        <div class="col-sm-6 text-left">{{ pagination }}</div>
+                        <div class="col-sm-6 text-right">{{ results }}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+
+        $('.btnMatch').on('click', function () {
+
+            var thisBtn = $(this);
+            var name = thisBtn.attr('product_name');
+            var get_name =thisBtn.attr('product_name').replaceAll(" ", "**");
+            var get_name2 =get_name.replaceAll("#", "**");
+            var get_name4 =get_name2.replaceAll("&#39;", "");
+            var get_name3 =get_name4.replaceAll("'", "");
+            var barcode = thisBtn.attr('product_id').replaceAll(" ", "**");
+
+
+            BootstrapDialog.show({
+                title: name,
+                closable: true,
+                size: BootstrapDialog.SIZE_WIDE,
+
+                message: function (dialog) {
+                    var $message = $('<div></div>');
+                    var pageToLoad = dialog.getData('pageToLoad');
+                    $message.load(pageToLoad);
+                    return $message;
+                },
+                data: {
+                    'pageToLoad': 'index.php?route=entegrasyon/product/product_match_form&code={{ code }}&barcode='+barcode+'&get_name='+get_name3+'&{{ token_link }}'
+                }
+            });
+
+
+
+
+        })
+
+    </script>
+
+    <script>
+
+        $(document).on('click', '.btnBulk', function () {
+            var product_list = [];
+            //   $('.btnBulk').button('loading');
+            $(".table .select:checked").each(function () {
+                var product_id = $(this).val();
+                product_list.push(product_id);
+            });
+
+
+
+
+            if (product_list.length != 0) {
+                $('#report').empty();
+                $('#progres_bar').html('<div id="prgBulk" class="progress active" style="margin-top:20px;"> <div class="progress-bar"  role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width:0%"><span class="yuzde"></span></div></div>');
+
+                downloadProducts(product_list[0],product_list);
+
+
+            }
+            else {
+                $('.btnBulk').button('reset');
+                Swal.fire('Ürün Seçmediniz');
+            }
+
+
+            function  downloadProducts(item,pList) {
+
+                var first_element=$("input[type='checkbox'][name='selected[]']:checked").first();
+                var reference= first_element.val();
+
+
+                var data={};
+                data.list=pList;
+
+                if ($("#firstrow:checked").val()) {
+                    data.reference= reference;
+                }else {
+                    data.reference= 0;
+                }
+                var category_id=$('#category_'+item).val();
+                var manufacturer_id=$('#manufacturer_'+item).val();
+
+
+                $.post('index.php?route=entegrasyon/product/download_product_bulk&code={{ code }}&product_id='+item+'&category_id='+category_id+'&manufacturer_id='+manufacturer_id+'&{{ token_link }}',data,function (json) {
+
+
+                    var product_name=$('#name'+item).text();
+                    var yuzde = Math.round(parseInt(json['current']) * 100 / pList.length);
+
+                    $('#prgBulk  .progress-bar').css('width', yuzde + '%');
+                    $('.progress  .yuzde').html(yuzde + '%' + ' tamamlandı');
+                    if(json['status']) {
+                        $('#report').append('<div class="alert alert-success"><i class="fa fa-check-circle"></i> ' + product_name + json['message'] + '</div>');
+                    }else {
+
+                        $('#report').append('<div class="alert alert-warning"><i class="fa fa-exclamation-triangle"></i> ' + product_name + json['message'] + '</div>');
+
+                    }
+
+
+                    if (json['next']) {
+
+                        downloadProducts(json['item'], json['list']);
+
+                    }  else {
+
+                        $('.btnsend').button('reset');
+                        $('#report').append('<div class="alert alert-info"><i class="fa fa-check-circle"></i>İndirme İşlemi Tamamlandı</div>');
+
+                    }
+
+
+
+                }, 'JSON');
+
+
+            }
+
+
+
+
+        });
+
+    </script>
+
+    <script>
+
+        $('.btnDownload').on('click',function (e) {
+
+            var thisbtn=$(this);
+            var product_id=thisbtn.attr('product_id');
+
+            var category_id=$('#category_'+product_id).val();
+            var manufacturer_id=$('#manufacturer_'+product_id).val();
+
+
+
+            thisbtn.button('loading');
+            $.post('index.php?route=entegrasyon/product/download_product&code={{ code }}&{{ token_link }}',{category_id:category_id,manufacturer_id:manufacturer_id,product_id:product_id},function (json) {
+
+                thisbtn.button('reset');
+
+                if(json['status']){
+                    $.toast({heading: 'Başarılı İşlem',text: json['message'], position: 'top-right',loader: true,allowToastClose: false,showHideTransition: 'slide',icon: 'success'});
+
+                    thisbtn.removeClass('btn-primary');
+                    thisbtn.addClass('btn-default');
+                    $('#product'+product_id).prop("disabled",true );
+                    $('#product'+product_id).text('<i class=fa fa-check"></i>');
+
+                }else {
+
+                    Swal.fire('Hata',json['message'],'warning');
+                    // $.toast({heading: 'Başarız İşlem',text: json['message'], position: 'top-right',loader: true,allowToastClose: false,showHideTransition: 'slide',icon: 'warning'});
+
+                }
+
+            },'JSON');
+
+        })
+
+    </script>
+
+
+
+
+    <script>
+
+        var thisinput=null;
+
+
+        $("input[name=\'manufacturer\'],input[name=\'category\']").on('click',function () {
+
+            thisinput=$(this);
+
+
+        });
+
+        $('input[name=\'manufacturer\']').autocomplete({
+            'source': function(request, response) {
+                $.ajax({
+                    url: 'index.php?route=catalog/manufacturer/autocomplete&{{ token_link }}&filter_name=' + encodeURIComponent(request),
+                    dataType: 'json',
+                    success: function(json) {
+                        json.unshift({
+                            manufacturer_id: 0,
+                            name: '{{ text_none }}'
+                        });
+
+                        response($.map(json, function(item) {
+                            return {
+                                label: item['name'],
+                                value: item['manufacturer_id']
+                            }
+                        }));
+                    }
+                });
+            },
+            'select': function(item) {
+                thisinput.val(item['label']);
+                $('#manufacturer_'+thisinput.attr('id')).val(item['value']);
+            }
+        });
+
+
+        $('input[name=\'category\']').autocomplete({
+            'source': function(request, response) {
+                $.ajax({
+                    url: 'index.php?route=catalog/category/autocomplete&{{ token_link }}&filter_name=' + encodeURIComponent(request),
+                    dataType: 'json',
+                    success: function(json) {
+
+                        json.unshift({
+                            category_id: 0,
+                            name: '{{ text_none }}'
+                        });
+
+                        response($.map(json, function(item) {
+                            return {
+                                label: item['name'],
+                                value: item['category_id']
+                            }
+                        }));
+                    }
+                });
+            },
+            'select': function(item) {
+
+                thisinput.val(item['label']);
+                $('#category_'+thisinput.attr('id')).val(item['value']);
+
+
+            }
+        });
+
+
+    </script>
+
+
+
+
+{{ footer }}

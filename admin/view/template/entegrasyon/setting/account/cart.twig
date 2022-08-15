@@ -1,0 +1,37 @@
+{% if products %}
+    <table class="table">
+        <thead>
+        <tr><th>Pazaryeri</th><th>Fiyat</th><th class="text-center">Premium Süresi</th><th>Sil</th></tr>
+
+
+        </thead>
+
+        {% for product in products %}
+            <tr>
+                <td>{{ product.name }}</td>
+                <td>{{ product.price }} +KDV</td>
+                <td class="text-center">{{ product.period }}</td>
+                <td><button code="{{ product.code }}" class="btn btn-danger btn-delete"><i class="fa fa-minus-circle"></i></button> </td>
+
+            </tr>
+
+        {% endfor %}
+
+
+    </table>
+
+    <div class="pull-right">
+        <table class="table">
+            {% if discount %}
+                <tr><td>Liste Fiyatı:</td><td>{{ list_price }}</td></tr>
+
+                <tr><td>İndirim Tutarı:</td><td>{{ discount }}</td></tr>
+
+            {% endif %}
+            <tr><td>Toplam:</td><td>{{ total }} +KDV</td></tr>
+        </table>
+    </div>
+
+    <button  class="btn btn-primary btn-lg btnPay btn-block">Ödeme Yap</button>
+
+{% endif %}

@@ -1,0 +1,503 @@
+
+<div class="panel panel-panel-default">
+
+    <div class="panel-heading">
+        <h3>Gittigidiyor Standart Ayarlar</h3>
+        <div class="pull-right">
+            <button id="btnSave" code="gg" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary btnSave "><i class="fa fa-save"></i></button>
+            <button  data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default btnVazgec"><i class="fa fa-reply"></i></button></div>
+    </div>
+
+
+</div>
+<div class="row">
+    <div class="row well"  style="border-top: 2px solid #27ad5e;">
+
+
+        <div class="col-sm-1">
+            <img class="img-responsive" src="view/image/entegrasyon/bilgi.png"/>
+        </div>
+        <div class="col-sm-11">
+            <h3 style="color:#27ad5e;font-weight: bolder ">Bilgilendirme</h3>
+            <p>Standart ayarlar tüm Gittigidiyor mağazanızda işlem yaparken kullanılan genel ayarlardır. Bu ayarlardan bazıları, ürün, marka yada kategori ayarlarında da bulunmaktadır. Eğer ürüne markaya yada kategoriye özel bir ayarlama yapmadıysanız burada belirlediğiniz ayarlar işleme alınacaktır. Ayarların öncelik sırası 1:Ürün, 2:Marka, 3:Kategori, 4:Genel şeklindedir. </p>
+        </div>
+    </div>
+
+    <form id="form-setting" class="inline-form">
+        <div class="col-sm-6">
+
+            <div class="panel-body">
+
+
+
+
+                <div class="form-group">
+                    <label class="control-label required">Kargo Yapılacak Şehir <span data-toggle="tooltip" title="" data-original-title="Satılan ürünlerinizi hangi şehirden karglayacağınızı belirler."></span></label>
+
+                    <select name="gg_setting_city"  class="form-control"  >
+                        {% for city in cities %}
+                            {% if city.trCode == gg_setting_city%}
+                                <option value="{{ city.trCode }}" selected> {{ city.cityName }} </option>
+                            {% else %}
+                                <option value="{{ city.trCode }}" > {{ city.cityName }} </option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+
+                </div>
+                <div class="form-group">
+                    <label class="control-label required">Kargo Firması <span data-toggle="tooltip" title="" data-original-title="Ürünlerinizi kargolarken hangi kargo firmasını kullanacaksınız ?"></span></label>
+
+                    <select name="gg_setting_shipping_company"  class="form-control" >
+                        {% for key, company in cargo_company %}
+                            {% if key in gg_setting_shipping_company %}
+                                <option value="{{ key }}" selected> {{ company  }}</option>
+                            {% else %}
+                                <option value="{{ key  }}"> {{ company  }}</option>
+                            {% endif %}
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">Hangi Statüdeki Ürünler Senkronize Edilsin ? <span data-toggle="tooltip" title="" data-original-title="Ürün senkronizasyonunda Aktif satışları mı yoksa, satılmayan ürünler mi senkronize edilsin ? yayın süresi dolan ürünlerinizi tekrar yayına almak için satılmayan ürünleri seçiniz. "></span></label>
+                    <select class="form-control" name="gg_setting_product_status">
+
+                        {%  if  not gg_setting_product_status %}
+
+                            <option value="0" selected >Aktif Satışlar</option>
+                            <option  value="1">Süresi Dolmuş Ürünler</option>
+
+                        {% else %}
+
+                            <option  value="0">Aktif Satışlar</option>
+                            <option selected    value="1">Süresi Dolmuş Ürünler</option>
+
+                        {% endif %}
+
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">Alıcı sepette öder özeliği aktif edilsin mi ? <span data-toggle="tooltip" title="" data-original-title="Kargoyu alıcı ödeyecekse ürün desisi üzerinden hesaplanan kargo ücreti gittgidiyor tarafından sipariş sırasında tahsil edilir. Bu özelliğin kullanılabilmesi için ürün desi bilgisinin gönderilmesi zorunludur. "></span></label>
+                    <select class="form-control" name="gg_setting_pay_in_the_basket">
+
+                        {%  if  gg_setting_pay_in_the_basket %}
+
+                            <option value="1" selected >Aktif</option>
+                            <option  value="0">Pasif</option>
+
+                        {% else %}
+
+                            <option value="1">Aktif</option>
+                            <option  selected   value="0">Pasif</option>
+                        {% endif %}
+
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Kargo Teslim Süresi <span data-toggle="tooltip" title="" data-original-title="Satılan ürünlerinizi ne zaman kargolayacağınızı belirtir."></span></label>
+
+                    <select name="gg_setting_shipping_time" id="shippingTime" class="form-control">
+
+                        <option  value="0">==Seçiniz==</option>
+                        <option {% if gg_setting_shipping_time=='today'  %} selected  {% endif %} value="today">Aynı Gün</option>
+                        <option {% if gg_setting_shipping_time=='tomorrow'  %} selected  {% endif %} value="tomorrow">Ertesi Gün</option>
+                        <option {% if gg_setting_shipping_time=='2-3days'  %} selected  {% endif %} value="2-3days">2-3 Gün İçinde</option>
+                        <option {% if gg_setting_shipping_time=='3-7days'  %} selected  {% endif %} value="3-7days">3-7 Gün İçinde</option>
+                        <option {% if gg_setting_shipping_time=='15days'  %} selected  {% endif %} value="15days">15 Gün İçinde</option>
+                        <option {% if gg_setting_shipping_time=='21days'  %} selected  {% endif %} value="21days">21 Gün İçinde</option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="time {%  if gg_setting_shipping_time !='today'  %} hidden {% endif %} ">
+
+
+
+                    <div class="col-xs-1"> <span>Saat</span></div>
+
+                    <div class="col-xs-3">
+                        <select name="gg_setting_hour" id="hour" class="form-control">
+                            <option value="0">==Seçiniz==</option>
+                            {% for row in hours %}
+                                <option {{ gg_setting_hour == row?'selected':''}} value="{{ row}}">{{ row}}</option>
+
+                            {% endfor %}
+
+
+
+                        </select>
+                    </div>
+
+                    <div class="col-xs-1">:</div>
+
+                    <div class="col-xs-3">
+                        <select id="minute" name="gg_setting_minute" class="form-control">
+                            <option value="0">==Seçiniz==</option>
+                            {% for row in minutes %}
+                                <option {{ row == gg_setting_minute ?'selected':''}} value="{{ row}}">{{ row}}</option>
+
+                            {% endfor %}
+
+
+
+                        </select>
+                    </div>
+
+
+                    <div class="col-xs-3"><span> öncesi alınan siparişler aynı gün içinde kargoya verilir.</span></div>
+
+                </div>
+
+
+
+                <div class="form-group">
+
+                    <label class="control-label">Kargoyu Kim Ödeyecek <span data-toggle="tooltip" title="" data-original-title="Kargo ücretini Alıcı mı yoka Satıcı mı ödeyecek ?"></span></label>
+
+                    <select id="shipping_template" name="gg_setting_shipping_template"   id="input-gg_shipmenttemplate" class="form-control" >
+                        {% for key, sablon in sablonlar %}
+                            {% if key == gg_setting_shipping_template %}
+                                <option value="{{ key  }}" selected> {{ sablon  }}</option>
+                            {% else %}
+                                <option value="{{ key  }}"> {{ sablon  }}</option>
+                            {% endif %}  {% endfor %}
+
+                    </select>
+
+                </div>
+
+
+
+
+                <div id="extra_shipping_price" class="form-group">
+                    <label class="control-label">Kargo Ücreti <small>(Alıcının Ödeyeceği Tutar)</small> <span data-toggle="tooltip" title="" data-original-title="Eğer ürünün kargo ücretini alıcı ödeyecekse, ödeyeceği ortalama yada net kargo ücretini buraya girmelisiniz. "></span></label>
+
+                    <input type="text" name="gg_setting_extra_shipping_price" value="{{ gg_setting_extra_shipping_price }}" placeholder="Sabit kargo ücreti" class="form-control">
+
+                </div>
+
+                <div id="extra_shipping_price" class="form-group">
+                    <label class="control-label">Kargo Ücreti <small>(Ürün Fiyatına Eklenecek Tutar)</small> <span data-toggle="tooltip" title="" data-original-title="Gittgidiyor Mağazanıza Ürün göndeme yada güncelleme işlemi yaparken ürün fiyatına kargo ücreti eklemek isterseniz sabit kargo tutarınız bu alana giriniz."></span></label>
+
+                    <input type="text" name="gg_setting_shipping_price" value="{{ gg_setting_shipping_price }}" placeholder="Sabit kargo ücreti" class="form-control">
+
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">Gelen siparişler, site siparişlerine de aktarılsın mı ? <span data-toggle="tooltip" title="" data-original-title="Gittigidiyor'dan aldığınız siparişler modül menüsündeki siparişler alanına aktarılmaktadır, siparişleri aynı zamanda sitenizin siparişerine de aktarılmasını istiyorsanız, aktarılsın seçeneğini seçiniz."></span></label>
+                    <select class="form-control" name="gg_setting_oc_order">
+
+                        {%  if  gg_setting_oc_order %}
+
+                            <option value="1" selected >Aktarılsın</option>
+                            <option  value="0">Aktarılmasın</option>
+
+                        {% else %}
+
+                            <option value="1">Aktarılsın</option>
+                            <option  selected   value="0">Aktarılmasın</option>
+                        {% endif %}
+
+                    </select>
+                </div>
+
+                <div class="form-group hidden">
+
+                    <label class="control-label">Ürün Seçenekleri<span data-toggle="tooltip" title="" data-original-title="Pazaryerinin kategoriye özel seçeneklerinin sadece zorunlu olanlarını yada tümünü görüntüleyebilirsiniz."></span></label>
+
+                    <select class="form-control" name="gg_setting_product_option">
+
+                        {%  if  gg_setting_product_option %}
+
+                            <option value="1"  selected >Tümü</option>
+                            <option  value="0">Zorunlu</option>
+
+                        {% else %}
+
+                            <option value="1"  >Tümü</option>
+                            <option selected  value="0">Zorunlu</option>
+                        {% endif %}
+
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">Renk Varyantı Otomatik Eklensin mi? <span data-toggle="tooltip" title="" data-original-title="Ürünlerinizde Renk seçeneği ekli değilse bu seçeneği aktif ediniz. Bu ayar aktif edildiğinde varyantlara çok renkli seçeneği otomatik olarak eklencektir."></span></label>
+                    <select class="form-control" name="gg_setting_default_variant_color">
+
+                        {%  if  gg_setting_default_variant_color %}
+
+                            <option value="1" selected >Aktif</option>
+                            <option  value="0">Pasif</option>
+
+                        {% else %}
+
+                            <option value="1">Aktif</option>
+                            <option  selected   value="0">Pasif</option>
+                        {% endif %}
+
+                    </select>
+                </div>
+
+
+                <div class="form-group variant">
+                    <label class="control-label">Seçenek & Varyant Gönderilsin mi ? <span data-toggle="tooltip" title="" data-original-title="Zorunlu Değil!, Ürününüzü seçenekli yada varyantlı olarak gönderebilirsiniz. "></span></label>
+                    <select class="form-control" name="gg_setting_variant">
+
+                        {%  if  gg_setting_variant %}
+
+                            <option value="0"  >Gönderme</option>
+                            <option selected  value="1">Gönder</option>
+
+                        {% else %}
+
+                            <option value="1">Gönder</option>
+                            <option  selected   value="0">Gönderme</option>
+                        {% endif %}
+
+                    </select>
+                </div>
+
+                <div class="form-group ">
+                    <label class="control-label">Siperişe TC Kimlik No Eklensin Mi? <span data-toggle="tooltip" title="" data-original-title="Adresin sonuna tc kimlik no eklensin mi? "></span></label>
+                    <select class="form-control" name="gg_setting_add_tc">
+
+
+                        {%  if  gg_setting_add_tc %}
+                            <option value="1"
+                                    selected> Eklensin</option>
+
+                            <option value="0"> Eklenmesin</option>
+
+                        {% else %}
+                            <option value="1"
+                            > Eklensin</option>
+
+                            <option value="0"       selected > Eklenmesin</option>
+                        {% endif %}
+
+
+                    </select>
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <div class="col-sm-6">
+            <div class="panel-body">
+                <div class="form-group">
+                    <label class="control-label required ">Yayınlanma Süresi <span data-toggle="tooltip" title="" data-original-title="Ürününüz gittigidiyor mağazanızda kaç gün boyunca satışta olacak ?"></span></label>
+                    <select name="gg_setting_show_time"  id="gg_send_time" class="form-control" >
+                        {% for key, s_time in show_time %}
+                            {% if key == gg_setting_show_time%}
+                                <option value="{{ key  }}" selected> {{ s_time  }}</option>
+                            {% else %}
+
+                                <option value="{{ key  }}"> {{ s_time  }}</option>
+
+                            {% endif %}    {% endfor %}
+                    </select>
+
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Sabit Fiyat Artış Oranı <span data-toggle="tooltip" title="" data-original-title="Zorunlu Alan!, Eğer ürüne, kategoriye yada markaya özel bir komisyon oranı girilmediyse burada belirlediğiniz sabit fiyat oranı tüm ürünlere uygulanacaktır. Ürüne,markaya yada kategoriye özel bir sabit fiyat artış oranı girilmediyse buradaki oran işleme alınır."></span></label>
+
+                    <input type="text" value="{{ gg_setting_commission }}" name="gg_setting_commission" class="form-control">
+
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">Sabit Fiyat Artış Oranları <span data-toggle="tooltip" title="" data-original-title="Ürün fiyatına bağlı olarak mevcut fiyatı belirlenen oranla çarpın, örneğin 10 TL'nin altındaki tüm fiyatlara yüzde 100 fiyat artışı uygulamak istiyorsanız, sadece 10:100 yazın, yada örneğin 50'nin altındaki tüm fiyatları %50 artış uygulamak için yeni satır ekleyin ve 50:50' yazın. 200 tl nin altındaki fiyatlara %30 fiyat artışı uygulama için yeni satır ekleyin ve 200:30 yazın. Dilediğiniz kadar satır ekleyebilirsiniz."></span></label>
+
+                    <textarea name="gg_setting_price_multiplier" placeholder="örnek: 80:50" class="form-control">{{ gg_setting_price_multiplier }}</textarea>
+
+
+                </div>
+
+                <div class="form-group">
+
+                    <label class="control-label required">KDV Eklensin mi ? <span data-toggle="tooltip" title="" data-original-title="Zorunlu Alan!, Ürüne KDV oranının eklenip eklenmeyeceğiniz belirler. Eğer ürününüze herhangi bir vergi sınıfı eklediyseniz, buradaki vergi oranı baz alınacaktır."></span></label>
+
+                    <select class="form-control" name="gg_setting_kdv_setting">
+
+                        {%  if  gg_setting_kdv_setting %}
+
+                            <option value="1"  selected >Eklensin</option>
+                            <option  value="0">Eklenmesin</option>
+
+                        {% else %}
+
+                            <option value="1"  >Eklensin</option>
+                            <option selected  value="0">Eklenmesin</option>
+                        {% endif %}
+
+                    </select>
+                </div>
+
+
+
+
+                <div class="form-group hidden">
+                    <label>Varsayılan Altbaşlık</label>
+
+
+                    <input type="text" name="gg_setting_subtitle" value="{{ gg_setting_subtitle }}" placeholder="Alt başlık giriniz" class="form-control">
+
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">Ürüne Özel Kategori Seçilebilsin mi ? <span data-toggle="tooltip" title="" data-original-title="Ürünleriniz herhangi bir kategoriye bağlı değilse pazaryerine ürüne gönderirken sadece ürüne özel bir kategori seçebilirsiniz."></span></label>
+                    <select class="form-control" name="gg_setting_product_category">
+
+                        {%  if  gg_setting_product_category %}
+                            <option value="1"  selected >Evet</option>
+                            <option  value="0">Hayır</option>
+
+                        {% else %}
+                            <option value="1"   >Evet</option>
+
+                            <option selected value="0">Hayır</option>
+
+                        {% endif %}
+                    </select>
+
+
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">Ürüne Özel Para Birimi Seçilebilsin mi ? <span data-toggle="tooltip" title=""
+                                                                                                data-original-title="Ürünlerinize genel olarak herhangi bir Para Birimi belirtilmemiş ise pazaryerine
+                       ürüne gönderirken sadece ürüne özel bir Para Birimi seçebilirsiniz."></span></label>
+                    <select class="form-control" name="gg_setting_product_iscurrency">
+
+                        {%  if  gg_setting_product_iscurrency %}
+                            <option value="1"  selected >Evet</option>
+                            <option  value="0">Hayır</option>
+
+                        {% else %}
+                            <option value="1"   >Evet</option>
+
+                            <option selected value="0">Hayır</option>
+
+                        {% endif %}
+                    </select>
+
+
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">Kampanya Uygulansın mı ? <span data-toggle="tooltip" title="" data-original-title="Ürünleriniz için belirlemiş olduğunuz kampanyalı fiyatların Trendyol mağazanızda da geçerli olup olmayacağını belirler."></span></label>
+
+                    <select class="form-control" name="gg_setting_product_special">
+
+                        {%  if  gg_setting_product_special %}
+                            <option value="1"  selected >Evet</option>
+                            <option  value="0">Hayır</option>
+
+                        {% else %}
+                            <option value="1"   >Evet</option>
+
+                            <option selected value="0">Hayır</option>
+
+                        {% endif %}
+                    </select>
+
+                    </select>
+
+
+                </div>
+
+
+
+                <div class="form-group hidden">
+                    <label>Ürün Özellikleri</label>
+                    <select class="form-control" name="gg_setting_product_attribute">
+
+                        {%  if  gg_setting_kdv_setting %}
+                            <option value="1"  selected   >Zorunlu</option>
+                            <option  value="0">Tümü</option>
+
+                        {% else %}
+                            <option value="1"   >Zorunlu</option>
+
+                            <option selected value="0">Tümü</option>
+
+                        {% endif %}
+                    </select>
+
+                    </select>
+
+
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">Ek Ürün Açıklaması <span data-toggle="tooltip" title="" data-original-title="Gittigidiyor Mağazanıza ürün gönderimi yaparken yada güncellerken ürün açıklamalarına standart ek içerik eklemek için içeriği oluşturduğunuz bilgi sayfasını seçiniz. Seçtiğiniz bilgi sayfasını içeriği ürün açıklamalarından sonra eklenecektir. "></span></label>
+                    <select class="form-control" name="gg_setting_additional_content">
+
+                        <option value="0">==Seçiniz==</option>
+                        {% for information in informations %}
+                            {% if information.information_id == gg_setting_additional_content%}
+                                <option value="{{ information.information_id  }}"
+                                        selected> {{ information.title  }}</option>
+                            {% else %}
+
+                                <option value="{{ information.information_id}}"> {{ information.title  }}</option>
+
+                            {% endif %}
+
+                        {% endfor %}
+
+                    </select>
+
+                    </select>
+
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label class="control-label">Ürün Kodu Ön Eki <span data-toggle="tooltip" title="" data-original-title="Zorunlu değil!, Ürünü pazaryerini gönderirken başka bir ürünle çakışmaması için ürün koduna ekleme yapabilirsiniz."></span></label>
+
+
+                    <input type="text" name="gg_setting_model_prefix" value="{{ gg_setting_model_prefix }}" placeholder="Ürün Kodu Ön Eki" class="form-control">
+
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">Ürün Barkod Alanı <span data-toggle="tooltip" title="" data-original-title="Ürünüze ait barkod yada gtin kodunu tanımladığınız alanı seçiniz. Ürününüzde seçtiğiniz alana ait herhangi bir giriş yok yoksa ürün kodu barkod olarak işleme alınır. "></span></label>
+                    <select class="form-control" name="gg_setting_barkod_place">
+
+                        <option value="0">==Seçiniz==</option>
+                        {% for barkod_place in barkod_places %}
+                            {% if barkod_place == gg_setting_barkod_place %}
+                                <option value="{{ barkod_place   }}"
+                                        selected> {{ barkod_place   }}</option>
+                            {% else %}
+
+                                <option value="{{ barkod_place }}"> {{ barkod_place   }}</option>
+
+                            {% endif %}
+
+                        {% endfor %}
+
+                    </select>
+
+
+                </div>
+
+            </div>
+        </div>
+    </form>
+</div>
+
+

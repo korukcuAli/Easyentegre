@@ -1,0 +1,144 @@
+
+   <div class="row">
+
+       <div id="valueMatch"></div>
+
+    <div id="mainOptions" class="panel panel-info">
+        <div class="panel-heading">Seçenek Eşleştirin</div>
+        <div class="panel-body">
+
+            <p class="">{{ marketplace.name }} mağazasından gelen seçenekleri web sitenizde sizin tarafınızdan oluşturulan seçenekler ile eşleştirmelisiniz. Seçenekleriniz kısmından doğru seçeneği seçip, seçenek eşleştir butonuna tıklayınız.     </p>
+                {% if marketplace.code=='hb' %} <p class="required"> <strong>Önemli:</strong>Aşağıdaki Seçenekleden sadece ürünlerinizde bulunan seçenekleri eşleştiriniz. Tamamını eşleştirmek zorunda değilsiniz</p> {% endif %}
+
+
+            <table class="table">
+
+                <tr class="well">
+                <td><label class="control-label required"> {{ marketplace.name }} Seçenekleri <span data-toggle="tooltip" title="{{ marketplace.name }} mağazanızdan gelen seçenekler."></span></label></td>
+                <td><label class="control-label required">Seçenekleriniz <span data-toggle="tooltip" title="Sitenizin katalog/seçenekler kısmında sizin tarafınızdan oluşturulmuş seçeneklerdir. Seçeneğinizi {{ marketplace.name }} seçeneği ile eşleştiriniz ."></span></label></td>
+                <td>Eşleştir</td></tr>
+                {% for marketplace_option in marketplace_options %}
+
+
+                    <tr>
+                        <td>{{ marketplace_option.name }}</td>
+                        <td><select id="oc_option{{ marketplace_option.id }}" name="oc_option" class="form-control">
+
+                                {% for oc_option in oc_options %}
+
+                                    {%  if matched_options[marketplace_option.id] == oc_option.option_id  %}
+
+                                    <option selected  value="{{ oc_option.option_id }}">{{ oc_option.name }}</option>
+                                    {% else %}
+
+                                        <option value="{{ oc_option.option_id }}">{{ oc_option.name }}</option>
+
+                                    {% endif %}
+
+                                {% endfor %}
+
+                            </select></td>
+                        <td>
+
+                            <div class="btn btn-group">
+                            <button data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Eşleşiyor..." order_number="{{ marketplace_option.order_number }}" marketplace_option_id="{{ marketplace_option.id }}" marketplace_option_name="{{ marketplace_option.name }}" class="btn btn-default btnMatch">Eşleştir</button>
+                            <button data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Sıfırlanıyor..." order_number="{{ marketplace_option.order_number }}" marketplace_option_id="{{ marketplace_option.id }}" marketplace_option_name="{{ marketplace_option.name }}" class="btn btn-default btn-danger btnUnMatch">Sıfırla</button>
+        </div>
+                        </td>
+                    </tr>
+
+                {% endfor %}
+
+
+
+            </table>
+
+
+        </div>
+
+
+
+    </div>
+   </div>
+
+   <script>
+
+
+       $('.btnUnMatch').on('click',function (event) {
+
+           var btn=$(this);
+           var marketplace_option_id=$(this).attr('marketplace_option_id');
+           var marketplace_option_name=$(this).attr('marketplace_option_name')
+           var order_number=$(this).attr('order_number')
+
+           var oc_option_id=$('#oc_option'+marketplace_option_id).val();
+
+           btn.button('loading');
+
+           $.post('index.php?route=entegrasyon/category/unmatch_option&code={{ code }}&marketplace_option_id='+marketplace_option_id+'&marketplace_option_name='+marketplace_option_name+'&order_number='+order_number+'&category_id={{ category_id }}&oc_option_id='+oc_option_id+'&{{ token_link }}',null,function(json) {
+
+
+               $.toast({
+                   heading: 'Başarılı',
+                   text: 'Eşleştirme Başarıyla Sıfırlandı!',
+                   position: 'top-right',
+                   loader: true,
+                   allowToastClose: false,
+                   showHideTransition: 'slide',
+                   icon: 'success'
+               });
+
+               btn.button('reset');
+
+
+           },'JSON');
+
+
+
+
+       })
+
+
+
+
+
+
+       $('.btnMatch').on('click',function (event) {
+
+          var btn=$(this);
+           var marketplace_option_id=$(this).attr('marketplace_option_id');
+           var marketplace_option_name=$(this).attr('marketplace_option_name')
+           var order_number=$(this).attr('order_number')
+
+           var oc_option_id=$('#oc_option'+marketplace_option_id).val();
+
+           btn.button('loading');
+
+           $.post('index.php?route=entegrasyon/category/match_option&code={{ code }}&marketplace_option_id='+marketplace_option_id+'&marketplace_option_name='+marketplace_option_name+'&order_number='+order_number+'&category_id={{ category_id }}&oc_option_id='+oc_option_id+'&{{ token_link }}',null,function(json) {
+
+               $('#valueMatch').load('index.php?route=entegrasyon/category/match_value_form&category_id={{ category_id }}&marketplace_option_id='+marketplace_option_id+'&matched_option_id='+json['matched_option_id']+'&{{ token_link }}',function (data) {
+                   btn.button('reset');
+                   $('#mainOptions').hide();
+               })
+
+           },'JSON');
+
+
+
+
+       })
+
+
+       $(document).on('click','.btnOptionVazgec',function (event) {
+
+           $(this).button('loading');
+           $('#mainOptions').show();
+           $('#valueMatch').empty();
+
+       })
+
+
+
+   </script>
+
+

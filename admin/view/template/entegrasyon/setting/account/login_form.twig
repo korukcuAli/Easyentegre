@@ -1,0 +1,105 @@
+
+<div class="membershipcontainer">
+
+    <div class="pull-right">
+        <button  data-toggle="tooltip" title="Geri Dön" class="btn btn-default btnVazgec"><i class="fa fa-reply"></i></button></div>
+
+
+
+    <div class="wrapper fadeInDown">
+        <div id="formContent">
+            <!-- Tabs Titles -->
+
+            <!-- Icon -->
+            <div class="fadeIn first">
+                <!-- <img src="http://danielzawadzki.com/codepen/01/icon.svg" id="icon" alt="User Icon" />-->
+                <div class="panel-heading"><h4>Easy Entegre Giriş</h4></div>
+            </div>
+
+            <!-- Login Form -->
+            <form>
+                <input type="text" id="username" class="fadeIn second" name="username" placeholder="Email">
+                <input type="password" id="password" class="fadeIn third" name="password" placeholder="Parola">
+            </form>
+
+            <a class="underlineHover hidden" href="#">Forgot Password?</a>
+
+            <!-- Remind Passowrd -->
+            <div id="formFooter">
+                <div class="btn-group">
+                    <button type="submit" class="fadeIn fourth btn btn-primary btn-lg btnLogin" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Bekleyiniz">Giriş Yap</button>
+                    <a href="index.php?route=entegrasyon/setting&form=register&{{ token_link }}"  class="fadeIn fourth btn btn-info btn-lg" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Bekleyiniz">Üye Ol</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<script>
+
+    $('.btnRegister').on('click',function (event) {
+        $('.btnRegister').button("loading");
+        //$('.membershipcontainer').empty();
+        setTimeout(function(){  $('.membershipcontainer').load('index.php?route=entegrasyon/setting/register&{{ token_link }}');
+        }, 100);
+
+    });
+
+
+    $('.btnLogin').on('click',function (event) {
+        $('.btnLogin').button("loading");
+        var username=$('#username').val();
+        var password=$('#password').val();
+        if(username==''){
+            Swal.fire('Hata','Lütfen Email Adresinizi Giriniz','warning');
+            $('.btnLogin').button("reset");
+            return
+        }
+
+        if(password==''){
+            $('.btnLogin').button("reset");
+            Swal.fire('Hata','Lütfen Parolanızı Giriniz','warning');
+            return;
+        }
+
+$.post('index.php?route=entegrasyon/setting/login&{{ token_link }}',{username:username,password:password},function (json) {
+    $('.btnLogin').button("reset");
+    if(json['status']){
+
+     /*   Swal.fire({
+            title: 'Başarılı',
+            text: "Entegrasyon girişiniz başarıyla tamamlandı, Ayarlar sayfasına dönmek istermisiniz?",
+            icon: 'success',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Evet!',
+            cancelButtonText: "Hayır!",
+
+        }).then((result) => {
+            if (result.value) {
+
+
+
+
+            }
+        })*/
+        window.location.href="index.php?route=entegrasyon/setting/login_success&{{ token_link }}"
+
+
+    }else {
+
+        Swal.fire('Hata',json['message'],'warning');
+
+    }
+
+},'JSON');
+
+    })
+
+</script>

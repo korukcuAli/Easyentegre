@@ -1,0 +1,53 @@
+
+    <td class="text-center ">{% if product.product_id in selected %}
+            <input class="select" type="checkbox" name="selected[]" value="{{ product.product_id }}" checked="checked" />
+        {% else %}
+            <input class="select" type="checkbox" name="selected[]"  value="{{ product.product_id }}" />
+        {% endif %}</td>
+    <td class="text-center">{% if product.image %} <img src="{{ product.image }}" alt="{{ product.name }}" class="img-thumbnail" /> {% else %} <span class="img-thumbnail list"><i class="fa fa-camera fa-2x"></i></span> {% endif %}</td>
+    <td class="text-left">
+
+        <p> <a class="btnEdit" product_id="{{ product_id }}"> {{ product.name }} </a> <br><span style="font-size: x-small"> <strong>Model:</strong> {{ product.model }}</span><br><span style="font-size: x-small"> <strong>Marka:</strong> {{ product.manufacturer }}</span></p>
+
+
+    </td>
+    <td class="text-center"><button name="{{ product.name }}" product_id="{{ product.product_id }}" title="{% if product.total_options %}Seçenekli Ürün{% else %} Seçeneksiz Ürün {% endif %}"  class="btn {% if product.total_options %}btn-info{% else %} btn-default {% endif %} btnVariant "><i class="fa fa-list"></i> </button> </td>
+
+    <td class="text-right">{% if product.special %} <span style="text-decoration: line-through;">{{ product.price }}</span><br/>
+            <div class="text-danger">{{ product.special }}</div>
+        {% else %}
+            {{ product.price }}
+        {% endif %}</td>
+    <td class="text-center">{% if product.quantity <= 0 %} <a product_id="{{ product.product_id }}" class="btn btn-warning btn-sm btn-quantity">{{ product.quantity }}</a> {% elseif product.quantity <= 5 %} <a product_id="{{ product.product_id }}" class="btn btn-danger btn-sm btn-quantity">{{ product.quantity }}</a> {% else %} <a product_id="{{ product.product_id }}" class="btn btn-success btn-sm btn-quantity">{{ product.quantity }}</a> {% endif %}</td>
+
+    {% for marketplace in marketplaces %}
+
+        {% if marketplace.status %}
+
+            <td class="text-center {{ marketplace.code }}">
+
+                <div class="" style="" >
+
+                    {% if product[marketplace.code]['price'] %}
+
+                        <span class="text-center" id="span-{{ marketplace.code }}-{{ product.product_id }}"
+                              style="{% if  product[marketplace.code].sale_status > 0 %}
+                                                              color: #27ad5f; font-weight:bolder
+                                                              {% else %} color: #c0c0c0{% endif %} ">{{ product[marketplace.code]['price'] }} TL <br></span>
+
+                    {% else %}
+                        <span id="span-{{ marketplace.code }}-{{ product.product_id }}" class="text-danger text-small">Mevcut Değil</span>
+                        <br>{% endif %}
+
+                    <!--    <input data-product_id="{{ product.product_id }}" class="status" type="checkbox" {% if product[marketplace.code]['product_id'] %} checked {% endif %} data-market-name="{{ marketplace.name  }}" data-size="small"  data-code="{{ marketplace.code }}"   data-toggle="toggle" {% if product[marketplace.code]['price'] %} data-on="{{ product[marketplace.code]['price'] }} TL" {% else %} data-on="Bekleyiniz" {% endif %}  data-off="Kapalı" >-->
+                    <button product_id="{{ product.product_id }}" code="{{ marketplace.code }}"  marketname="{{ marketplace.name }}" name="{{ product.name }}"  data-toggle="tooltip" title="{{ marketplace.name }} Ayarları" class="btn btn-default btnSetting"><i class="fa fa-pencil"></i></button>
+                </div>
+            </td>
+
+
+        {% endif %}
+
+    {% endfor %}
+    <td class="text-right hidden"><button product_id="{{ product.product_id }}"  name="{{ product.name }}"  data-toggle="tooltip" title="{{ button_edit }}" class="btn btn-primary btnSetting"><i class="fa fa-pencil"></i></button></td>
+
+

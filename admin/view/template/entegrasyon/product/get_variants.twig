@@ -1,0 +1,80 @@
+
+
+
+<div class="btn-group topgroup pull-right">
+    <button class="btn btn-info btnReVariant" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Oluşturuluyor...">Yeniden Varyant Oluştur</button>
+    <button class="btn btn-primary  btnOptions" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Yükleniyor...">Ürün Seçenekleri</button>
+
+</div>
+
+<div class="clearfix"></div>
+<div id="variant_contaniner"></div>
+<script>
+
+    if(parseInt('{{ total_options }}')){
+        $('.topgroup').show();
+
+        $('#variant_contaniner').load('index.php?route=entegrasyon/product/variant_list&action=&product_id={{ product_id }}&{{ token_link }}');
+
+    }else {
+        $('.topgroup').hide();
+
+        $('#variant_contaniner').load('index.php?route=entegrasyon/product/option_list&product_id={{ product_id }}&{{ token_link }}');
+
+
+    }
+
+
+    $('.btnReVariant').on('click',function (){
+
+
+        Swal.fire({
+            title: 'Aman Dikkat!',
+            text: "Bu ürün için belirlediğiniz varyant görselleri ve barkodlar silinecektir!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yeniden Oluştur',
+            cancelButtonText: 'Vazgeçtim!'
+
+        }).then((result) => {
+
+
+            if (result.isConfirmed) {
+
+
+                $('#variant_contaniner').load('index.php?route=entegrasyon/product/variant_list&action=rebuild&product_id={{ product_id }}&{{ token_link }}',function (){
+                    Swal.fire(
+                        'Harika!',
+                        'Varyantlar oluşturuldu!.',
+                        'success'
+                    )
+
+                });
+            }
+
+
+
+
+
+        })
+
+
+    });
+
+
+    $('.btnOptions').on('click',function (){
+
+        $('.btnOptions').button('loading');
+        $('#variant_contaniner').empty();
+        $('#variant_contaniner').load('index.php?route=entegrasyon/product/option_list&product_id={{ product_id }}&{{ token_link }}',function (){
+            $('.topgroup').hide('slow');
+            $('.btnOptions').button('reset');
+
+        });
+
+
+    });
+
+</script>

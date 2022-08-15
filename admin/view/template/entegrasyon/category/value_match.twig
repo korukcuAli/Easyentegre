@@ -1,0 +1,127 @@
+<div  class="panel panel-default">
+    <div class="panel-heading"><p class="panel-title"><strong>{{ market_option_name }}</strong> Seçenek Değerlerini Eşleştirin</p>
+
+            <button style="margin-top: -7px" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i>" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default pull-right btnOptionVazgec"><i class="fa fa-reply"></i></button></div>
+    <div class="panel-body">
+
+        <table class="table">
+
+            <tr class="well"><td>{{ market_option_name }} Değerleri</td><td>{{ marketplace.name }} {{ market_option_name }} Değerleri</td></tr>
+            {% for oc_option_value in oc_option_values %}
+
+                <tr id="tr_{{ oc_option_value.option_value_id}}" class="{% if oc_option_value.is_matched %}bg-success{% else %}bg-danger{% endif %}">
+                    <td><p class="">{{ oc_option_value.name }}</p></td>
+
+                    <td colspan="left">
+
+
+                        <a href="#" id="ty_manufacturer_id" class="eslestir" data-type="typeaheadjs"
+                           data-pk="{{ oc_option_value.option_value_id }}" data-value="{{ oc_option_value.matched_value }}"
+                           data-emptytext="Değer eşleştir"
+                           data-url="index.php?route=entegrasyon/category/save_option_value&code={{ code }}&oc_option_value_id={{ oc_option_value.option_value_id }}&matched_option_id={{ matched_option_id }}&market_option_id={{ marketplace_option_id }}&category_id={{ category_id }}&{{ token_link }}"
+                           data-title="Lütfen seçenek değeri arayın"></a>
+
+
+                    </td>
+                    <td class="hidden"><button oc_option_value_id="{{ oc_option_value.option_value_id }}" class="btn btn-default btnOptionValueMatch" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Eşleşiyor...">{% if oc_option_value.is_matched %}Değiştir{% else %} Eşleştir {% endif %}</button> {% if oc_option_value.is_matched %}<i class="fa fa-check text-success"></i> {% else %}{% endif %} </td>
+                </tr>
+
+            {% endfor %}
+
+
+
+        </table>
+
+
+    </div>
+
+
+
+
+
+</div>
+<script>
+
+
+        $('.eslestir').editable({
+            mode: 'inline',
+            typeahead: {
+                limit: 200,
+                remote: "index.php?route=entegrasyon/category/option_search&filter_category_id={{ category_id }}&filter_code={{ code }}&filter_option_id={{ marketplace_option_id }}&filter_name=%QUERY&{{ token_link }}",
+                displayKey: 'manufacturer_id',
+                valueKey: 'name',
+                display: function (item) {
+                    return item.name
+                },
+
+            }, success: function (json, newValue) {
+                
+                if (!json['status']) {
+
+                    $.toast({
+                        heading: 'Hata',
+                        text: json['message'],
+                        position: 'top-right',
+                        loader: true,
+                        allowToastClose: false,
+                        showHideTransition: 'slide',
+                        icon: 'warning'
+                    });
+
+
+                } else {
+
+                    $.toast({
+                        heading: 'Başarılı',
+                        text: json['message'],
+                        position: 'top-right',
+                        loader: true,
+                        allowToastClose: false,
+                        showHideTransition: 'slide',
+                        icon: 'success'
+                    });
+
+                }
+
+            }
+        });
+
+
+
+    $.fn.editableform.buttons =
+        '<button type="submit" class="btn btn-primary btn-sm editable-submit">' +
+        '<i class="fa fa-check"></i>' +
+        '</button>' +
+        '<button type="button" class="btn btn-danger btn-sm editable-cancel">' +
+        '<i class="fa fa-times"></i>' +
+        '</button>';
+
+
+</script>
+<script>
+
+    $('.select2').selectpicker();
+    $('.btnOptionValueMatch').on('click',function (event) {
+    var mybtn=$(this);
+    var oc_option_value_id=$(this).attr('oc_option_value_id')
+    var market_option_value_id=$('#oc_option_value'+oc_option_value_id).val();
+    var market_option_value_order_number=$('#oc_option_value'+oc_option_value_id+' option:selected').attr('order_number');
+    var market_option_value_name=$('#oc_option_value'+oc_option_value_id+' option:selected').attr('data-name');
+
+   // mybtn.button('loading');
+    $.post('index.php?route=entegrasyon/category/match_option_value&matched_option_id={{ matched_option_id }}&{{ token_link }}',{oc_option_value_id:oc_option_value_id,market_option_value_id:market_option_value_id,market_option_value_order_number:market_option_value_order_number,market_option_value_name:market_option_value_name},function(json) {
+
+        mybtn.text("Değiştir");
+
+        //  mybtn.button('reset');
+        $.toast({heading: 'Başarılı',text: json['message'], position: 'top-right',loader: true,allowToastClose: false,showHideTransition: 'slide',icon: 'success'});
+
+        $('#tr_'+oc_option_value_id).toggleClass('bg-danger bg-success');
+        mybtn.text("Değiştir");
+        //mybtn.prop("value", "Değiştir");
+        mybtn.after(' <i class="fa fa-check text-success"></i>');
+
+    },'JSON');
+})
+
+</script>

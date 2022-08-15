@@ -1,0 +1,248 @@
+<div class="panel-body">
+    <i id="market_place_code" mpc="{{ code }}"></i>
+
+
+    {% if code =='gg' %}
+
+
+        {% for message in messages %}
+            {% if  message.senderNickName  == role_name %}
+
+                <!--  Sağ Kısım - Satıcı  -->
+
+                <div class="chat">
+
+                    <div class="chat-body">
+                        <div class="chat-content">
+                            <a href="#" class="right-media-heading">{{ message.senderNickName }}</a>
+
+                            <p>{{ message.messageText }}</p>
+                            <c class="chat-time">   {{ message.messageDate |date('d-m-Y H:i:s') }} </c>
+
+                        </div>
+                    </div>
+                </div>
+                <!--  Sağ Kısım - Satıcı son  -->
+
+            {% else %}
+                <!--  Müşteri Sol kısım  -->
+
+                <div class="chat chat-left">
+
+                    <div class="chat-body">
+                        <div class="chat-content">
+                            <a href="#" class="left-media-heading">{{ message.senderNickName }}</a>
+
+                            <p>{{ message.messageText }}</p>
+                            <c class="chat-time">   {{ message.messageDate |date('d-m-Y H:i:s') }} </c>
+                        </div>
+                    </div>
+                </div>
+                <!--  Müşteri Sol kısım  Son -->
+
+
+            {% endif %}
+
+        {% endfor %}
+
+
+        <div id="added-answer"></div>
+
+    {% else %}
+
+
+
+<div style="text-align: center; margin-bottom: 10px;" > <h3>{{ productTitle }}</h3> </div>
+
+        <!--  Müşteri Sol kısım  -->
+
+        <div class="chat chat-left">
+
+            <div class="chat-body">
+                <div class="chat-content">
+                    <a href="#" class="left-media-heading">{{ user_name }} </a>
+
+                    <p>{{ question_text }}</p>
+                    <c class="chat-time">   {{ question_creationDate }} </c>
+                </div>
+            </div>
+        </div>
+        <!--  Müşteri Sol kısım  Son -->
+
+
+        {% if rejected_status=='true' %}
+            <!--  Error -Sağ Kısım - Satıcı  -->
+
+            <div class="chat">
+
+                <div class="chat-body">
+                    <div class="error-chat-content">
+                        <a href="#" class="right-media-heading">Satıcı</a>
+
+                        <p>{{ rejectedAnswer_text }}</p>
+                        <c class="chat-time">   {{ rejectedAnswer_creationDate }} </c>
+                        <c><b><br>Mesaj Onaylanmadı Çünkü:</b> {{ rejectedAnswer_reason }}</c>
+
+                    </div>
+                </div>
+            </div>
+            <!--  Error -Sağ Kısım - Satıcı son  -->
+        {% endif %}
+
+
+        <!--  Sağ Kısım - Satıcı  -->
+
+        {% if answer_text %}
+            <div class="chat">
+
+                <div class="chat-body">
+                    <div class="chat-content">
+                        <a href="#" class="right-media-heading">Satıcı</a>
+
+                        <p>{{ answer_text }}</p>
+                        <c class="chat-time">   {{ answer_creationDate }} </c>
+
+                    </div>
+                </div>
+            </div>
+            <!--  Sağ Kısım - Satıcı son  -->
+
+        {% endif %}
+
+        <div id="added-answer"></div>
+
+    {% endif %}
+
+
+    <!-- Text Area Kısmı -->
+    <div class="panel-footer {% if  answer_text %} hidden {% endif %} ">
+        <form>
+            <div class="input-group">
+                <input type="text" name="text" id="text" question_id="{{ question_id }}" class="form-control answer"
+                       placeholder="Cevabınızı Yazın">
+                <span class="input-group-btn">
+            <button data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Gönderiliyor" id="send_btn"
+                    class="btn btn-primary" type="button">Gönder</button>
+          </span>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<!-- Text Area Kısmı Son -->
+
+
+</div>
+<script>
+
+
+</script>
+
+<script>
+
+    $("#send_btn").on("click", function () {
+
+        var answer = $("#text").val();
+        var question_id = $("#text").attr('question_id');
+        var mpc = $("#market_place_code").attr('mpc');
+        var today = new Date();
+
+
+
+        $("#send_btn").button('loading');
+        if (answer.length <= 10) {
+
+            Swal.fire("Cevap 10 karakterden uzun olmalı.")
+            $("#send_btn").button('reset');
+
+        } else {
+            $.post('index.php?route=entegrasyon/product_question/reply&code={{ code }}&question_id=' + question_id + '&{{ token_link }}', {answer: answer}, function (json) {
+
+                $("#send_btn").button('reset');
+
+
+                if (json['status']) {
+
+
+                    if (mpc != 'gg') {
+                        $(".panel-footer").hide();
+
+                    } else {
+
+                    }
+
+                    $("#added-answer").append(" <div class=\"chat\">\n" +
+                        "\n" +
+                        "        <div class=\"chat-body\">\n" +
+                        "            <div class=\"chat-content\">\n" +
+                        "                <a href=\"#\" class=\"right-media-heading\">Satıcı</a>\n" +
+                        "\n" +
+                        "                <p> " + answer + "</p>\n" +
+                        "                <c class=\"chat-time\">   " + today + " </c>\n" +
+                        "\n" +
+                        "            </div>\n" +
+                        "        </div>\n" +
+                        "    </div>");
+
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Başarılı, Ürün sorusu başarıyla cevaplandı'
+                    })
+
+
+                } else {
+
+                    Swal.fire('Uyarı', json['message'], 'warning');
+
+                }
+
+
+            }, "JSON");
+
+
+        }
+
+
+    });
+
+
+</script>
+
+<!--
+
+<div class="chat">
+
+    <div class="chat-body">
+        <div class="chat-content">
+            <p>
+                <br>What can I do for you?
+            </p>
+            <time class="chat-time" datetime="2015-07-01T11:37">11:37:08 am</time>
+        </div>
+    </div>
+</div>
+
+
+<div class="chat chat-left">
+
+    <div class="chat-body">
+        <div class="chat-content">
+            <p>Well, I am just looking around.</p>
+            <time class="chat-time" datetime="2015-07-01T11:39">11:39:57 am</time>
+        </div>
+    </div>
+</div>
+-->

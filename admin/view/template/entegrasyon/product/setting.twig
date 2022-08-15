@@ -1,0 +1,86 @@
+<div class="panel-body">
+
+    {% if message is defined %}
+
+        <div class="alert alert-{{ alert_type }}">
+            <strong> Uyarı </strong> {{ message }}
+        </div>
+    {% endif %}
+
+    <a class="reload"></a>
+    <div class="buttonContainer panel-footer"></div>
+
+    <div class="icerik">
+    </div>
+
+</div>
+
+
+
+
+
+<script>
+
+    $(function () {
+        $('.icerik').load('index.php?route=entegrasyon/product/product_setting&code={{ code }}&{{ token_link }}&product_id={{ product_id }}&category_id={{ category_id }}');
+    });
+
+    $(function () {
+        $('.buttonContainer').load('index.php?route=entegrasyon/product/get_buttons&code={{ code }}&{{ token_link }}&product_id={{ product_id }}');
+    });
+
+    $('.reload').on('click',function () {
+        $('.buttonContainer').load('index.php?route=entegrasyon/product/get_buttons&code={{ code }}&{{ token_link }}&product_id={{ product_id }}');
+
+    })
+</script>
+
+<script>
+
+    $(document).on('click','#btnComplate',function () {
+        $('.icerik').empty();
+        $('.icerik').load('index.php?route=entegrasyon/product/product_setting&code={{ code }}&{{ token_link }}&product_id={{ product_id }}&category_id=0');
+        $('.buttonContainer').show('slow');
+        $('.alert').show('slow');
+    })
+
+</script>
+
+
+
+<script>
+    $(document).on('click','#btnMatch',function (event) {
+
+        // $('.modal').modal('hide');
+        $('.buttonContainer').hide('slow');
+        var category_id=$(this).attr('category_id');
+        var category_name=$(this).attr('name');
+        //$('.icerik').empty();
+        $('.icerik').load('index.php?route=entegrasyon/category/setting&code={{ code }}&category_id='+category_id+'&{{ token_link }}');
+
+    })
+
+
+
+</script>
+
+
+<script>
+    $(document).on('click','#btnManufacturerMatch',function (event) {
+        event.preventDefault();
+        $('.buttonContainer').hide('slow');
+        $('.alert').hide('slow');
+
+        var manufacturer_id=$(this).attr('manufacturer_id');
+        var manufacturer_name=$(this).attr('name');
+
+        // $('.icerik').empty();
+        $('.icerik').load('index.php?route=entegrasyon/manufacturer/setting&code={{ code }}&manufacturer_id='+manufacturer_id+'&{{ token_link }}');
+
+
+    })
+
+
+
+</script>
+

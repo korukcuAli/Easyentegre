@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html dir="{{ direction }}" lang="{{ lang }}">
+<head>
+    <meta charset="UTF-8" />
+    <title>{{ title }}</title>
+    <base href="{{ base }}" />
+    <link href="view/javascript/bootstrap/css/bootstrap.css" rel="stylesheet" media="all" />
+    <script type="text/javascript" src="view/javascript/jquery/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="view/javascript/bootstrap/js/bootstrap.min.js"></script>
+    <link href="view/javascript/font-awesome/css/font-awesome.min.css" type="text/css" rel="stylesheet" />
+    <link type="text/css" href="view/stylesheet/stylesheet.css" rel="stylesheet" media="all" />
+</head>
+<style>
+    .rcorners2 {
+        border-radius: 25px;
+        border: 1px solid #b1b1b1;
+        padding: 20px;
+        width: 100%;
+        margin: 5px;
+    }
+
+</style>
+<body>
+<div class="container ">
+
+    {% if print %}
+    {% else %}
+        <br><button id="btnPrint" class="pull-right btn btn-warning">YAZDIR <i class="fa fa-print" aria-hidden="true"></i></button>
+        <br>
+    {% endif %}
+
+    {% for order in orders %}
+        <div style="page-break-after: always;">
+            <h1 class="hidden">      {{ order.marketplace_info.name }}</h1>
+            <img class="img-thumbnail" style="width: 75px" src="{{ dir_image }}/image/entegrasyon-logo/{{ order.marketplace_info.code }}-logo.png">
+
+            {% if easy_setting_shipping_logo %}
+            <img class="img-thumbnail" style="width: 75px" src="{{ logo }}">
+            {% endif %}
+
+            <!-- -->
+            <center> <b>Barkod</b> <br><img src="{{ order.store_url }}admin/index.php?route=entegrasyon/order/print_barcode&{{ token_link }}&data={{ order.order_id }}" ><br />
+            </center>
+            <table class="table">
+
+                <td>
+                    <div class="col-sm-6 rcorners2">
+                        <h3 ><b>  Alıcının Bilgileri</b></h3>
+                        <br><br>
+
+                        <b  > Kargo Firması:</b>
+                        {{ order.shipment_method }}<br> <br>
+                        <b  > Sipariş NO:</b>
+                        {{ order.market_order_id }}<br> <br>
+                        <b  > Ad - Soyad:</b>
+                        {{order.customer_name }} <br> <br>
+                        <b > Adres:</b>
+                        {{ order.shipping_address }}
+
+
+
+                    </div></td>
+
+
+            </table>
+
+
+            <div class="rcorners2">
+
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <td><b>{{ column_product }}</b></td>
+                        <td><b>{{ column_model }}</b></td>
+                        <td class="text-right"><b>{{ column_quantity }}</b></td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for product in order.product %}
+                        <tr>
+
+                            <td>{{ product.name }}
+                                {% for option in product.option %}
+                                    <br />
+                                    &nbsp;<small> - {{ option.name }}: {{ option.value }}</small>
+                                {% endfor %}</td>
+                            <td>{{ product.model }}</td>
+                            <td class="text-right">{{ product.quantity }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+
+                </table>
+            </div>
+
+        </div>
+    {% endfor %}
+</div>
+</body>
+
+</html>
+
+
+<script>
+    var print2 = '{{ print }}'
+    if (print2){
+        window.print();
+
+    }else{
+
+    }
+
+</script>

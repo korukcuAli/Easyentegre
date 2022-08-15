@@ -1,0 +1,510 @@
+<div class="panel-body">
+
+    <table class="table">
+
+
+        <thead class="">
+        <th >
+            <label class="control-label">Para Birimi <span data-toggle="tooltip" title=""
+                                                           data-original-title="Zorunlu Değil!, Her ürün için farklı para birimi kullanıyorsanız, kullanığınız para birimini seçiniz. Ürün tutarı seçilen para biriminden TL ye çevrilerek işlem yapılacaktır. TL para birimini kullanıyorsanız seçim yapmanıza gerek yoktur."></span></label>
+        </th>
+        <th>
+            <label class="control-label">Kargo Ücreti <span data-toggle="tooltip" title=""
+                                                            data-original-title="Zorunlu Değil!, Eğer ürüne özel bir kargo ücreti belirleyecekseniz buraya sadece rakamla bir kargo ücreti girin, girdiniğiniz kargo ücreti ürün fiyatına eklenecektir."></span></label>
+        </th>
+
+        <th>
+            <label class="control-label">Komisyon <span data-toggle="tooltip" title=""
+                                                        data-original-title="Zorunlu Değil!, Eğer ürüne özel bir komisyon oranı belirlyecekseniz buraya sadece rakamla bir komisyon oranı girin, örneğin ürünü %20 fiyat artışı ile göndermek isterseniz bu alana 20 yazınız."></span></label>
+        </th>
+
+
+        <th>
+            <label class="control-label"> Katalog ID <span data-toggle="tooltip" title=""
+                                                           data-original-title="Eğer ürününüz  Gittigidiyor'da yer alan katalog ürünlerinden biri ise ürününüze ait marka model yada özellik girerek arayabilirsiniz. Ürününüz Gittigidiyor kataloğuna mevcutsa listelenen ürünler arasından ürününüzü seçebilirsiniz. "></span></label>
+        </th>
+        <th>
+
+            <label class="control-label">Ana Ürün Kodu <span data-toggle="tooltip"
+                                                             title="Eğer bir çok ürünü aynı ana ürün kodu ile göndermek isterseniz buraya ürün kodu giriniz, bu alan boş bırakılırsa ürün model kodu ana ürün kodu olarak işleme alınacaktır. "></span></label>
+
+        </th>
+        </thead>
+        <tbody>
+
+        <td ><a href="#" id="gg_currency" charset="btn btn-default"
+               data-url="index.php?route=entegrasyon/genel/save_setting&code=gg&controller=product&{{ token_link }}"
+               data-name="gg_currency" data-type="select"
+               data-source='index.php?route=entegrasyon/genel/currencies&{{ token_link }}'
+               data-value="{{ gg_currency }}" data-title="Para birimi seçin" data-pk="{{ product_id }}"
+               class="editable btn btn-default" data-emptytext="Para Birimi" title="Bir Para birimi seçin"></a></td>
+
+        <td>
+            <a href="#" id="gg_shipping_price" class="editable btn btn-default" data-pk="{{ product_id }}"
+               data-emptytext="Kargo ücreti" data-value="{{ gg_shipping_price }}"
+               data-url="index.php?route=entegrasyon/genel/save_setting&code=gg&controller=product&{{ token_link }}"
+               data-title="Kargo Ücreti Giriniz"></a>
+        </td>
+        <td><a href="#" id="gg_commission" class="editable btn btn-default" data-pk="{{ product_id }}"
+               data-emptytext="Komisyon giriniz" data-value="{{ gg_commission }}"
+               data-url="index.php?route=entegrasyon/genel/save_setting&code=gg&controller=product&{{ token_link }}"
+               data-title="Komisyon oranınızı girin"></a>
+        </td>
+
+
+        <td>
+
+
+            <a href="#" id="gg_catalog_id" class="katalog-eslestir btn btn-default" data-type="typeaheadjs"
+               data-pk="{{ product_id }}" data-value="{{ gg_catalog_id }}" data-emptytext="Katalog Ürünü Ara"
+               data-url="index.php?route=entegrasyon/genel/save_setting&code=gg&action=category_match&&controller=product&{{ token_link }}"
+               data-title="Katalog Ürün Arayın"></a>
+
+
+        </td>
+
+        <td>
+
+            <a href="#" id="gg_product_code" class="editable btn btn-default" data-type="text"
+               data-pk="{{ product_id }}" data-value="{{ gg_product_code }}" data-emptytext="Ana Ürün Kodu Giriniz"
+               data-url="index.php?route=entegrasyon/genel/save_setting&code=gg&&controller=product&{{ token_link }}"
+               data-title="Ana Ürün Kodu Giriniz."></a></td>
+
+
+        <td>
+
+        </tbody>
+        <table class="table">
+            <thead>
+
+            <th><label class="control-label">Ürüne Özel Açıklaması <span data-toggle="tooltip" title="ZORUNLU ALAN DEĞİLDİR ! Eğer katalog ürün kategorisine ürün gönderiyorsanız, bu alana minimum 0 maksimum 150 karakterlik bir ürün açıklaması giriniz. Eğer ürüne ait açıklamayı göndermek istiyorsanız bu alanı boş bırakınız."></span></label></th>
+            <th><label class="control-label">Ürüne Özel Başlık <span data-toggle="tooltip" title="ZORUNLU ALAN DEĞİLDİR ! "></span></label></th>
+
+            </thead>
+            <tbody >
+
+            {% if gg_product_desciption %}
+                <td><a  href="#" id="gg_product_desciption" class="editable "  data-type="textarea" data-pk="{{ product_id }}"
+                        data-value="{{ gg_product_desciption}}" data-emptytext="Ürün Açıklaması Girin"
+                        data-url="index.php?route=entegrasyon/genel/save_setting&code=gg&&controller=product&{{  token_link }}"
+                        data-title="Açıklama giriniz."> Değiştirmek İçin Tıklayın</a></td>
+            {% else %}
+                <td><a  href="#" id="gg_product_desciption" class="editable "  data-type="textarea" data-pk="{{ product_id }}"
+                        data-value="{{ gg_product_desciption}}" data-emptytext="Ürün Açıklaması Girin"
+                        data-url="index.php?route=entegrasyon/genel/save_setting&code=gg&&controller=product&{{  token_link }}"
+                        data-title="Açıklama giriniz."></a></td>
+            {% endif %}
+
+
+           
+
+            {% if gg_product_title %}
+                <td><a  href="#" id="gg_product_title" class="editable "  data-type="textarea" data-pk="{{ product_id }}"
+                        data-value="{{ gg_product_title}}" data-emptytext="Ürün Başlığı Girin"
+                        data-url="index.php?route=entegrasyon/genel/save_setting&code=gg&&controller=product&{{  token_link }}"
+                        data-title=" Başlık Giriniz.">Başlığı Değiştir</a></td>
+            {% else %}
+                <td><a  href="#" id="gg_product_title" class="editable "  data-type="textarea" data-pk="{{ product_id }}"
+                        data-value="{{ gg_product_title}}" data-emptytext="Ürün Başlığı Girin"
+                        data-url="index.php?route=entegrasyon/genel/save_setting&code=gg&&controller=product&{{  token_link }}"
+                        data-title="Başlık Giriniz."></a></td>
+            {% endif %}
+
+
+            </tbody>
+
+
+
+        </table>
+    </table>
+
+
+    <table class="table">
+        <tr>
+            <td style="width:27%;"><label id="price_toggle" class="control-label">Satış Fiyatı <span
+                            data-toggle="tooltip"
+                            title="ZORUNLU ALAN DEĞİLDİR !  Bu alana fiyat girerseniz, ürünün direkt satış fiyatı, girdiğiniz rakam olacaktır. Bu alan boş bırakılırsa, ürün fiyatı katalogtaki fiyat olacaktır."></span></label>
+            </td>
+            <td><a href="#" id="gg_product_sale_price" class="editable" data-pk="{{ product_id }}"
+                   data-value="{{ gg_product_sale_price }}" data-emptytext="Fiyat Giriniz"
+                   data-url="index.php?route=entegrasyon/genel/save_setting&code=gg&&controller=product&{{ token_link }}"
+                   data-title="Fiyat Giriniz"></a></td>
+        </tr>
+        <!--
+        <tr>
+            <td><label class="control-label">Üstü Çizili Fiyat<span data-toggle="tooltip"
+                                                                    title="ZORUNLU ALAN DEĞİLDİR ! Bu alana girdiğiniz değer, ürünün üstü çizili indirimsiz fiyatı olarak gösterilecektir. Buraya fiyat girmezseniz ürün kampanyasız satış fiyatı ile gidecektir."></span></label>
+            </td>
+            <td><a href="#" id="gg_product_list_price" class="editable" data-pk="{{ product_id }}"
+                   data-value="{{ gg_product_list_price }}" data-emptytext="Fiyat Giriniz"
+                   data-url="index.php?route=entegrasyon/genel/save_setting&code=gg&&controller=product&{{ token_link }}"
+                   data-title="Fiyat Giriniz"></a></td>
+        </tr>-->
+
+        <tr class="{{ product_category_display }}">
+            <td><label class="control-label">Kategori Seç <small class="text-success">(Ürüne Özel)</small> <span
+                            data-toggle="tooltip"
+                            title="ZORUNLU ALAN DEĞİLDİR ! Ürüne özel kategori seçebilirsiniz, eğer ürün bulunduğu kategoriyi eşleştirdiyseniz ürüne özel kategori seçmek zorunda değilsiniz. eğer ürüne özel kategori seçildiyse ürün seçilen kategoriye gönderilir."></span></label>
+            </td>
+            <td><a href="#" id="gg_category_id" class="eslestir" data-type="typeaheadjs" data-pk="{{ product_id }}"
+                   data-value="{{ gg_category_id }}" data-emptytext="Kategori Seçin"
+                   data-url="index.php?route=entegrasyon/genel/save_setting&code=gg&&controller=product&{{ token_link }}"
+                   data-title="Lütfen Kategori Arayın"></a></td>
+        </tr>
+
+    </table>
+    <table class="table">
+        <thead>
+
+        <th><label id="gg_product_image" class="control-label">Pazar Yerine Özel Ana Görsel<span data-toggle="tooltip" title="Ana ürün görselini buradan değiştirebilirsiniz.."></span></label></th>
+
+
+        </thead>
+
+        <tbody>
+
+        <td><a href=""  id="thumb-image" data-toggle="image" class="send_main_img" ><img style="border: 1px solid #dddddd" src="{{ image  }}" alt="" title="" data-placeholder="görsel" /></a>
+            <input class="txtimage" type="hidden" name="gg_main_image" value="{{ image  }}" id="input-image" /></td>
+
+        </tbody>
+
+
+    </table>
+
+
+        {% if product_categories is defined  and  not category_id %}
+            </hr>
+
+            {% if product_categories %}
+
+            <label class="control-label">Ürünün bağlı olduğu kategoriler <span data-toggle="tooltip"
+                                                                               title="Ürününüz aşağıdaki kategoriler ile bağlantılıdır. kategorilerden birini eşleştirdiğinizde eğer ürüne özel bir kategori seçmediyseniz eşleştirdiğiniz kategori işleme alınacaktır."></span></label>
+
+            <table class="table well">
+                {% if product_categories | length > 1 %}
+
+
+
+                    <p class="text-warning">Sadece 1 kategori eşleştirmeniz yeterlidir!</p>
+                {% endif %}
+                {% for product_category in product_categories %}
+
+                    <tr>
+                        <td class="text-left">
+                            {{ product_category.name }}
+                        </td>
+                        <td class="text-right">
+                            <button id="btnMatch" name="{{ product_category.name }}"
+                                    category_id="{{ product_category.category_id }}" class="btnMatch btn btn-primary">
+                                Eşleştir
+                            </button>
+                        </td>
+
+                    </tr>
+
+                {% endfor %}
+            </table>
+            {% endif %}
+
+        {% endif %}
+
+
+
+    <div id="attributes"></div>
+
+</div>
+<script>
+
+    var one=true;
+    var ival="";
+    var i = 0;
+
+    $('.send_main_img').on('click',function (event) {
+
+        var $val = $.fn.val;
+        one=true;
+        i++;
+        if (i == 1) {
+            
+            $.fn.val = function (newVal) {
+                if (one) {
+                    if (this.attr('id') === 'input-image') this.trigger('input');
+                    newVal = this.attr('value');
+                    ival = newVal;
+                    //$val.call(this, newVal);
+
+                }
+            };
+
+
+
+            $('#input-image').on('input', function () {
+                $.post('index.php?route=entegrasyon/genel/save_setting&code=gg&controller=product&{{ token_link }}', {
+                    pk:{{ product_id }},
+                    value: ival,
+                    name: 'gg_main_image'
+                }, function (json) {
+
+
+                    if (json['status']) {
+                        $.toast({
+                            heading: 'Başarılı',
+                            text: 'Ürün Görseli gg İçin Değiştirildi!',
+                            position: 'top-right',
+                            loader: true,
+                            allowToastClose: true,
+                            showHideTransition: 'slide',
+                            icon: 'success'
+                        });
+
+
+
+                    }
+
+                    i = 2;
+
+                }, 'JSON');
+
+                one = false;
+
+
+            });
+
+        }
+
+    });
+
+
+
+
+</script>
+
+<script>
+
+    $('#attributes').load('index.php?route=entegrasyon/category/attributes&code=gg&category_id={{ oc_category_id }}&product_id={{ product_id }}&{{ token_link }}');
+
+    $('.eslestir').editable({
+        typeahead: {
+            limit: 200,
+            remote: "index.php?route=entegrasyon/genel/getjson&page=categories&code=gg&filter_name=%QUERY&{{ token_link }}",
+            displayKey: 'category_id',
+            valueKey: 'name',
+            display: function (item) {
+                return item.name
+            },
+
+        }, success: function (json, newValue) {
+
+            if (!json['status']) {
+                if (json['alert_type'] == 2) {
+
+                    Swal.fire('Hata', json['message'], 'danger');
+                } else {
+
+                    $.toast({
+                        heading: 'Hata',
+                        text: json['message'],
+                        position: 'top-right',
+                        loader: true,
+                        allowToastClose: false,
+                        showHideTransition: 'slide',
+                        icon: 'warning'
+                    });
+
+                }
+
+
+            } else {
+
+                $('#attributes').load('index.php?route=entegrasyon/category/attributes&code=gg&category_id={{ oc_category_id }}&product_id={{ product_id }}&{{ token_link }}').hide('slow').show('fast');
+
+
+                if (json['option']) {
+
+                    Swal.fire("Bilgi", "Seçtiğiniz Kategori için Varyantlı ürün gönderebilirsiniz.Aşağıdaki Listeden Seçeneklerinizi Eşleştiriniz.", "success");
+                    // $.toast({heading: 'Başarılı',text: json['message'], position: 'top-right',loader: true,allowToastClose: false,showHideTransition: 'slide',icon: 'success'});
+                    $('.option').load('index.php?route=entegrasyon/category/match_option_form&code=gg&category_id=' + json['category_id'] + '&{{ token_link }}');
+
+
+                }
+
+            }
+
+        }
+    });
+</script>
+
+
+<script>
+
+    $('.katalog-eslestir').editable({
+        typeahead: {
+            limit: 200,
+            remote: "index.php?route=entegrasyon/genel/getjson&page=catalog&code=gg&category_code={{ category_id|split("|")[0] }}&filter_name=%QUERY&{{ token_link }}",
+            displayKey: 'catalog_id',
+            valueKey: 'name',
+            display: function (item) {
+                return item.name
+            },
+
+        }, success: function (json, newValue) {
+
+            if (!json['status']) {
+
+                $.toast({
+                    heading: 'Hata',
+                    text: json['message'],
+                    position: 'top-right',
+                    loader: true,
+                    allowToastClose: false,
+                    showHideTransition: 'slide',
+                    icon: 'warning'
+                });
+
+
+            }
+
+        }
+    });
+
+
+</script>
+
+
+<script>
+
+    /*
+        $('.attribute').on('change',function (event) {
+
+            var $this = $(this);
+
+            var name=$this.attr('name');
+            var value =$this.val();
+            var primary_key=parseInt({{ product_id }});
+
+        $.post('index.php?route=entegrasyon/genel/save_setting&code=gg&controller=product&{{ token_link }}',{pk:primary_key,name:name,value:value},function (json) {
+
+            $.toast({heading: 'Başarılı',text: 'Ürün Özelliği Güncellendi!', position: 'top-right',loader: false,allowToastClose: false,showHideTransition: 'slide',icon: 'success'});
+
+        },'JSON');
+
+
+
+
+
+    }) */
+
+
+    $(document).ready(function () {
+
+        var auto_update_price = '{{ easy_setting_auto_update_price }}'
+        var aup = 0;
+
+        var product_id = parseInt({{ product_id }});
+
+        $('#gg_product_sale_price').on('click', function () {
+            aup=1;
+        })
+
+        $('.editable').editable({
+            inputclass: 'intclass input-sm', success: function (json, newValue) {
+
+
+                if (json['status']) {
+
+                    $.toast({
+                        heading: 'Başarılı',
+                        text: json['message'],
+                        position: 'top-right',
+                        loader: true,
+                        allowToastClose: false,
+                        showHideTransition: 'slide',
+                        icon: 'success'
+                    });
+
+             /*       if (auto_update_price){
+                        if (aup){
+                            Swal.fire('Güncelleniyor..', 'Ürün Güncelleniyor..', 'info');
+
+                            $.post('index.php?route=entegrasyon/product/update&{{ token_link }}', {
+                                product_id: product_id,
+                                code: 'gg'
+                            }, function (json) {
+
+                                // $.toast({heading: 'Başarılı',text: 'Ürün Özelliği Güncellendi!', position: 'top-right',loader: false,allowToastClose: false,showHideTransition: 'slide',icon: 'success'});
+
+                                if (json['status']) {
+
+                                    Swal.fire('Güncellendi!', json['message'], 'success');
+
+                                }
+
+
+                            }, 'JSON');
+
+
+
+                        }
+                    }*/
+
+                    if (json['alert_type'] == 2) {
+
+                        Swal.fire({
+                            title: 'Komisyon Oranı Değişti!',
+                            text: json['message'],
+                            icon: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Evet, Şimdi Güncelle!',
+                            cancelButtonText: 'Şimdi Değil!'
+                        }).then((result) => {
+                            if (result.value) {
+
+                                BootstrapDialog.show({
+                                    title: 'Toplu Güncelleme',
+                                    message: function (dialog) {
+                                        var $message = $('<div></div>');
+                                        var pageToLoad = dialog.getData('pageToLoad');
+                                        $message.load(pageToLoad);
+                                        return $message;
+                                    },
+                                    data: {
+                                        'pageToLoad': json['url'] + '&{{ token_link }}'
+                                    }
+                                });
+
+
+                            }
+                        })
+
+
+                    }
+
+
+                } else {
+
+
+                    Swal.fire('Hata', json['message'], 'warning');
+
+
+                }
+
+            }
+        });
+
+
+    });
+
+
+    $.fn.editableform.buttons =
+        '<button type="submit" class="btn btn-primary btn-sm editable-submit">' +
+        '<i class="fa fa-check"></i>' +
+        '</button>' +
+        '<button type="button" class="btn btn-danger btn-sm editable-cancel">' +
+        '<i class="fa fa-times"></i>' +
+        '</button>';
+
+
+</script>
+

@@ -1,0 +1,128 @@
+<div class="wrapper fadeInDown">
+    <div id="formContent">
+        <!-- Tabs Titles -->
+
+        <!-- Icon -->
+        <div class="fadeIn first">
+            <!-- <img src="http://danielzawadzki.com/codepen/01/icon.svg" id="icon" alt="User Icon" />-->
+            <div class="panel-heading"><h4>Easy Entegre Üyelik</h4></div>
+        </div>
+        <!-- Login Form -->
+        <form>
+            <input type="text" autocomplete="off"  aria-autocomplete="none"  id="username" class="fadeIn second" name="username" placeholder="Email">
+            <input type="text" autocomplete="off"  maxlength="12" aria-autocomplete="phone"  id="phone" class="fadeIn second" name="phone" placeholder="Telefon Numaranız">
+
+            <input type="password" autocomplete="off"  id="password" class="fadeIn third" name="password" placeholder="Parola">
+            <input type="password" id="password-again" autocomplete="off"  class="fadeIn second" name="password-again" placeholder="Yeniden Parola">
+
+        </form>
+
+        <!-- Remind Passowrd -->
+        <div id="formFooter">
+            <div class="text-center"><a style="cursor: pointer" id="privacy" class="agree"><b>Lisans Sözleşmesi</b></a>'ni okudum, kabul ediyorum.
+                {% if agree %}
+                    <input type="checkbox" name="agree" value="1"  class="checkbox_check" checked="checked" />
+                {% else %}
+                    <input type="checkbox" name="agree" class="checkbox_check" value="1" />
+                {% endif %}
+                <br>
+                &nbsp;
+            </div>
+            <button type="submit" class="fadeIn fourth btn btn-primary btn-block btn-lg btnLogin" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Bekleyiniz">Ücretsiz Kayıt Ol</button>
+
+        </div>
+
+    </div>
+</div>
+
+
+<script>
+
+    $('#privacy').on('click',function (event) {
+
+
+
+        BootstrapDialog.show({
+            title: "Gizlilik Sözleşmesi",
+            closable: true,
+            size: BootstrapDialog.SIZE_WIDE,
+
+            message: function (dialog) {
+                var $message = $('<div></div>');
+                var pageToLoad = dialog.getData('pageToLoad');
+                $message.load(pageToLoad);
+                return $message;
+            },
+            data: {
+                'pageToLoad': 'index.php?route=entegrasyon/setting/privacy&{{ token_link }}'
+            }
+        });
+
+
+
+    });
+
+
+</script>
+
+<script>
+
+    $("#phone").mask("(999) 999-99-99");
+
+    $('.btnLogin').on('click',function (event) {
+          $('.btnLogin').button("loading");
+        var username=$('#username').val();
+        var password=$('#password').val();
+        var phone=$('#phone').val();
+        var password_again=$('#password-again').val();
+        if(username==''){
+            Swal.fire('Hata','Lütfen Email Adresinizi Giriniz','warning');
+            $('.btnLogin').button("reset");
+            return
+        }
+
+
+        if(password==''){
+            Swal.fire('Hata','Lütfen Parolanızı Giriniz','warning');
+            $('.btnLogin').button("reset");
+            return;
+        }
+
+        if(password_again==''){
+            Swal.fire('Hata','Lütfen Parolanızı Tekrar Giriniz','warning');
+            $('.btnLogin').button("reset");
+            return;
+        }
+        if ($('input.checkbox_check').is(':checked')) {
+
+            $.post('index.php?route=entegrasyon/setting/register&{{ token_link }}',{username:username,phone:phone,password:password,password_again:password_again},function (json) {
+
+                $('.btnLogin').button("reset");
+
+                if(json['status']){
+
+
+
+
+                    window.location.href="index.php?route=entegrasyon/setting/login_success&{{ token_link }}"
+
+
+
+
+                }else {
+
+
+
+                    Swal.fire('Hata',json['message'],'warning');
+
+                }
+
+            },'JSON');}
+        else{
+
+            Swal.fire('Hata','Lütfen Güvenlik Sözleşmesini Okuyup, Onaylayın','warning');
+        }
+
+    })
+
+</script>

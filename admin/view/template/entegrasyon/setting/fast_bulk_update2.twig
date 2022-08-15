@@ -1,0 +1,116 @@
+
+
+
+
+<div class="row">
+
+    <div  style="width: 100%" class="panel">
+
+
+
+        <div class="panel-body">
+
+            <table  style="width: 100%" class="table  table-bordered">
+
+<div class="text-center">
+                <p class="lead ">Toplu Güncelleme Yapmak İstediğiniz Pazar Yerinin Logosuna Tıklayın..</p>
+</div>
+
+
+
+                </tbody>
+
+            </table>
+
+            <div id="report"   >
+
+                {% for marketplace in marketplaces %}
+
+                    {% if marketplace.status %}
+
+
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-xs-2">
+                                    <button class="btn bulk_update_basic center-block" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> <img src='{{ marketplace.logo }}' />" type="button" total_product="{{ marketplace.products_total }}" marketplace="{{ marketplace.name }}" code="{{ marketplace.code }}"> <img src="{{ marketplace.logo }}" />  </button>
+                                <h6 class="text-center">{{ marketplace.products_total }}/<span class=" lastid_test_{{ marketplace.code }}">0</span></h6>
+                                </div>
+                                <div class="col-xs-10">
+                                    <div id="progress_{{ marketplace.code }}" class="progress  active center-block"  style="margin-top:20px;"> <div id="progress-bar_{{ marketplace.code }}" class="progress-bar progress-bar-striped progress-bar-animated"  role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width:0%"><span class="yuzde_{{ marketplace.code }}"></span></div></div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <br>
+                    {% endif %}
+
+                {% endfor %}
+            </div>
+        </div>
+
+
+
+    </div>
+
+
+</div>
+
+
+<script>
+
+    $( ".bulk_update_basic" ).click(function() {
+
+
+        var code = $(this).attr("code");
+        var total_product = $(this).attr("total_product");
+
+        var url = "{{ caralog_url }}/index.php?route=api/notejs/update_products_fast&code="+code+"&request_limit=1000&last_product_index=0"
+        starttool(url,code,total_product);
+        $(this).prop('disabled',true);
+        $(this).button('loading');
+
+
+
+    })
+
+</script>
+
+<script>
+
+    function starttool(url,code,total_product) {
+
+        $.ajax({
+            url: url,
+            type: 'post',
+            dataType: 'json',
+            success: function(json) {
+                var yuzde = Math.round(json['last_product_id'] / total_product * 100 );
+
+
+                $('#updated_product').html(json['total_matched']);
+                $('#progress_'+code+'  #progress-bar_'+code).css('width', yuzde + '%');
+                $('#progress_'+code+'   .yuzde_'+code).html(yuzde + '%' + ' tamamlandı');
+
+                if(json['last_product_id'] < total_product ){
+                    starttool("{{ caralog_url }}/index.php?route=api/notejs/update_products_fast&code="+code+"&request_limit=1000&last_product_index="+json['last_product_id'], code,total_product);
+                    $('.lastid_test_'+code).html(json['last_product_id']);
+
+
+                }else {
+                    $('.lastid_test_'+code).html(json['last_product_id']);
+
+                    $( ".bulk_update_basic" ).button('reset');
+                }
+
+
+            },
+            error: function (request, status, error) {
+                //alert(request.responseText);
+            }
+        });
+    }
+
+
+</script>

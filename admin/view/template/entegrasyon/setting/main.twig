@@ -1,0 +1,265 @@
+<div class="row">
+    <div class="col-md-8 marketplaces">
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <td class="text-center" width="10%">Logo</td>
+                        <td class="text-left" width="15%">Pazaryeri</td>
+                        <td class="{{ easy_visibility }} text-center easy-mode " width="10%">Üyelik</td>
+                        <td class="{{ easy_visibility }} text-center easy-mode " width="10%">Hesap</td>
+                        <td class="text-center" width="15%">Kalan Gün</td>
+
+                        <td class="text-center" width="10%">Durumu</td>
+
+                        <td class="text-right" width="35%">Eylem</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    {% for marketplace in marketplaces %}
+                        <tr>
+                            <td class="text-center"><img src="{{ marketplace.logo }}"></td>
+                            <td class="text-left">{{ marketplace.name }}</td>
+                            <td class=" {{ easy_visibility }} text-center easy-mode ">{{ marketplace.member_type }}</td>
+                            <td class=" {{ easy_visibility }} easy-mode">
+                                {% if marketplace.member_type=='Demo'  %} <a href="index.php?route=entegrasyon/setting/account_info&{{ token_link }}" class="btn btn-primary btn-block">Satın Al</a> {% else %} <a href="index.php?route=entegrasyon/setting/account_info&{{ token_link }}" class="btn btn-info btn-block">Süre Uzat</a>  {% endif %}
+
+                            </td>
+                            <td class="text-center">{{ marketplace.left_day }}</td>
+
+
+                            <td class="text-center">{{ marketplace.status ? 'Aktif':'Pasif' }}</td>
+                            <td class="text-right"> {%  if marketplace.status %}<button code="{{ marketplace.code }}" style="margin-right: 3px" data-toggle="tooltip" title="{{ marketplace.name }} {% if marketplace.code=='hb' or marketplace.code=='eptt' %} Mağazasından ürün aktarımı yapılamamaktadır! {% else %}Mağazanızdaki ürünleri  sitenize aktarır. {% endif %}"    class="btn {% if marketplace.code=='hb' or marketplace.code=='eptt' %} btn-default {% else %} btn-info  {% endif %} btnDown" data-loading-text="<i class='fa fa-spinner fa-spin '></i>"> <i class="fa fa-download"></i></button>
+                                    <button code="{{ marketplace.code }}" style="margin-right: 3px" data-toggle="tooltip" title="{{ marketplace.name }} Mağazanızdaki ürünlerle sitenizdeki ürünleri eşleştirir."    class="btn btn-warning btnGetProducts" data-loading-text="<i class='fa fa-spinner fa-spin '></i>"> <i class="fa fa-refresh"></i></button>
+                                    <button code="{{ marketplace.code }}" style="margin-right: 3px" data-toggle="tooltip" title="{{ marketplace.name }} Mağazanızdaki ürünlerle sitenize aktarır."    class="btn hidden btn-danger btnGetProducts" data-loading-text="<i class='fa fa-spinner fa-spin '></i>"> <i class="fa fa-refresh"></i></button>
+
+                                    <button code="{{ marketplace.code }}" data-toggle="tooltip" title="{{ marketplace.name }} Ayarları"   class="btn btn-primary btnEdit" data-loading-text="<i class='fa fa-spinner fa-spin '></i>"> <i class="fa  fa-edit"></i></button> {%  endif %}  <button code="{{ marketplace.code }}" data-toggle="tooltip" title="{{ marketplace.name }} api bilgilerinizi girin"   class="btn btn-success {% if not permission %} hidden {% endif %} btnPazar" data-loading-text="<i class='fa fa-spinner fa-spin '></i> ..." > <i class="fa fa-wrench"></i></button> </td>   </tr>
+                    {% endfor %}
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-md-4" style="padding-left:10px;">
+        <div id="entegrasyon-version" class="alert alert-info text-left">
+            <div id="entegrasyon-version-loading"> <i class="fa fa-cog fa-lg fa-spin"></i> Entegrasyon Güncellemesi Kontrol Ediliyor </div>
+        </div>
+
+        <div class="col-md-12 text-center">
+            <div class="row">
+
+                <div class="col-md-6 text-center">
+                    <div class="well"> <a code="easy" class="btnEdit"> <span class="fa-stack fa-2x"> <i class="fa fa-square-o fa-stack-2x"></i> <i class="fa  fa-cog fa-stack-1x"></i> </span>
+                            <h4>Genel Ayarlar</h4>
+                        </a> </div>
+                </div>
+
+                <div class="col-md-6 text-center">
+                    <div class="well"> <a href="{{ tool_link }}" class="btnTools"> <span class="fa-stack fa-2x"> <i class="fa fa-square-o fa-stack-2x"></i> <i class="fa fa-wrench fa-stack-1x"></i> </span>
+                            <h4>Araçlar</h4>
+                        </a> </div>
+                </div>
+                <div class="{{ easy_visibility }} col-md-6 text-center easy-mode ">
+                    <div class="well"> <a href="https://www.easyentegre.com/s.s.s" target="_blank"> <span class="fa-stack fa-2x"> <i class="fa fa-square-o fa-stack-2x"></i> <i class="fa fa-life-ring fa-stack-1x"></i> </span>
+                            <h4>Sıkça Sorulanlar</h4>
+                        </a> </div>
+                </div>
+                <div class="col-md-4 text-center hidden">
+                    <div class="well"> <a href="{{ manage_link }}"> <span class="fa-stack fa-2x"> <i class="fa fa-square-o fa-stack-2x"></i> <i class="fa fa-wrench fa-stack-1x"></i> </span>
+                            <h4>Senkronizasyon</h4>
+                        </a> </div>
+                </div>
+                <div class=" {{ easy_visibility }} col-md-6 text-center easy-mode">
+                    <div class="well"> <a href="https://www.easyentegre.com/egitim-videolari.html" target="_BLANK"> <span class="fa-stack fa-2x"> <i class="fa fa-square-o fa-stack-2x"></i> <i class="fa fa-youtube-play fa-stack-1x"></i> </span>
+                            <h4>Nasıl Kullanılır</h4>
+                        </a> </div>
+                </div>
+                <div class="col-md-4 text-center hidden">
+                    <div class="well"> <a href="http://www.entegrasyonpro.com/suggestions" target="_BLANK"> <span class="fa-stack fa-2x"> <i class="fa fa-square-o fa-stack-2x"></i> <i class="fa fa-bullhorn fa-stack-1x"></i> </span>
+                            <h4>Duyurular</h4>
+                        </a> </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+
+</div>
+<div class="row hidden">
+    <div class="panel panel-default" style="border-top: 2px solid #27ad5e;">
+
+        <div class="panel-heading">
+            <h3 class="panel-title"><i class="fa fa-tasks"></i> Cron</h3>
+        </div>
+
+        <div class="panel-body">
+
+            <table class="table">
+
+                <tr>
+                    <td class="center"><label class="control-label">Sipariş & Ürün Soruları Kontrol<span data-toggle="tooltip" title="" data-original-title="Siparişlerinizi ve ürün sorularınızı, ayarladığınız cron süresine göre kontrol eder, Cron süresi en az 20 dakika olmalıdır."></span></label></td><td>{{ orders_cron }}</td></tr>
+                <tr class="hidden"> <td class="center"> <label class="control-label">Ürün Soruları Kontrol<span data-toggle="tooltip" title="" data-original-title="Ürün sorularınızı, ayarladığınız cron süresine göre kontrol eder, Cron süresi en az 20 dakika olmalıdır."></span></label></td><td>{{ question_cron }}
+                <tr> <td class="center"> <label class="control-label hidden">Ürün Güncelleme<span data-toggle="tooltip" title="" data-original-title="Ürün Güncelleme; Katalog/Ürünler sayfasından herhangi bir ürünü güncellendiğinizde güncellediğiniz ürün hangi pazaryerlerinde mevcutsa o pazaryerlerinde güncellenir. Herhangi bir özelliği değiştirilememiş ürünler güncellenmez. Cron Süresi en az 20 dakika olmalıdır."></span></label></td><td>{{ update_cron }}
+
+                    </td></tr>
+
+                </tr>
+
+            </table>
+
+
+        </div>
+
+    </div>
+
+</div>
+
+<script type="text/javascript">
+    function version() {
+        var version = '{{ entegrasyon_version }}';
+
+        $('#entegrasyon-version').empty().html('<div id="entegrasyon-version-loading"><i class="fa fa-cog fa-lg fa-spin"></i> {{ text_version_check }}</div>');
+
+        setTimeout(function () {
+            $.ajax({
+                type: 'GET',
+                url: 'index.php?route=entegrasyon/setting/version&{{ token_link }}',
+                dataType: 'json',
+                success: function (json) {
+
+                    checkmode();
+                    //      $('.marketplaces').empty();
+                    $('.marketplaces').load('index.php?route=entegrasyon/setting/marketplaces&{{ token_link }}');
+                    $('#entegrasyon-version-loading').hide();
+
+                    if (json.error) {
+                        $('#entegrasyon-version').removeClass('attention').addClass('alert-warning').append(json.msg);
+                    } else {
+                        if (version < json.version) {
+                            $('#entegrasyon-version').removeClass('attention').addClass('alert-warning').append('<i class="fa fa-warning"></i> {{ text_version_current }} v.' + version + ', {{ text_version_available }} v.' + json.version + '  <hr><a class="btn btn-primary" href="index.php?route=entegrasyon/setting/updater&{{ token_link }}">Şimdi Güncelle</a>');
+                        } else {
+                            $('#entegrasyon-version').removeClass('attention').addClass('alert-success').append('<i class="fa fa-check"></i> {{ text_version_latest }} (v.' + version + ')');
+                        }
+                    }
+                },
+                failure: function () {
+                    $('#entegrasyon-version').html('{{ error_failed }}<strong><span onclick="version();">{{ button_retry }}</span></strong>');
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    if (xhr.status != 0) {
+                        alert(xhr.status + "\r\n" + thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+                    }
+                }
+            });
+        }, 500);
+    }
+
+
+    function checkmode(){
+
+        setTimeout(function () {
+            $.ajax({
+                type: 'GET',
+                url: 'index.php?route=entegrasyon/setting/checkmode&{{ token_link }}',
+                dataType: 'json',
+                success: function (json) {
+
+                    if(parseInt(json['easy_visibility'])){
+
+                        //$('.easy-mode').show();
+                        $('.easy-mode').removeClass('hidden')
+
+                    }else {
+
+                        // $('.easy-mode').hide();
+
+                        $('.easy-mode').addClass('hidden');
+
+                    }
+
+
+                    if(!json['domain_control']){
+
+                        Swal.fire({
+                            title: 'Dikkat Dikkat',
+                            text: "Kayıtlı domain ile istekte bulunduğunuz domain bilgileri eşleşmemektedir. Bu durumunda birçok fonksiyon çalışmayacaktır. Mevcut domaininiz ile yeni kayıt oluşturmak istermisiniz ?",
+                            icon: 'info',
+                            showCancelButton: true,
+                            confirmButtonColor: '#3085d6',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Evet!',
+                            cancelButtonText: 'Hayır!'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+
+                                $.post('index.php?route=entegrasyon/setting/logout&{{ token_link }}',{},function(json){
+
+
+
+                                },'JSON');
+
+
+                                window.location.href="index.php?route=entegrasyon/setting&{{ token_link }}"
+
+                            }
+                        })
+
+
+
+
+                    }
+
+
+
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    if (xhr.status != 0) {
+                        alert(xhr.status + "\r\n" +thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+                    }
+                }
+            });
+        }, 500);
+
+
+    }
+
+
+
+    function getNotifications() {
+        $('#entegrasyon-notification').empty().html('<div id="entegrasyon-loading"><i class="fa fa-cog fa-lg fa-spin"></i> {{ text_getting_messages }}</div>');
+
+        setTimeout(function () {
+            $.ajax({
+                type: 'GET',
+                url: 'index.php?route=entegrasyon/setting/version&{{ token_link }}',
+                dataType: 'json',
+                success: function (json) {
+                    html = '<h4><i class="fa fa-info-circle"></i>  {{ text_title_messages }}</h4>';
+                    html += '<ul>';
+                    $.each(json, function (key, val) {
+                        html += '<li>' + val + '</li>';
+                    });
+                    html += '</ul>';
+
+                    $('#entegrasyon-notification').html(html);
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    if (xhr.status != 0) {
+                        alert(xhr.status + "\r\n" +thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+                    }
+                }
+            });
+        }, 500);
+    }
+
+    $(document).ready(function () {
+        version();
+        getNotifications();
+    });
+    //--></script>

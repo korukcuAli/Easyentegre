@@ -1,0 +1,67 @@
+<div class="panel panel-panel-default">
+
+    <div class="row well"  style="border-top: 2px solid #27ad5e;">
+
+
+        <div class="col-sm-1">
+            <img class="img-responsive" src="view/image/entegrasyon/bilgi.png"/>
+        </div>
+        <div class="col-sm-11">
+            <h3 style="color:#27ad5e;font-weight: bolder ">Bilgilendirme</h3>
+            <p>Hepsiburada Merchant ID bilginizi almak için <a href="https://hbmarketplace.secure.force.com/apex/newmemberticketform?CariKod=&MagazaAdi=&taleptipi=API+Entegrasyon+%C4%B0%C5%9Flemleri&isMulti=False&isTeknik=False&isLead=False" target="_blank"><strong>Buraya</strong></a> Tıklayarak Api isteğinde bulunmalısınız. Mesaj Kısmına entegratör firma olarak <strong>miryazilim_dev</strong> firmasını yetkilendirmek istiyorum diye not düşmelisiniz. Hepsiburada yönetimi yetkilendirmeyi yaptığında hep size hemde bize merchant ID numarasını gönderecektir. bu numarayı aşağıdaki alana girerek kurulumu tamamlayabilisiniz. </p>
+        </div>
+    </div>
+
+    <div class="panel-heading">
+        <div class="panel-title">Hepsiburada Api Ayarları</div>
+        <div class="pull-right" style="    margin-top: -7px;">
+            <button  data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-primary btnVazgec"><i class="fa fa-reply"></i></button></div>
+    </div>
+
+
+</div>
+
+<div class="row">
+    <div class="container-fluid">
+
+<form>
+        <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-meta-title">Hepsiburada Merchant ID</label>
+            <div class="col-sm-6">
+                <input type="text" name="hb_merchant_id" value="{{ hb_merchant_id }}" placeholder="Hepsiburada Merchant ID nizi Giriniz" id="input-meta-api-secret" class="form-control" />
+            </div>
+        </div>
+</form>
+        <div class="clearfix"></div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-4">
+                <div class="btn-group">
+                    <button code="hb" name="Hepsiburada" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Kontrol Ediliyor..." class="btn btn-success btn-lg btnKaydet">Kaydet</button>
+                    <button code="hb" name="Hepsiburada" class="btn btn-warning btn-lg btnReset" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Yükleniyor..." >Sıfırla</button>
+                    
+
+                </div>
+            </div>
+
+        </div>
+    </div></div>
+
+
+
+</div>
+
+
+<script>
+
+
+
+
+
+
+
+
+
+
+</script>
+
